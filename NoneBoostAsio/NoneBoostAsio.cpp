@@ -1,95 +1,87 @@
 ﻿#include <iostream>
-
 #include <string>
 #include <include/asio.hpp>
 
-std::string make_daytime_string()
-{
-	using namespace std;
-	time_t now = time(0);
-	static char buf[100];
-	auto errorCode = ctime_s(buf, 100, &now);
-	UNREFERENCED_PARAMETER(errorCode);
-	return std::string{ buf };
-}
-
-class tcp_connection
-	: public std::enable_shared_from_this<tcp_connection>
+class TcpConnection
+	: public std::enable_shared_from_this<TcpConnection>
 {
 public:
-	typedef std::shared_ptr<tcp_connection> pointer;
-
-	static pointer create(asio::io_context& io_context)
+	static std::shared_ptr<TcpConnection> Create(asio::io_context& ioContext)
 	{
-		return pointer(new tcp_connection(io_context));
+		return std::shared_ptr<TcpConnection>(new TcpConnection(ioContext));
 	}
 
 	asio::ip::tcp::socket& socket()
 	{
-		return socket_;
+		return m_socket;
 	}
 
-	void start()
+	void Start()
 	{
-		message_ = make_daytime_string();
+		auto MakeDaytimeString = []() 
+		{
+			time_t now = time(0);
+			static char buf[100];
+			auto errorCode = ctime_s(buf, 100, &now);
+			return std::string{ buf };
+		};
 
-		asio::async_write(socket_, asio::buffer(message_),
-			std::bind(&tcp_connection::handle_write, shared_from_this(),
+		m_message = MakeDaytimeString();
+
+		asio::async_write(m_socket, asio::buffer(m_message),
+			std::bind(&TcpConnection::HandleWrite, shared_from_this(),
 				std::placeholders::_1,
 				std::placeholders::_2));
 	}
 
 private:
-	tcp_connection(asio::io_context& io_context)
-		: socket_(io_context)
+	TcpConnection(asio::io_context& io_context)
+		: m_socket(io_context)
 	{
 	}
 
-	void handle_write(const asio::error_code& /*error*/,
-		size_t /*bytes_transferred*/)
+	void HandleWrite(const asio::error_code& /*error*/,	size_t /*bytes_transferred*/)
 	{
 	}
 
-	asio::ip::tcp::socket socket_;
-	std::string message_;
+	asio::ip::tcp::socket m_socket;
+	std::string m_message;
 };
 
-class tcp_server
+class TcpServer
 {
 public:
-	tcp_server(asio::io_context& io_context)
-		: io_context_(io_context),
-		acceptor_(io_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), 13))
+	TcpServer(asio::io_context& ioContext)
+		: m_ioContext(ioContext),
+		m_acceptor(ioContext, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), 13))
 	{
-		start_accept();
+		StartAccept();
 	}
 
 private:
-	void start_accept()
+	void StartAccept()
 	{
-		tcp_connection::pointer new_connection =
-			tcp_connection::create(io_context_);
+		std::shared_ptr<TcpConnection> newConnection = TcpConnection::Create(m_ioContext);
 
-		acceptor_.async_accept(new_connection->socket(),
-			std::bind(&tcp_server::handle_accept,
+		m_acceptor.async_accept(newConnection->socket(),
+			std::bind(&TcpServer::HandleAccept,
 				this,
-				new_connection,
+				newConnection,
 				std::placeholders::_1));
 	}
 
-	void handle_accept(tcp_connection::pointer new_connection,
-		const asio::error_code& error)
+	void HandleAccept(std::shared_ptr<TcpConnection> newConnection, const asio::error_code& error)
 	{
 		if (!error)
 		{
-			new_connection->start();
+			newConnection->Start();
 		}
 
-		start_accept();
+		StartAccept();
 	}
 
-	asio::io_context& io_context_;
-	asio::ip::tcp::acceptor acceptor_;
+	asio::io_context& m_ioContext;
+	asio::ip::tcp::acceptor m_acceptor;
 };
 
 int main()
@@ -97,7 +89,7 @@ int main()
 	try
 	{
 		asio::io_context io_context;
-		tcp_server server(io_context);
+		TcpServer server(io_context);
 		io_context.run();
 	}
 	catch (std::exception& e)
