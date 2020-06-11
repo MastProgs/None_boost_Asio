@@ -25,17 +25,22 @@ public:
 		m_message = MakeDaytimeString();
 
 		asio::async_write(m_socket, asio::buffer(m_message),
-			std::bind(&TcpConnection::HandleWrite, shared_from_this(),
-				std::placeholders::_1,
-				std::placeholders::_2));
+			[me = shared_from_this()](const asio::error_code& error, size_t bytes_transferred) 
+		{
+			me->HandleWrite(error, bytes_transferred);
+		});
+
+			//std::bind(&TcpConnection::HandleWrite, shared_from_this(),
+			//	std::placeholders::_1,
+			//	std::placeholders::_2));
 	}
 
 	TcpConnection(asio::io_context& ioContext)
 		: m_socket(ioContext)
 	{
 	}
-private:
 
+private:
 	void HandleWrite(const asio::error_code& /*error*/,	size_t /*bytes_transferred*/)
 	{
 		// 클라로 송신한 이후 처리할 게 있는 경우
@@ -63,10 +68,15 @@ private:
 		std::shared_ptr<TcpConnection> newConnection = std::make_shared<TcpConnection>(m_ioContext);
 
 		m_acceptor.async_accept(newConnection->GetSocket(),
-			std::bind(&TcpServer::HandleAccept,
-				this,
-				newConnection,
-				std::placeholders::_1));
+			[newConnect = newConnection, me = this](const asio::error_code& error)
+			{
+				me->HandleAccept(newConnect, error);
+			});
+
+			//std::bind(&TcpServer::HandleAccept,
+			//	this,
+			//	newConnection,
+			//	std::placeholders::_1));
 	}
 
 	void HandleAccept(std::shared_ptr<TcpConnection> newConnection, const asio::error_code& error)
