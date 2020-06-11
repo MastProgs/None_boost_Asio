@@ -1,6 +1,8 @@
-﻿#include <iostream>
+﻿#include <include/asio.hpp>
+#include <iostream>
 #include <string>
-#include <include/asio.hpp>
+
+constexpr int PORT_NUMBER{ 9000 };
 
 class TcpConnection
 	: public std::enable_shared_from_this<TcpConnection>
@@ -56,7 +58,7 @@ class TcpServer
 public:
 	TcpServer(asio::io_context& ioContext)
 		: m_ioContext(ioContext),
-		m_acceptor(ioContext, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), 13))
+		m_acceptor(ioContext, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), PORT_NUMBER))
 	{
 		StartAccept();
 	}
