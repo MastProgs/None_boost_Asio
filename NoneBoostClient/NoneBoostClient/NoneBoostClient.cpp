@@ -9,22 +9,27 @@ constexpr int PORT_NUMBER{ 9000 };
 class TCP_Client
 {
 public:
-	TCP_Client(asio::io_service& io_service) : m_io_service{ io_service }, m_Socket{ io_service }, m_nSeqNumber{ 0 }{};
+	TCP_Client(asio::io_service& io_service) : m_io_service{ io_service }, m_socket{ io_service }, m_nSeqNumber{ 0 }{};
 	~TCP_Client() {};
 
 	void Connect(asio::ip::tcp::endpoint& endpoint)
 	{
-		m_Socket.async_connect(endpoint, std::bind(&TCP_Client::handle_connect, this, std::placeholders::_1));
+		m_socket.async_connect(endpoint,
+			[me = this](const asio::error_code& error) 
+		{
+			me->HandleConnect(error); 
+		});
+		// std::bind(&TCP_Client::HandleConnect, this, std::placeholders::_1));
 	}
 
 private:
 	void PostWrite()
 	{
-		if (m_Socket.is_open() == false) { return; }
+		if (m_socket.is_open() == false) { return; }
 
 		if (m_nSeqNumber > 7)
 		{
-			m_Socket.close();
+			m_socket.close();
 			return;
 		}
 
@@ -35,22 +40,30 @@ private:
 
 		m_writeMessage = szMessage;
 
-		asio::async_write(m_Socket, 
-			asio::buffer(m_writeMessage), 
-			std::bind(&TCP_Client::handle_write, this, std::placeholders::_1, std::placeholders::_2));
+		asio::async_write(m_socket,
+			asio::buffer(m_writeMessage),
+			[me = this](const asio::error_code& error, size_t bytes_transferred)
+			{
+				me->HandleWrite(error, bytes_transferred);
+			});
+			//std::bind(&TCP_Client::HandleWrite, this, std::placeholders::_1, std::placeholders::_2));
 
 		PostReceive();
 	}
 
 	void PostReceive()
 	{
-		memset(&m_ReceiveBuffer, '\0', sizeof(m_ReceiveBuffer));
+		memset(&m_recvBuf, '\0', sizeof(m_recvBuf));
 
-		m_Socket.async_read_some(asio::buffer(m_ReceiveBuffer),
-			std::bind(&TCP_Client::handle_receive, this, std::placeholders::_1, std::placeholders::_2));
+		m_socket.async_read_some(asio::buffer(m_recvBuf),
+			[me = this](const asio::error_code& error, size_t bytes_transferred)
+		{
+			me->HandleReceive(error, bytes_transferred);
+		});
+			//std::bind(&TCP_Client::HandleReceive, this, std::placeholders::_1, std::placeholders::_2));
 	}
 
-	void handle_connect(const asio::error_code& error)
+	void HandleConnect(const asio::error_code& error)
 	{
 		if (error)
 		{
@@ -63,12 +76,12 @@ private:
 		}
 	}
 
-	void handle_write(const asio::error_code& /*error*/, size_t /*bytes_transferred*/)
+	void HandleWrite(const asio::error_code& /*error*/, size_t /*bytes_transferred*/)
 	{
 
 	}
 
-	void handle_receive(const asio::error_code& error, size_t bytes_transferred)
+	void HandleReceive(const asio::error_code& error, size_t bytes_transferred)
 	{
 		if (error)
 		{
@@ -83,7 +96,7 @@ private:
 		}
 		else
 		{
-			const std::string strRecvMessage = m_ReceiveBuffer.data();
+			const std::string strRecvMessage = m_recvBuf.data();
 			std::cout << "서버에서 받은 메세지 : " << strRecvMessage << ", 받은 크기 : " << bytes_transferred << std::endl;
 
 			PostWrite();
@@ -92,9 +105,9 @@ private:
 
 private:
 	asio::io_service& m_io_service;
-	asio::ip::tcp::socket m_Socket;
+	asio::ip::tcp::socket m_socket;
 	int m_nSeqNumber;
-	std::array<char, 128> m_ReceiveBuffer;
+	std::array<char, 128> m_recvBuf;
 	std::string m_writeMessage;
 };
 

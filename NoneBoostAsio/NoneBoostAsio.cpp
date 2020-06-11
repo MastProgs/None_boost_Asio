@@ -28,13 +28,9 @@ public:
 
 		asio::async_write(m_socket, asio::buffer(m_message),
 			[me = shared_from_this()](const asio::error_code& error, size_t bytes_transferred) 
-		{
-			me->HandleWrite(error, bytes_transferred);
-		});
-
-			//std::bind(&TcpConnection::HandleWrite, shared_from_this(),
-			//	std::placeholders::_1,
-			//	std::placeholders::_2));
+			{
+				me->HandleWrite(error, bytes_transferred);
+			});
 	}
 
 	TcpConnection(asio::io_context& ioContext)
@@ -74,17 +70,13 @@ private:
 			{
 				me->HandleAccept(newConnect, error);
 			});
-
-			//std::bind(&TcpServer::HandleAccept,
-			//	this,
-			//	newConnection,
-			//	std::placeholders::_1));
 	}
 
 	void HandleAccept(std::shared_ptr<TcpConnection> newConnection, const asio::error_code& error)
 	{
 		if (!error)
 		{
+			std::cout << newConnection->GetSocket().local_endpoint().address().to_string() << " is Connected\n";
 			newConnection->Start();
 		}
 
