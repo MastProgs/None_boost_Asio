@@ -1,0 +1,24 @@
+#include "stdafx.h"
+#include "AsioServer.h"
+
+int main()
+{
+	try
+	{
+		AsioServer asioServer;
+
+		if (asioServer.Init_AsioServer() == false)
+		{
+			// error check
+		}
+
+		if (asioServer.StartListen() == false)
+		{
+			// error check
+		}
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << e.what();
+	}
+}
