@@ -73,14 +73,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>E:\Dev Projects\None_boost_Asio\asio-1.18.0;$(IncludePath)</IncludePath>
+    <IncludePath>E:\Dev Projects\None_boost_Asio\C++20 Asio\AsioCpp20;E:\Dev Projects\None_boost_Asio\asio-1.18.0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>E:\Dev Projects\None_boost_Asio\asio-1.18.0;$(IncludePath)</IncludePath>
+    <IncludePath>E:\Dev Projects\None_boost_Asio\C++20 Asio\AsioCpp20;E:\Dev Projects\None_boost_Asio\asio-1.18.0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -146,16 +146,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AsioAcceptor.cpp" />
-    <ClCompile Include="AsioClient.cpp" />
-    <ClCompile Include="AsioServer.cpp" />
+    <ClCompile Include="Core\AsioAcceptor.cpp" />
+    <ClCompile Include="Core\AsioClient.cpp" />
+    <ClCompile Include="Core\AsioServer.cpp" />
+    <ClCompile Include="Core\Object.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AsioAcceptor.h" />
-    <ClInclude Include="AsioClient.h" />
-    <ClInclude Include="AsioServer.h" />
+    <ClInclude Include="Core\AsioAcceptor.h" />
+    <ClInclude Include="Core\AsioClient.h" />
+    <ClInclude Include="Core\AsioServer.h" />
+    <ClInclude Include="Core\Object.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

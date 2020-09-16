@@ -27,13 +27,16 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>PCH</Filter>
     </ClCompile>
-    <ClCompile Include="AsioServer.cpp">
+    <ClCompile Include="Core\AsioAcceptor.cpp">
       <Filter>소스 파일\Core</Filter>
     </ClCompile>
-    <ClCompile Include="AsioAcceptor.cpp">
+    <ClCompile Include="Core\AsioClient.cpp">
       <Filter>소스 파일\Core</Filter>
     </ClCompile>
-    <ClCompile Include="AsioClient.cpp">
+    <ClCompile Include="Core\AsioServer.cpp">
+      <Filter>소스 파일\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Object.cpp">
       <Filter>소스 파일\Core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,13 +44,16 @@
     <ClInclude Include="stdafx.h">
       <Filter>PCH</Filter>
     </ClInclude>
-    <ClInclude Include="AsioServer.h">
+    <ClInclude Include="Core\AsioAcceptor.h">
       <Filter>소스 파일\Core</Filter>
     </ClInclude>
-    <ClInclude Include="AsioAcceptor.h">
+    <ClInclude Include="Core\AsioClient.h">
       <Filter>소스 파일\Core</Filter>
     </ClInclude>
-    <ClInclude Include="AsioClient.h">
+    <ClInclude Include="Core\AsioServer.h">
+      <Filter>소스 파일\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Object.h">
       <Filter>소스 파일\Core</Filter>
     </ClInclude>
   </ItemGroup>

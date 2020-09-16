@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "AsioAcceptor.h"
 #include "AsioClient.h"
+#include <atomic>
 
 AsioAcceptor::AsioAcceptor(asio::io_context& io, asio::ip::tcp::endpoint&& e)
 	: m_io{ io }
@@ -27,18 +28,21 @@ bool AsioAcceptor::StartListen()
 void AsioAcceptor::Listen()
 {
 	auto client = std::make_shared<AsioClient>( m_io );
-
 	m_acceptor.async_accept(client->GetSocket(),
-		[c = client, this](const asio::error_code& error)
+		[client, This = shared_from_this()](const std::error_code& error)
 		{
-			this->HandleAccept(c, error);
-			this->Listen();
+			This->HandleAccept(client, error);
+			This->Listen();
 		}
 	);
 }
 
-void AsioAcceptor::HandleAccept(std::shared_ptr<AsioClient> client, const asio::error_code& error)
+void AsioAcceptor::HandleAccept(std::shared_ptr<AsioClient> client, const std::error_code& error)
 {
 	UNREFERENCED_PARAMETER(client);
-	UNREFERENCED_PARAMETER(error);	
+
+	if (error)
+	{
+		error.message();
+	}
 }

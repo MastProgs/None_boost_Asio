@@ -3,7 +3,7 @@
 
 class AsioClient;
 
-class AsioAcceptor
+class AsioAcceptor : public Object, public std::enable_shared_from_this<AsioAcceptor>
 {
 public:
 	explicit AsioAcceptor(asio::io_context& io, asio::ip::tcp::endpoint&& e);
@@ -12,8 +12,10 @@ public:
 	bool StartListen();
 
 private:
-	void Listen();
-	void HandleAccept(std::shared_ptr<AsioClient> client, const asio::error_code& error);
+	// 생성할 Client 클래스 재정의 필요
+	virtual void Listen();
+
+	void HandleAccept(std::shared_ptr<AsioClient> client, const std::error_code& error);
 
 private:
 	asio::ip::tcp::acceptor m_acceptor;
