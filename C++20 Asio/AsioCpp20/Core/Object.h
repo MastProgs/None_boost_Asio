@@ -2,7 +2,7 @@
 class Object
 {
 public:
-	Object() = default;
+	Object();
 	virtual ~Object() = default;
 
 	Object(const Object&) = delete;

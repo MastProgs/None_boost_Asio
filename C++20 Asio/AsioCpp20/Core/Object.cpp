@@ -1,32 +1,39 @@
 #include "stdafx.h"
 #include "Object.h"
 
+Object::Object()
+{
+    DoPreInit();
+    DoInit();
+    DoPostInit();
+}
+
 bool Object::DoPreInit()
 {
     if (true == isPreInited)
     {
-        return true;
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 bool Object::DoInit()
 {
     if (true == isInited)
     {
-        return true;
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 bool Object::DoPostInit()
 {
     if (true == isPostInited)
     {
-        return true;
+        return false;
     }
 
-    return false;
+    return true;
 }

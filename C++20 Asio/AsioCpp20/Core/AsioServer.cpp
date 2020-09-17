@@ -12,7 +12,7 @@ AsioServer::~AsioServer()
 {
 }
 
-bool AsioServer::Init_AsioServer(int threadCount)
+bool AsioServer::PrepareAsioServer(int threadCount)
 {
 	if (SetThreadCore(threadCount)
 		&& SetServerIpList()
@@ -27,6 +27,34 @@ bool AsioServer::Init_AsioServer(int threadCount)
 bool AsioServer::StartListen()
 {
 	return m_acceptor->StartListen();
+}
+
+void AsioServer::Post(std::function<void()> callback)
+{
+	// dispatch 는 호출한 쓰레드에서만 관련 함수를 처리하지만 post 는 비어있는 쓰레드 어느곳에서나 함수 처리 가능함
+	//m_ioContext.get_executor().post(m_ioContext, callback);	// 빌드 에러 뜨는데 이유를 모르겠음
+	// m_ioContext.post(callback);	// 이 함수는 이제 쓰면 안된다고 함
+
+	/*
+	* 예제 = https://www.boost.org/doc/libs/1_66_0/doc/html/boost_asio/example/cpp03/services/logger_service.hpp
+	스택오버플로우 = https://stackoverflow.com/questions/59753391/boost-asio-io-service-vs-io-context
+	io_service is deprecated.
+	Yes, you should use io_context.Beware that the "old" API is deprecated as well(e.g.io_service.post(), you should use post(io_context, handler)).
+
+		. . .
+
+		io_service->io_context
+		io_service.post()->io_context.get_executor().post()
+		io_service.dispatch()->io_context.get_executor().dispatch()
+
+		io_service::strand->strand<io_context::executor_type>
+
+	there were also changes to composed operation customization hooks 
+	- there are only 2 now - boost::asio::associated_allocator and boost::asio::associated_executor, 
+	which default to looking for get_allocator(), get_executor(), T::allocator_type, T::executor_type members of the composed operation function object.
+
+	This is not a complete list.
+	*/
 }
 
 bool AsioServer::SetThreadCore(int threadCount)

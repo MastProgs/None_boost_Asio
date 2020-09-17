@@ -7,7 +7,7 @@ int main()
 	{
 		AsioServer asioServer;
 
-		if (asioServer.Init_AsioServer() == false)
+		if (asioServer.PrepareAsioServer() == false)
 		{
 			// error check
 		}

@@ -10,8 +10,10 @@ public:
 	AsioServer();
 	~AsioServer();
 
-	bool Init_AsioServer(int threadCount = 0);
+	bool PrepareAsioServer(int threadCount = 0);
 	bool StartListen();
+
+	void Post(std::function<void()> callback);
 
 private:
 	bool SetThreadCore(int threadCount = 0);
