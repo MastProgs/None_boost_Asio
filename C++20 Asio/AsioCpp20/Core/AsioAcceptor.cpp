@@ -28,7 +28,7 @@ bool AsioAcceptor::StartListen()
 
 void AsioAcceptor::Listen()
 {
-	auto client = std::make_shared<AsioClient>( m_io );
+	auto client = std::make_shared<GameClient>( m_io );
 	m_acceptor.async_accept(client->GetSocket(),
 		[client, This = shared_from_this()](const std::error_code& error)
 		{
@@ -38,7 +38,7 @@ void AsioAcceptor::Listen()
 	);
 }
 
-void AsioAcceptor::HandleAccept(std::shared_ptr<AsioClient> client, const std::error_code& error)
+void AsioAcceptor::HandleAccept(std::shared_ptr<GameClient> client, const std::error_code& error)
 {
 	UNREFERENCED_PARAMETER(client);
 

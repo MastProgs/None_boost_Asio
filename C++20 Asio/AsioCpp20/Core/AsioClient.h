@@ -26,3 +26,13 @@ private:
 	asio::ip::tcp::socket m_socket;
 };
 
+// 사용 예시
+class GameClient : public AsioClient
+{
+public:
+	explicit GameClient(asio::io_context& io);
+	virtual ~GameClient() = default;
+	virtual bool Init() override final;
+
+	// 기타 컨텐츠 적인거 넣고 초기화 할거 넣고 하면서 사용하면 될 듯
+};

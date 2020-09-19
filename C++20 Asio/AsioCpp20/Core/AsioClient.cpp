@@ -45,3 +45,13 @@ void AsioClient::PostSendPacket(const std::error_code& error, size_t bytesTransf
 		callback();
 	}
 }
+
+GameClient::GameClient(asio::io_context& io)
+	: AsioClient{ io }
+{
+}
+
+bool GameClient::Init()
+{
+	return __super::Init();
+}

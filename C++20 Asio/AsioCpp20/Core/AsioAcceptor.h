@@ -1,7 +1,7 @@
 #pragma once
 #include <include/asio.hpp>
 
-class AsioClient;
+class GameClient;
 
 class AsioAcceptor : public Object, public std::enable_shared_from_this<AsioAcceptor>
 {
@@ -15,7 +15,7 @@ private:
 	// 생성할 Client 클래스 재정의 필요
 	virtual void Listen();
 
-	void HandleAccept(std::shared_ptr<AsioClient> client, const std::error_code& error);
+	void HandleAccept(std::shared_ptr<GameClient> client, const std::error_code& error);
 
 private:
 	asio::ip::tcp::acceptor m_acceptor;
@@ -23,4 +23,3 @@ private:
 
 	std::atomic<bool> m_isAlreadyListening{ false };
 };
-

@@ -5,12 +5,12 @@ int main()
 {
 	try
 	{
-		if (AsioServer::Instance().PrepareAsioServer() == false)
+		if (ThisServerIO::Instance().PrepareAsioServer() == false)
 		{
 			// error check
 		}
 
-		if (AsioServer::Instance().StartListen() == false)
+		if (ThisServerIO::Instance().StartListen() == false)
 		{
 			// error check
 		}

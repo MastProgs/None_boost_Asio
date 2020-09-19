@@ -4,14 +4,14 @@
 
 class AsioAcceptor;
 
-class AsioServer : public Singleton<AsioServer>
+class AsioContext : public Singleton<AsioContext>
 {
 protected:
-	AsioServer();
-	friend AsioServer& Singleton<AsioServer>::Instance();
+	AsioContext();
+	friend AsioContext& Singleton<AsioContext>::Instance();
 
 public:
-	virtual ~AsioServer();
+	virtual ~AsioContext();
 
 	bool PrepareAsioServer(int threadCount = 0);
 	bool StartListen();
@@ -32,4 +32,10 @@ private:
 	unsigned int m_cpuThreadCount = 0;
 	std::vector<std::string> m_ipv4List;
 	std::vector<std::string> m_ipv6List;
+};
+
+// 사용 예시
+class ThisServerIO : public AsioContext
+{
+
 };
