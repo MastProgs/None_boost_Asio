@@ -17,6 +17,9 @@ public:
 	bool StartIOService();
 
 	void Post(std::function<void()> callback);
+	void Dispatch(std::function<void()> callback);
+	void Stop();
+	bool RestartThreads();
 
 	void SetServerShutdown(bool b) { isServerShutdown = b; }
 	bool GetServerShutdown() { return isServerShutdown; }

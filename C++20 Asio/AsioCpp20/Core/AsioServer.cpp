@@ -2,7 +2,7 @@
 #include "AsioServer.h"
 #include "AsioAcceptor.h"
 
-#include <thread>
+#include <thread>;
 
 AsioContext::AsioContext()
 {
@@ -46,7 +46,7 @@ bool AsioContext::StartThreads()
 	m_threadList.reserve(m_cpuThreadCount);
 	for (size_t i = 0; i < m_cpuThreadCount; i++)
 	{
-		m_threadList.emplace_back([&]() { m_ioContext.run(); });
+		m_threadList.emplace_back([&, i]() { m_ioContext.run(); });
 	}
 
 	for (auto& th : m_threadList)
@@ -68,6 +68,34 @@ void AsioContext::Post(std::function<void()> callback)
 	* 예제 = https://www.boost.org/doc/libs/1_66_0/doc/html/boost_asio/example/cpp03/services/logger_service.hpp
 	* 스택오버플로우 = https://stackoverflow.com/questions/59753391/boost-asio-io-service-vs-io-context
 	*/
+}
+
+void AsioContext::Dispatch(std::function<void()> callback)
+{
+	asio::dispatch(m_ioContext, callback);
+}
+
+void AsioContext::Stop()
+{
+	// io_context 와 관련한 run() 상태의 쓰레드들이 모두 return 을 하고, 관련 쓰레드들은 정상 종료를 하게 된다.
+	m_ioContext.stop();
+}
+
+bool AsioContext::RestartThreads()
+{
+	if (m_threadList.size() == 0) { return false; }
+
+	for (const auto& th : m_threadList)
+	{
+		if (th.joinable()) { return false; }
+	}
+
+	for (auto& th : m_threadList)
+	{
+		th.join();
+	}
+
+	return true;
 }
 
 bool AsioContext::SetThreadCore(int threadCount)
