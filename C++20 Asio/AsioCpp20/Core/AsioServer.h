@@ -8,7 +8,7 @@ class AsioServer : public Singleton<AsioServer>
 {
 protected:
 	AsioServer();
-	friend class Singleton<AsioServer>;
+	friend AsioServer& Singleton<AsioServer>::Instance();
 
 public:
 	virtual ~AsioServer();
