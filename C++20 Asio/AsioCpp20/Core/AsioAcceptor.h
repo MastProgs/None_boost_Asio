@@ -7,7 +7,7 @@ class AsioAcceptor : public Object, public std::enable_shared_from_this<AsioAcce
 {
 public:
 	explicit AsioAcceptor(asio::io_context& io, asio::ip::tcp::endpoint&& e);
-	~AsioAcceptor();
+	virtual ~AsioAcceptor();
 
 	bool StartListen();
 

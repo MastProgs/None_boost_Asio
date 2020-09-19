@@ -6,8 +6,9 @@ class AsioClient : public Object, public std::enable_shared_from_this<AsioClient
 {
 public:
 	explicit AsioClient(asio::io_context& io);
+	virtual ~AsioClient() = default;
 
-	virtual bool Init() override final;
+	virtual bool Init() override;
 
 	asio::ip::tcp::socket& GetSocket() { return m_socket; }
 

@@ -5,4 +5,5 @@
 #include <string>
 #include <memory>
 
-#include "Core/Object.h"
+#include "ObjectBase/Object.h"
+#include "ObjectBase/Singleton.h"

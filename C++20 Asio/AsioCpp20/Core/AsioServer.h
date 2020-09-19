@@ -4,11 +4,14 @@
 
 class AsioAcceptor;
 
-class AsioServer : public Object
+class AsioServer : public Singleton<AsioServer>
 {
-public:
+protected:
 	AsioServer();
-	~AsioServer();
+	friend class Singleton<AsioServer>;
+
+public:
+	virtual ~AsioServer();
 
 	bool PrepareAsioServer(int threadCount = 0);
 	bool StartListen();

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "AsioAcceptor.h"
 #include "AsioClient.h"
+
 #include <atomic>
 
 AsioAcceptor::AsioAcceptor(asio::io_context& io, asio::ip::tcp::endpoint&& e)

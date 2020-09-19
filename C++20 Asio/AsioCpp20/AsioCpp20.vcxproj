@@ -149,15 +149,17 @@
     <ClCompile Include="Core\AsioAcceptor.cpp" />
     <ClCompile Include="Core\AsioClient.cpp" />
     <ClCompile Include="Core\AsioServer.cpp" />
-    <ClCompile Include="Core\Object.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ObjectBase\Object.cpp" />
+    <ClCompile Include="ObjectBase\Singleton.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\AsioAcceptor.h" />
     <ClInclude Include="Core\AsioClient.h" />
     <ClInclude Include="Core\AsioServer.h" />
-    <ClInclude Include="Core\Object.h" />
+    <ClInclude Include="ObjectBase\Object.h" />
+    <ClInclude Include="ObjectBase\Singleton.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

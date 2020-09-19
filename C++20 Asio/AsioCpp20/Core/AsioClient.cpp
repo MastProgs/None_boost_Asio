@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "AsioClient.h"
+#include "../ObjectBase/Object.h"
 #include <functional>
 
 AsioClient::AsioClient(asio::io_context& io)

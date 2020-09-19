@@ -19,6 +19,9 @@
     <Filter Include="소스 파일\Core">
       <UniqueIdentifier>{e34fed10-640b-43ed-b1bd-63559282661d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\ObjectBase">
+      <UniqueIdentifier>{74f7b106-5754-41bd-88d5-af6b37aa725f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -36,8 +39,11 @@
     <ClCompile Include="Core\AsioServer.cpp">
       <Filter>소스 파일\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Object.cpp">
-      <Filter>소스 파일\Core</Filter>
+    <ClCompile Include="ObjectBase\Object.cpp">
+      <Filter>소스 파일\ObjectBase</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectBase\Singleton.cpp">
+      <Filter>소스 파일\ObjectBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -53,8 +59,11 @@
     <ClInclude Include="Core\AsioServer.h">
       <Filter>소스 파일\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Object.h">
-      <Filter>소스 파일\Core</Filter>
+    <ClInclude Include="ObjectBase\Object.h">
+      <Filter>소스 파일\ObjectBase</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectBase\Singleton.h">
+      <Filter>소스 파일\ObjectBase</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
