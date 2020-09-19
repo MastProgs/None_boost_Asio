@@ -24,9 +24,37 @@ bool AsioContext::PrepareAsioServer(int threadCount)
 	return true;
 }
 
+bool AsioContext::StartIOService()
+{
+	if (StartListen()
+		&& StartThreads())
+	{
+		return true;
+	}
+
+	return false;
+}
+
 bool AsioContext::StartListen()
 {
 	return m_acceptor->StartListen();
+}
+
+
+bool AsioContext::StartThreads()
+{
+	m_threadList.reserve(m_cpuThreadCount);
+	for (size_t i = 0; i < m_cpuThreadCount; i++)
+	{
+		m_threadList.emplace_back([&]() { m_ioContext.run(); });
+	}
+
+	for (auto& th : m_threadList)
+	{
+		th.join();
+	}
+
+	return true;
 }
 
 void AsioContext::Post(std::function<void()> callback)

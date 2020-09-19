@@ -14,28 +14,29 @@ public:
 	virtual ~AsioContext();
 
 	bool PrepareAsioServer(int threadCount = 0);
-	bool StartListen();
+	bool StartIOService();
 
 	void Post(std::function<void()> callback);
 
+	void SetServerShutdown(bool b) { isServerShutdown = b; }
+	bool GetServerShutdown() { return isServerShutdown; }
 private:
+	bool StartListen();
+	bool StartThreads();
+
 	bool SetThreadCore(int threadCount = 0);
 	bool SetServerIpList();
-
-	// 생성할 Accept 클래스 재정의 필요
-	virtual bool SetAcceptor();
+	bool SetAcceptor();
 
 private:
 	asio::io_context m_ioContext;
 	std::shared_ptr<AsioAcceptor> m_acceptor;
 
-	unsigned int m_cpuThreadCount = 0;
 	std::vector<std::string> m_ipv4List;
 	std::vector<std::string> m_ipv6List;
-};
 
-// 사용 예시
-class ThisServerIO : public AsioContext
-{
+	unsigned int m_cpuThreadCount = 0;
+	std::vector<std::thread> m_threadList;
 
+	bool isServerShutdown{ false };
 };
