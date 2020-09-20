@@ -152,6 +152,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ObjectBase\Object.cpp" />
     <ClCompile Include="ObjectBase\Singleton.cpp" />
+    <ClCompile Include="Packet\Packet.cpp" />
+    <ClCompile Include="Packet\PacketHandler.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +162,8 @@
     <ClInclude Include="Core\AsioServer.h" />
     <ClInclude Include="ObjectBase\Object.h" />
     <ClInclude Include="ObjectBase\Singleton.h" />
+    <ClInclude Include="Packet\Packet.h" />
+    <ClInclude Include="Packet\PacketHandler.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

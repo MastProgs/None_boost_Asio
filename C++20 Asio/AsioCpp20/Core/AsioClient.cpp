@@ -19,6 +19,10 @@ bool AsioClient::Init()
 
 void AsioClient::TEST_SampleResponse()
 {
+	asio::async_write(m_socket, asio::buffer("HelloWorld"),
+		[](const std::error_code& error, size_t bytes_transferred)
+	{
+	});
 }
 
 void AsioClient::SendPacket(const std::string_view& packet, std::function<void()> callback)

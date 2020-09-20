@@ -22,6 +22,9 @@
     <Filter Include="소스 파일\ObjectBase">
       <UniqueIdentifier>{74f7b106-5754-41bd-88d5-af6b37aa725f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Packet">
+      <UniqueIdentifier>{bdff5b20-8935-4490-b6e7-ab0b5234aea4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,6 +48,12 @@
     <ClCompile Include="ObjectBase\Singleton.cpp">
       <Filter>소스 파일\ObjectBase</Filter>
     </ClCompile>
+    <ClCompile Include="Packet\Packet.cpp">
+      <Filter>소스 파일\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Packet\PacketHandler.cpp">
+      <Filter>소스 파일\Packet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -64,6 +73,12 @@
     </ClInclude>
     <ClInclude Include="ObjectBase\Singleton.h">
       <Filter>소스 파일\ObjectBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Packet\Packet.h">
+      <Filter>소스 파일\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Packet\PacketHandler.h">
+      <Filter>소스 파일\Packet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

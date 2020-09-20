@@ -117,7 +117,7 @@ bool AsioContext::SetServerIpList()
 		else if (addr.is_v6()) { m_ipv6List.emplace_back(addr.to_string()); }
 	}
 	
-	return m_ipv4List.size() + m_ipv6List.size();
+	return (m_ipv4List.size() + m_ipv6List.size()) != 0;
 }
 
 bool AsioContext::SetAcceptor()
