@@ -17,9 +17,9 @@ public:
 	// packet 클래스 구현 필요
 	void SendPacket(const std::string_view& packet, std::function<void()> callback = nullptr);
 
-private:
+protected:
 	// packet 클래스 구현 필요
-	void PostSendPacket(const std::error_code& error, size_t bytesTransferred, const std::string_view& packet, std::function<void()> callback = nullptr);
+	virtual void PostSendPacket(const std::error_code& error, size_t bytesTransferred, const std::string_view& packet, std::function<void()> callback = nullptr);
 
 private:
 
@@ -35,4 +35,6 @@ public:
 	virtual bool Init() override final;
 
 	// 기타 컨텐츠 적인거 넣고 초기화 할거 넣고 하면서 사용하면 될 듯
+private:
+	virtual void PostSendPacket(const std::error_code& error, size_t bytesTransferred, const std::string_view& packet, std::function<void()> callback = nullptr) override final;
 };

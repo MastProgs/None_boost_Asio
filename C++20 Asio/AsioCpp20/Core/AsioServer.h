@@ -2,7 +2,7 @@
 
 #include <include/asio.hpp>
 
-class AsioAcceptor;
+class GameClientAcceptor;
 
 class AsioContext : public Singleton<AsioContext>
 {
@@ -33,7 +33,7 @@ private:
 
 private:
 	asio::io_context m_ioContext;
-	std::shared_ptr<AsioAcceptor> m_acceptor;
+	std::shared_ptr<GameClientAcceptor> m_acceptor;
 
 	std::vector<std::string> m_ipv4List;
 	std::vector<std::string> m_ipv6List;

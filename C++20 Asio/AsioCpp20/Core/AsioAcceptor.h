@@ -19,7 +19,9 @@ protected:
 	template <typename Derived>
 	std::shared_ptr<Derived> shared_from_base()
 	{
-		return std::static_pointer_cast<Derived>(shared_from_this());
+		auto ptr = std::dynamic_pointer_cast<Derived>(shared_from_this());
+		assert(ptr != nullptr);
+		return ptr;
 	}
 
 protected:
@@ -31,13 +33,12 @@ protected:
 
 // 사용 예시
 class GameClient;
-
 class GameClientAcceptor : public AsioAcceptor
 {
 public:
 	explicit GameClientAcceptor(asio::io_context& io, asio::ip::tcp::endpoint&& e);
 	virtual ~GameClientAcceptor() = default;
 
-	virtual void Listen();
+	virtual void Listen() override final;
 	void HandleAccept(std::shared_ptr<GameClient> client, const std::error_code& error);
 };

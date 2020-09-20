@@ -123,7 +123,7 @@ bool AsioContext::SetServerIpList()
 bool AsioContext::SetAcceptor()
 {
 	constexpr int PORT_NUMBER = 10001;
-	m_acceptor = std::make_shared<AsioAcceptor>(m_ioContext, asio::ip::tcp::endpoint{ asio::ip::tcp::v4(), PORT_NUMBER });
+	m_acceptor = std::make_shared<GameClientAcceptor>(m_ioContext, asio::ip::tcp::endpoint{ asio::ip::tcp::v4(), PORT_NUMBER });
 
 	return m_acceptor != nullptr;
 }

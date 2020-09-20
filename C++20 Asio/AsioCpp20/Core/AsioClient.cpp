@@ -19,7 +19,7 @@ bool AsioClient::Init()
 
 void AsioClient::TEST_SampleResponse()
 {
-	asio::async_write(m_socket, asio::buffer("HelloWorld"),
+	asio::async_write(m_socket, asio::buffer("HelloWorld\n"),
 		[](const std::error_code& error, size_t bytes_transferred)
 	{
 	});
@@ -28,9 +28,9 @@ void AsioClient::TEST_SampleResponse()
 void AsioClient::SendPacket(const std::string_view& packet, std::function<void()> callback)
 {
 	asio::async_write(m_socket, asio::buffer(packet),
-		[This = shared_from_this(), p = std::string{ packet }, func = callback](const std::error_code& error, size_t bytes_transferred)
+		[self = shared_from_this(), p = std::string{ packet }, func = callback](const std::error_code& error, size_t bytes_transferred)
 	{
-		This->PostSendPacket(error, bytes_transferred, p, func);
+		self->PostSendPacket(error, bytes_transferred, p, func);
 	});
 }
 
@@ -42,6 +42,7 @@ void AsioClient::PostSendPacket(const std::error_code& error, size_t bytesTransf
 	if (error)
 	{
 		error.message();
+		return;
 	}
 
 	if (nullptr != callback)
@@ -49,6 +50,14 @@ void AsioClient::PostSendPacket(const std::error_code& error, size_t bytesTransf
 		callback();
 	}
 }
+
+/// <summary>
+/// 
+/// Acceptor 를 통해서 접속 받은 소켓에 대응되는 클라이언트 소켓 클래스를 정의내릴 수 있음
+/// 게임 클라이언트가 될 수도 있고, 기타 서버 대 서버에 의한 클라이언트 소켓이 될 수도 있겠지?
+/// 
+/// </summary>
+/// <param name="io"> AsioServer 의 io_context 가 들어와야, 관련 context 에서 처리가 진행된다 </param>
 
 GameClient::GameClient(asio::io_context& io)
 	: AsioClient{ io }
@@ -58,4 +67,11 @@ GameClient::GameClient(asio::io_context& io)
 bool GameClient::Init()
 {
 	return __super::Init();
+}
+
+void GameClient::PostSendPacket(const std::error_code& error, size_t bytesTransferred, const std::string_view& packet, std::function<void()> callback)
+{
+	// 일반적으로 send 를 하고 나서 후 처리를 할 일은 별로 없을것으로 보인다.
+	/// 있다면 log 남기는거 정도가 있을듯
+	__super::PostSendPacket(error, bytesTransferred, packet, callback);
 }
