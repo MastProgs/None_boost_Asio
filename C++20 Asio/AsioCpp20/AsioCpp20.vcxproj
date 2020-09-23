@@ -149,6 +149,7 @@
     <ClCompile Include="Core\AsioAcceptor.cpp" />
     <ClCompile Include="Core\AsioClient.cpp" />
     <ClCompile Include="Core\AsioServer.cpp" />
+    <ClCompile Include="Log\Log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ObjectBase\Object.cpp" />
     <ClCompile Include="ObjectBase\Singleton.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Core\AsioAcceptor.h" />
     <ClInclude Include="Core\AsioClient.h" />
     <ClInclude Include="Core\AsioServer.h" />
+    <ClInclude Include="Log\Log.h" />
     <ClInclude Include="ObjectBase\Object.h" />
     <ClInclude Include="ObjectBase\Singleton.h" />
     <ClInclude Include="Packet\Packet.h" />

@@ -32,6 +32,8 @@ void AsioAcceptor::Listen()
 	m_acceptor.async_accept(client->GetSocket(),
 		[client, self = shared_from_this()](const std::error_code& error)
 	{
+		std::cout << "Client Connected\n";
+
 		self->HandleAccept(client, error);
 		self->Listen();
 	}
@@ -48,6 +50,7 @@ void AsioAcceptor::HandleAccept(std::shared_ptr<AsioClient> client, const std::e
 
 	// 테스트용 응답
 	client->TEST_SampleResponse();
+	client->RecvPacket();
 }
 
 /// <summary>
@@ -70,6 +73,8 @@ void GameClientAcceptor::Listen()
 	m_acceptor.async_accept(client->GetSocket(),
 		[client, self = shared_from_base<GameClientAcceptor>()](const std::error_code& error)
 	{
+		std::cout << "Client Connected\n";
+
 		self->HandleAccept(client, error);
 		self->Listen();
 	}
@@ -86,4 +91,5 @@ void GameClientAcceptor::HandleAccept(std::shared_ptr<GameClient> client, const 
 
 	// 테스트용 응답
 	client->TEST_SampleResponse();
+	client->RecvPacket();
 }

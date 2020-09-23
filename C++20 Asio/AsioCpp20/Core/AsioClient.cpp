@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "AsioClient.h"
+#include <Packet/PacketHandler.h>
+
 #include <functional>
 
 AsioClient::AsioClient(asio::io_context& io)
@@ -30,6 +32,38 @@ void AsioClient::SendPacket(const std::string_view& packet, std::function<void()
 		[self = shared_from_this(), p = std::string{ packet }, func = callback](const std::error_code& error, size_t bytes_transferred)
 	{
 		self->PostSendPacket(error, bytes_transferred, p, func);
+	});
+}
+
+void AsioClient::RecvPacket()
+{
+	asio::async_read(m_socket, asio::buffer(m_recvBuffer), [self = shared_from_this(), sock = &m_socket, buf = &m_recvBuffer[0]](const std::error_code& error, size_t bytes_transferred)
+	{
+		if (error)
+		{
+			if (error.value() == asio::error::operation_aborted)
+			{
+				return;
+			}
+
+			if (error.value() == asio::error::eof)
+			{
+				// client 가 연결 종료
+				auto ep = sock->remote_endpoint();
+				std::cout << "Client Disonnected :: IP = " << ep.address().to_string() << ", Port = " << ep.port() << "\n";
+
+				sock->shutdown(sock->shutdown_both);
+				sock->close();
+
+				return;
+			}
+
+			return;
+		}
+
+		PacketHandler::Instance().ProcessPacket(buf, self);
+
+		self->RecvPacket();
 	});
 }
 
@@ -66,6 +100,39 @@ GameClient::GameClient(asio::io_context& io)
 bool GameClient::Init()
 {
 	return __super::Init();
+}
+
+void GameClient::RecvPacket()
+{
+	asio::async_read(m_socket, asio::buffer(m_recvBuffer), [self = shared_from_base<GameClient>(), sock = &m_socket, buf = &m_recvBuffer[0]](const std::error_code& error, size_t bytes_transferred)
+	{
+		if (error)
+		{
+			if (error.value() == asio::error::operation_aborted)
+			{
+				return;
+			}
+
+			if (error.value() == asio::error::eof)
+			{
+				// client 가 연결 종료
+				auto ep = sock->remote_endpoint();
+				std::cout << "Client Disonnected :: IP = " << ep.address().to_string() << ", Port = " << ep.port() << "\n";
+
+				sock->shutdown(sock->shutdown_both);
+				sock->close();
+
+				return;
+			}
+
+			return;
+		}
+
+		// process packet
+		C2S_PacketHandler::Instance().ProcessPacket(buf, self);
+
+		self->RecvPacket();
+	});
 }
 
 void GameClient::PostSendPacket(const std::error_code& error, size_t bytesTransferred, const std::string_view& packet, std::function<void()> callback)

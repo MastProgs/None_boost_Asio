@@ -14,16 +14,23 @@ public:
 
 	void TEST_SampleResponse();
 
-	// packet 클래스 구현 필요
 	void SendPacket(const std::string_view& packet, std::function<void()> callback = nullptr);
+	virtual void RecvPacket();
 
 protected:
-	// packet 클래스 구현 필요
+	template <typename Derived>
+	std::shared_ptr<Derived> shared_from_base()
+	{
+		auto ptr = std::dynamic_pointer_cast<Derived>(shared_from_this());
+		assert(ptr != nullptr);
+		return ptr;
+	}
+
+protected:
 	virtual void PostSendPacket(const std::error_code& error, size_t bytesTransferred, const std::string_view& packet, std::function<void()> callback = nullptr);
 
-private:
-
 	asio::ip::tcp::socket m_socket;
+	std::array<char, 256> m_recvBuffer{ 0 };
 };
 
 // 사용 예시
@@ -34,6 +41,7 @@ public:
 	virtual ~GameClient() = default;
 	virtual bool Init() override final;
 
+	virtual void RecvPacket() override final;
 	// 기타 컨텐츠 적인거 넣고 초기화 할거 넣고 하면서 사용하면 될 듯
 private:
 	virtual void PostSendPacket(const std::error_code& error, size_t bytesTransferred, const std::string_view& packet, std::function<void()> callback = nullptr) override final;
