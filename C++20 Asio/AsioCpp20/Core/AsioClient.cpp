@@ -4,6 +4,38 @@
 
 #include <functional>
 
+namespace
+{
+	// https://dens.website/tutorials/cpp-asio/buffer-sequence
+	// std::string first = "Hello Boost.Asio!";
+	// char second[15] = { 0 };
+	// char const* pointer = get_data();
+	// std::size_t size = get_size();
+	// 
+	// std::array<asio::const_buffer, 3> sequence{ first, second, io::buffer(pointer, size) };
+	// 
+	// // Now we can pass this sequence into I/O function:
+	// io::async_write(socket, sequence, handler);
+
+	//template <typename... Args>
+	//auto const_sequence(Args&&... args)
+	//{
+	//	return std::array<asio::const_buffer, sizeof...(Args)>{asio::buffer(args)...};
+	//}
+	//
+	//template <typename... Args>
+	//auto sequence(Args&&... args)
+	//{
+	//	return std::array<asio::mutable_buffer, sizeof...(Args)>{asio::buffer(args)...};
+	//}
+
+	// 사용 예시
+	// io::async_write(socket, const_sequence(first, second, io::buffer(pointer, size)), handler);
+
+	constexpr int PACKET_MAX_SIZE = 65535;
+	constexpr char PACKET_LAST_SEPARATOR_CHAR = '\n';
+}
+
 AsioClient::AsioClient(asio::io_context& io)
 	: m_socket{ io }
 {
@@ -37,7 +69,7 @@ void AsioClient::SendPacket(const std::string_view& packet, std::function<void()
 
 void AsioClient::RecvPacket()
 {
-	asio::async_read(m_socket, asio::buffer(m_recvBuffer), [self = shared_from_this(), sock = &m_socket, buf = &m_recvBuffer[0]](const std::error_code& error, size_t bytes_transferred)
+	asio::async_read_until(m_socket, asio::dynamic_buffer(m_recvBuffer, PACKET_MAX_SIZE), PACKET_LAST_SEPARATOR_CHAR, [self = shared_from_this(), sock = &m_socket, pBuf = &m_recvBuffer](const std::error_code& error, size_t bytes_transferred)
 	{
 		if (error)
 		{
@@ -61,7 +93,8 @@ void AsioClient::RecvPacket()
 			return;
 		}
 
-		PacketHandler::Instance().ProcessPacket(buf, self);
+		PacketHandler::Instance().ProcessPacket(*pBuf, self);
+		pBuf->clear();
 
 		self->RecvPacket();
 	});
@@ -104,7 +137,7 @@ bool GameClient::Init()
 
 void GameClient::RecvPacket()
 {
-	asio::async_read(m_socket, asio::buffer(m_recvBuffer), [self = shared_from_base<GameClient>(), sock = &m_socket, buf = &m_recvBuffer[0]](const std::error_code& error, size_t bytes_transferred)
+	asio::async_read_until(m_socket, asio::dynamic_buffer(m_recvBuffer, PACKET_MAX_SIZE), PACKET_LAST_SEPARATOR_CHAR, [self = shared_from_base<GameClient>(), sock = &m_socket, pBuf = &m_recvBuffer](const std::error_code& error, size_t bytes_transferred)
 	{
 		if (error)
 		{
@@ -129,7 +162,8 @@ void GameClient::RecvPacket()
 		}
 
 		// process packet
-		C2S_PacketHandler::Instance().ProcessPacket(buf, self);
+		C2S_PacketHandler::Instance().ProcessPacket(*pBuf, self);
+		pBuf->clear();
 
 		self->RecvPacket();
 	});

@@ -7,7 +7,7 @@ public:
 	PacketHandler() = default;
 	virtual ~PacketHandler() = default;
 
-	static void ProcessPacket(const std::string_view& packet, std::shared_ptr<AsioClient> client);
+	void ProcessPacket(const std::string_view& packet, std::shared_ptr<AsioClient> client);
 private:
 };
 
@@ -19,6 +19,6 @@ public:
 	C2S_PacketHandler() = default;
 	virtual ~C2S_PacketHandler() = default;
 
-	static void ProcessPacket(const std::string_view & packet, std::shared_ptr<GameClient> client);
+	void ProcessPacket(const std::string_view & packet, std::shared_ptr<GameClient> client);
 private:
 };

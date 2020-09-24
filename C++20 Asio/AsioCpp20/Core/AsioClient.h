@@ -30,7 +30,7 @@ protected:
 	virtual void PostSendPacket(const std::error_code& error, size_t bytesTransferred, const std::string_view& packet, std::function<void()> callback = nullptr);
 
 	asio::ip::tcp::socket m_socket;
-	std::array<char, 256> m_recvBuffer{ 0 };
+	std::string m_recvBuffer{ 0 };
 };
 
 // 사용 예시
