@@ -22,7 +22,7 @@ public:
 		// std::bind(&TCP_Client::HandleConnect, this, std::placeholders::_1));
 	}
 
-private:
+//private:
 	void PostWrite()
 	{
 		if (m_socket.is_open() == false) { return; }
@@ -35,20 +35,22 @@ private:
 
 		++m_nSeqNumber;
 
-		char szMessage[128]{ 0 };
-		sprintf_s(szMessage, 128 - 1, "%d - Send Message", m_nSeqNumber);
-
-		m_writeMessage = szMessage;
+		// char szMessage[128]{ 0 };
+		// sprintf_s(szMessage, 128 - 1, "%d - Send Message", m_nSeqNumber);
+		// 
+		// m_writeMessage = szMessage;
+		//m_writeMessage = "Hello World!";
 
 		asio::async_write(m_socket,
-			asio::buffer(m_writeMessage),
+			asio::buffer("Hello World!"),
 			[me = this](const asio::error_code& error, size_t bytes_transferred)
 			{
 				me->HandleWrite(error, bytes_transferred);
+				me->PostReceive();
 			});
 			//std::bind(&TCP_Client::HandleWrite, this, std::placeholders::_1, std::placeholders::_2));
 
-		PostReceive();
+		//PostReceive();
 	}
 
 	void PostReceive()

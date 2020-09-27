@@ -89,7 +89,5 @@ void GameClientAcceptor::HandleAccept(std::shared_ptr<GameClient> client, const 
 		return;
 	}
 
-	// 테스트용 응답
-	client->TEST_SampleResponse();
 	client->RecvPacket();
 }

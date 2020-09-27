@@ -33,7 +33,7 @@ namespace
 	// io::async_write(socket, const_sequence(first, second, io::buffer(pointer, size)), handler);
 
 	constexpr int PACKET_MAX_SIZE = 65535;
-	constexpr char PACKET_LAST_SEPARATOR_CHAR = '\n';
+	constexpr char PACKET_LAST_SEPARATOR_CHAR = '\0';
 }
 
 AsioClient::AsioClient(asio::io_context& io)
@@ -52,7 +52,7 @@ bool AsioClient::Init()
 
 void AsioClient::TEST_SampleResponse()
 {
-	asio::async_write(m_socket, asio::buffer("HelloWorld\n"),
+	asio::async_write(m_socket, asio::buffer("Hello Asio C++ World"),
 		[](const std::error_code& error, size_t bytes_transferred)
 	{
 	});

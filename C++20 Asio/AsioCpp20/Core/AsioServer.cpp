@@ -122,6 +122,8 @@ bool AsioContext::SetServerIpList()
 
 bool AsioContext::SetAcceptor()
 {
+	// 여러 Acceptor 를 쓰는 경우, 포트 번호를 여기서 따로 따로 지정해주면 된다.
+
 	constexpr int PORT_NUMBER = 9000;
 	m_acceptor = std::make_shared<GameClientAcceptor>(m_ioContext, asio::ip::tcp::endpoint{ asio::ip::tcp::v4(), PORT_NUMBER });
 

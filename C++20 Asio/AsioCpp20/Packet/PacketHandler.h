@@ -13,7 +13,7 @@ private:
 
 // 사용 예시
 class GameClient;
-class C2S_PacketHandler : public PacketHandler
+class C2S_PacketHandler : public Singleton<C2S_PacketHandler>
 {
 public:
 	C2S_PacketHandler() = default;
