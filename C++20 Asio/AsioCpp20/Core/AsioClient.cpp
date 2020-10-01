@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "AsioClient.h"
 #include <Packet/PacketHandler.h>
+#include "../../Protocol/Protocol.h"
 
 #include <functional>
 
@@ -31,9 +32,6 @@ namespace
 
 	// 사용 예시
 	// io::async_write(socket, const_sequence(first, second, io::buffer(pointer, size)), handler);
-
-	constexpr int PACKET_MAX_SIZE = 65535;
-	constexpr char PACKET_LAST_SEPARATOR_CHAR = '\0';
 }
 
 AsioClient::AsioClient(asio::io_context& io)
@@ -55,6 +53,8 @@ void AsioClient::TEST_SampleResponse()
 	asio::async_write(m_socket, asio::buffer("Hello Asio C++ World"),
 		[](const std::error_code& error, size_t bytes_transferred)
 	{
+		UNREFERENCED_PARAMETER(error);
+		UNREFERENCED_PARAMETER(bytes_transferred);
 	});
 }
 
@@ -69,8 +69,10 @@ void AsioClient::SendPacket(const std::string_view& packet, std::function<void()
 
 void AsioClient::RecvPacket()
 {
-	asio::async_read_until(m_socket, asio::dynamic_buffer(m_recvBuffer, PACKET_MAX_SIZE), PACKET_LAST_SEPARATOR_CHAR, [self = shared_from_this(), sock = &m_socket, pBuf = &m_recvBuffer](const std::error_code& error, size_t bytes_transferred)
+	asio::async_read_until(m_socket, asio::dynamic_buffer(m_recvBuffer, PACKET_MAX_SIZE), PACKET_DELIMITER, [self = shared_from_this(), sock = &m_socket, pBuf = &m_recvBuffer](const std::error_code& error, size_t bytes_transferred)
 	{
+		UNREFERENCED_PARAMETER(bytes_transferred);
+
 		if (error)
 		{
 			if (error.value() == asio::error::operation_aborted)
@@ -137,8 +139,10 @@ bool GameClient::Init()
 
 void GameClient::RecvPacket()
 {
-	asio::async_read_until(m_socket, asio::dynamic_buffer(m_recvBuffer, PACKET_MAX_SIZE), PACKET_LAST_SEPARATOR_CHAR, [self = shared_from_base<GameClient>(), sock = &m_socket, pBuf = &m_recvBuffer](const std::error_code& error, size_t bytes_transferred)
+	asio::async_read_until(m_socket, asio::dynamic_buffer(m_recvBuffer, PACKET_MAX_SIZE), PACKET_DELIMITER, [self = shared_from_base<GameClient>(), sock = &m_socket, pBuf = &m_recvBuffer](const std::error_code& error, size_t bytes_transferred)
 	{
+		UNREFERENCED_PARAMETER(bytes_transferred);
+
 		if (error)
 		{
 			if (error.value() == asio::error::operation_aborted)
