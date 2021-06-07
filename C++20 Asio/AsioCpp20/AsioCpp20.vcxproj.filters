@@ -25,7 +25,7 @@
     <Filter Include="소스 파일\Packet">
       <UniqueIdentifier>{bdff5b20-8935-4490-b6e7-ab0b5234aea4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Log">
+    <Filter Include="소스 파일\Loge">
       <UniqueIdentifier>{f5630657-84c4-4711-9efc-719483d7ecae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -58,7 +58,7 @@
       <Filter>소스 파일\Packet</Filter>
     </ClCompile>
     <ClCompile Include="Log\Log.cpp">
-      <Filter>소스 파일\Log</Filter>
+      <Filter>소스 파일\Loge</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -87,7 +87,7 @@
       <Filter>소스 파일\Packet</Filter>
     </ClInclude>
     <ClInclude Include="Log\Log.h">
-      <Filter>소스 파일\Log</Filter>
+      <Filter>소스 파일\Loge</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
