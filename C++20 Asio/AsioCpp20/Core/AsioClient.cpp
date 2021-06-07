@@ -3,9 +3,6 @@
 #include <Packet/PacketHandler.h>
 #include "../../Protocol/Protocol.h"
 
-#include <functional>
-#include <format>
-
 namespace
 {
 	// https://dens.website/tutorials/cpp-asio/buffer-sequence

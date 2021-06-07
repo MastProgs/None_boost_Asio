@@ -2,7 +2,7 @@
 #include "AsioServer.h"
 #include "AsioAcceptor.h"
 
-#include <thread>;
+#include <thread>
 
 AsioContext::AsioContext()
 {
