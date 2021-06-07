@@ -4,6 +4,7 @@
 #include "../../Protocol/Protocol.h"
 
 #include <functional>
+#include <format>
 
 namespace
 {
@@ -84,7 +85,7 @@ void AsioClient::RecvPacket()
 			{
 				// client 가 연결 종료
 				auto ep = sock->remote_endpoint();
-				std::cout << "Client Disonnected :: IP = " << ep.address().to_string() << ", Port = " << ep.port() << "\n";
+				std::cout << std::format("Client Disonnected :: IP = {}, Port = {}\n", ep.address().to_string(), ep.port());
 
 				sock->shutdown(sock->shutdown_both);
 				sock->close();
@@ -154,7 +155,7 @@ void GameClient::RecvPacket()
 			{
 				// client 가 연결 종료
 				auto ep = sock->remote_endpoint();
-				std::cout << "Client Disonnected :: IP = " << ep.address().to_string() << ", Port = " << ep.port() << "\n";
+				std::cout << std::format("Client Disonnected :: IP = {}, Port = {}\n", ep.address().to_string(), ep.port());
 
 				sock->shutdown(sock->shutdown_both);
 				sock->close();
