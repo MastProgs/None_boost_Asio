@@ -67,6 +67,31 @@ std::string_view AsioClient::GetPacketData(std::string_view packetBuf)
 	return "";
 }
 
+void AsioClient::RecvPacketErrorHandle(const std::error_code& err, asio::ip::tcp::socket& sock)
+{
+	if (err)
+	{
+		if (err.value() == asio::error::operation_aborted)
+		{
+			return;
+		}
+
+		if (err.value() == asio::error::eof)
+		{
+			// client 가 연결 종료
+			auto ep = sock.remote_endpoint();
+			std::cout << std::format("Client Disonnected :: IP = {}, Port = {}\n", ep.address().to_string(), ep.port());
+
+			sock.shutdown(sock.shutdown_both);
+			sock.close();
+
+			return;
+		}
+
+		return;
+	}
+}
+
 void AsioClient::SendPacket(std::string_view packet, std::function<void()> callback)
 {
 	std::string packetData = std::string{ packet };
@@ -88,23 +113,7 @@ void AsioClient::RecvPacket()
 
 		if (error)
 		{
-			if (error.value() == asio::error::operation_aborted)
-			{
-				return;
-			}
-
-			if (error.value() == asio::error::eof)
-			{
-				// client 가 연결 종료
-				auto ep = sock->remote_endpoint();
-				std::cout << std::format("Client Disonnected :: IP = {}, Port = {}\n", ep.address().to_string(), ep.port());
-
-				sock->shutdown(sock->shutdown_both);
-				sock->close();
-
-				return;
-			}
-
+			self->RecvPacketErrorHandle(error, *sock);
 			return;
 		}
 				
@@ -117,8 +126,6 @@ void AsioClient::RecvPacket()
 			std::cout << std::format("AsioClient::RecvPacket(), CodeLine : {}, LogMsg : {}, data : {}\n", __LINE__ , LogManager::Instance().FindErrorNameToMsg("InvalidPacketData"), *pBuf);
 			_ASSERT(true);
 		}
-
-		pBuf->clear();
 
 		self->RecvPacket();
 	});
@@ -168,23 +175,7 @@ void GameClient::RecvPacket()
 
 		if (error)
 		{
-			if (error.value() == asio::error::operation_aborted)
-			{
-				return;
-			}
-
-			if (error.value() == asio::error::eof)
-			{
-				// client 가 연결 종료
-				auto ep = sock->remote_endpoint();
-				std::cout << std::format("Client Disonnected :: IP = {}, Port = {}\n", ep.address().to_string(), ep.port());
-
-				sock->shutdown(sock->shutdown_both);
-				sock->close();
-
-				return;
-			}
-
+			self->RecvPacketErrorHandle(error, *sock);
 			return;
 		}
 
@@ -198,8 +189,6 @@ void GameClient::RecvPacket()
 			std::cout << std::format("GameClient::RecvPacket() CodeLine : {}, LogMsg : {}, PacketData : {}\n", __LINE__, LogManager::Instance().FindErrorNameToMsg("InvalidPacketData"), *pBuf);
 			_ASSERT(true);
 		}
-
-		pBuf->clear();
 
 		self->RecvPacket();
 	});
