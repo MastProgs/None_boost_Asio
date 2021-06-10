@@ -3,6 +3,9 @@
 #include <string>
 #include <array>
 
+constexpr int PACKET_MAX_SIZE = 65535;
+const std::string PACKET_DELIMITER = "\r\t\n\0";
+
 const std::string SERVER_IP{ "127.0.0.1" };
 constexpr int PORT_NUMBER{ 9000 };
 
@@ -42,7 +45,7 @@ public:
 		//m_writeMessage = "Hello World!";
 
 		asio::async_write(m_socket,
-			asio::buffer("Hello World!"),
+			asio::buffer("Hello World!" + PACKET_DELIMITER),
 			[me = this](const asio::error_code& error, size_t bytes_transferred)
 			{
 				me->HandleWrite(error, bytes_transferred);

@@ -136,7 +136,7 @@ public:
 private:
 	std::mutex m_lock;
 
-	std::unordered_map<int, std::shared_ptr<LogVirtual>> m_logMap;
+	std::unordered_map<int, std::unique_ptr<LogVirtual>> m_logMap;
 	std::unordered_map<std::string, int> m_logNameMap;
 
 	int GetCode()
@@ -161,6 +161,6 @@ private:
 
 		auto i = GetCode();
 		m_logNameMap.insert({ std::string{ logName }, i });
-		m_logMap.insert({ i, std::make_shared<Log<LogErrorType>>(logName, i, errType, msg) });
+		m_logMap.insert({ i, std::make_unique<Log<LogErrorType>>(logName, i, errType, msg) });
 	}
 };

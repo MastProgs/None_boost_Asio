@@ -14,7 +14,7 @@ public:
 
 	void TEST_SampleResponse();
 
-	void SendPacket(const std::string_view& packet, std::function<void()> callback = nullptr);
+	void SendPacket(std::string_view packet, std::function<void()> callback = nullptr);
 	virtual void RecvPacket();
 
 protected:
@@ -26,8 +26,10 @@ protected:
 		return ptr;
 	}
 
+	std::string_view GetPacketData(std::string_view packetBuf);
+
 protected:
-	virtual void PostSendPacket(const std::error_code& error, size_t bytesTransferred, const std::string_view& packet, std::function<void()> callback = nullptr);
+	virtual void PostSendPacket(const std::error_code& error, size_t bytesTransferred, std::string_view packet, std::function<void()> callback = nullptr);
 
 	asio::ip::tcp::socket m_socket;
 	std::string m_recvBuffer;
@@ -44,5 +46,5 @@ public:
 	virtual void RecvPacket() override final;
 	// 기타 컨텐츠 적인거 넣고 초기화 할거 넣고 하면서 사용하면 될 듯
 private:
-	virtual void PostSendPacket(const std::error_code& error, size_t bytesTransferred, const std::string_view& packet, std::function<void()> callback = nullptr) override final;
+	virtual void PostSendPacket(const std::error_code& error, size_t bytesTransferred, std::string_view packet, std::function<void()> callback = nullptr) override final;
 };

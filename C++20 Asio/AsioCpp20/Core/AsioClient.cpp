@@ -56,7 +56,18 @@ void AsioClient::TEST_SampleResponse()
 	});
 }
 
-void AsioClient::SendPacket(const std::string_view& packet, std::function<void()> callback)
+std::string_view AsioClient::GetPacketData(std::string_view packetBuf)
+{
+	auto pos = packetBuf.find(PACKET_DELIMITER);
+	if (pos != std::string::npos)
+	{
+		return packetBuf.substr(0, pos);
+	}
+
+	return std::string{};
+}
+
+void AsioClient::SendPacket(std::string_view packet, std::function<void()> callback)
 {
 	asio::async_write(m_socket, asio::buffer(packet),
 		[self = shared_from_this(), p = std::string{ packet }, func = callback](const std::error_code& error, size_t bytes_transferred)
@@ -93,14 +104,14 @@ void AsioClient::RecvPacket()
 			return;
 		}
 
-		PacketHandler::Instance().ProcessPacket(*pBuf, self);
+		PacketHandler::Instance().ProcessPacket(self->GetPacketData(*pBuf), self);
 		pBuf->clear();
 
 		self->RecvPacket();
 	});
 }
 
-void AsioClient::PostSendPacket(const std::error_code& error, size_t bytesTransferred, const std::string_view& packet, std::function<void()> callback)
+void AsioClient::PostSendPacket(const std::error_code& error, size_t bytesTransferred, std::string_view packet, std::function<void()> callback)
 {
 	UNREFERENCED_PARAMETER(bytesTransferred);
 	UNREFERENCED_PARAMETER(packet);
@@ -164,14 +175,14 @@ void GameClient::RecvPacket()
 		}
 
 		// process packet
-		C2S_PacketHandler::Instance().ProcessPacket(*pBuf, self);
+		C2S_PacketHandler::Instance().ProcessPacket(self->GetPacketData(*pBuf), self);
 		pBuf->clear();
 
 		self->RecvPacket();
 	});
 }
 
-void GameClient::PostSendPacket(const std::error_code& error, size_t bytesTransferred, const std::string_view& packet, std::function<void()> callback)
+void GameClient::PostSendPacket(const std::error_code& error, size_t bytesTransferred, std::string_view packet, std::function<void()> callback)
 {
 	// 일반적으로 send 를 하고 나서 후 처리를 할 일은 별로 없을것으로 보인다.
 	/// 있다면 log 남기는거 정도가 있을듯
