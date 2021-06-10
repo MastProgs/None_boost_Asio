@@ -76,6 +76,7 @@ protected:
 		InsertNewLog("InvalidCode", LogErrorType::ERROR, "Invalid Error Code");
 		InsertNewLog("InvalidName", LogErrorType::ERROR, "Invalid Error Code");
 		InsertNewLog("SameLogNameError", LogErrorType::ERROR, "When you insert new error code, log name already exist in log manager");
+		InsertNewLog("InvalidPacketData", LogErrorType::ERROR, "Packet PACKET_DELIMITER is not same");
 	}
 
 public:

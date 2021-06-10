@@ -64,21 +64,25 @@ std::string_view AsioClient::GetPacketData(std::string_view packetBuf)
 		return packetBuf.substr(0, pos);
 	}
 
-	return std::string{};
+	return "";
 }
 
 void AsioClient::SendPacket(std::string_view packet, std::function<void()> callback)
 {
-	asio::async_write(m_socket, asio::buffer(packet),
-		[self = shared_from_this(), p = std::string{ packet }, func = callback](const std::error_code& error, size_t bytes_transferred)
+	std::string packetData = std::string{ packet };
+	std::shared_ptr<std::string> sendBuffer{ new std::string{ packetData + std::string{ PACKET_DELIMITER } } };
+	asio::async_write(m_socket, asio::buffer(*sendBuffer),
+		[self = shared_from_this(), p = packetData, func = callback, pBuf = sendBuffer](const std::error_code& error, size_t bytes_transferred)
 	{
 		self->PostSendPacket(error, bytes_transferred, p, func);
+		//std::cout << std::format("Sended Message : {}, 보낸 크기 : {}\n", p, bytes_transferred);
 	});
 }
 
 void AsioClient::RecvPacket()
 {
-	asio::async_read_until(m_socket, asio::dynamic_buffer(m_recvBuffer, PACKET_MAX_SIZE), PACKET_DELIMITER, [self = shared_from_this(), sock = &m_socket, pBuf = &m_recvBuffer](const std::error_code& error, size_t bytes_transferred)
+	std::shared_ptr<std::string> recvBuffer{ new std::string{ "" } };
+	asio::async_read_until(m_socket, asio::dynamic_buffer(*recvBuffer, PACKET_MAX_SIZE), PACKET_DELIMITER, [self = shared_from_this(), sock = &m_socket, pBuf = recvBuffer](const std::error_code& error, size_t bytes_transferred)
 	{
 		UNREFERENCED_PARAMETER(bytes_transferred);
 
@@ -103,8 +107,17 @@ void AsioClient::RecvPacket()
 
 			return;
 		}
+				
+		if (auto realData = self->GetPacketData(*pBuf); realData != "")
+		{
+			PacketHandler::Instance().ProcessPacket(realData, self);
+		}
+		else
+		{
+			std::cout << std::format("AsioClient::RecvPacket(), CodeLine : {}, LogMsg : {}, data : {}\n", __LINE__ , LogManager::Instance().FindErrorNameToMsg("InvalidPacketData"), *pBuf);
+			_ASSERT(true);
+		}
 
-		PacketHandler::Instance().ProcessPacket(self->GetPacketData(*pBuf), self);
 		pBuf->clear();
 
 		self->RecvPacket();
@@ -148,7 +161,8 @@ bool GameClient::Init()
 
 void GameClient::RecvPacket()
 {
-	asio::async_read_until(m_socket, asio::dynamic_buffer(m_recvBuffer, PACKET_MAX_SIZE), PACKET_DELIMITER, [self = shared_from_base<GameClient>(), sock = &m_socket, pBuf = &m_recvBuffer](const std::error_code& error, size_t bytes_transferred)
+	std::shared_ptr<std::string> recvBuffer{ new std::string{ "" } };
+	asio::async_read_until(m_socket, asio::dynamic_buffer(*recvBuffer, PACKET_MAX_SIZE), PACKET_DELIMITER, [self = shared_from_base<GameClient>(), sock = &m_socket, pBuf = recvBuffer](const std::error_code& error, size_t bytes_transferred)
 	{
 		UNREFERENCED_PARAMETER(bytes_transferred);
 
@@ -175,7 +189,16 @@ void GameClient::RecvPacket()
 		}
 
 		// process packet
-		C2S_PacketHandler::Instance().ProcessPacket(self->GetPacketData(*pBuf), self);
+		if (auto realData = self->GetPacketData(*pBuf); realData != "")
+		{
+			C2S_PacketHandler::Instance().ProcessPacket(self->GetPacketData(*pBuf), self);
+		}
+		else
+		{
+			std::cout << std::format("GameClient::RecvPacket() CodeLine : {}, LogMsg : {}, PacketData : {}\n", __LINE__, LogManager::Instance().FindErrorNameToMsg("InvalidPacketData"), *pBuf);
+			_ASSERT(true);
+		}
+
 		pBuf->clear();
 
 		self->RecvPacket();

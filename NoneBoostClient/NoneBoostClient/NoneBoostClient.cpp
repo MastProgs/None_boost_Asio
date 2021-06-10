@@ -44,8 +44,9 @@ public:
 		// m_writeMessage = szMessage;
 		//m_writeMessage = "Hello World!";
 
+		m_sendBuf = { "Hello World!" + PACKET_DELIMITER };
 		asio::async_write(m_socket,
-			asio::buffer("Hello World!" + PACKET_DELIMITER),
+			asio::buffer(m_sendBuf),
 			[me = this](const asio::error_code& error, size_t bytes_transferred)
 			{
 				me->HandleWrite(error, bytes_transferred);
@@ -59,7 +60,6 @@ public:
 	void PostReceive()
 	{
 		memset(&m_recvBuf, '\0', sizeof(m_recvBuf));
-
 		m_socket.async_read_some(asio::buffer(m_recvBuf),
 			[me = this](const asio::error_code& error, size_t bytes_transferred)
 		{
@@ -101,8 +101,16 @@ public:
 		}
 		else
 		{
-			const std::string strRecvMessage = m_recvBuf.data();
-			std::cout << "서버에서 받은 메세지 : " << strRecvMessage << ", 받은 크기 : " << bytes_transferred << std::endl;
+			std::string recvMsg{ m_recvBuf.data() };
+			auto pos = recvMsg.find(PACKET_DELIMITER);
+			if (pos != std::string::npos)
+			{
+				std::cout << "서버에서 받은 메세지 : " << recvMsg.substr(0, pos) << ", 받은 크기 : " << bytes_transferred << std::endl;
+			}
+			else
+			{
+				std::cout << "서버에서 받은 패킷 PACKET_DELIMITER 가 일치하지 않음, 받은 크기 : " << bytes_transferred << std::endl;
+			}
 
 			PostWrite();
 		}
@@ -112,7 +120,8 @@ private:
 	asio::io_service& m_io_service;
 	asio::ip::tcp::socket m_socket;
 	int m_nSeqNumber;
-	std::array<char, 128> m_recvBuf;
+	std::string m_sendBuf;
+	std::array<char, PACKET_MAX_SIZE> m_recvBuf;
 	std::string m_writeMessage;
 };
 

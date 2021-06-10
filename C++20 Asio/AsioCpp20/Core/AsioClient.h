@@ -32,7 +32,8 @@ protected:
 	virtual void PostSendPacket(const std::error_code& error, size_t bytesTransferred, std::string_view packet, std::function<void()> callback = nullptr);
 
 	asio::ip::tcp::socket m_socket;
-	std::string m_recvBuffer;
+	// std::string m_sendBuffer;	// 데이터 일관성을 위해 스마트 포인터로 대체
+	// std::string m_recvBuffer;	// 데이터 일관성을 위해 스마트 포인터로 대체
 };
 
 // 사용 예시
