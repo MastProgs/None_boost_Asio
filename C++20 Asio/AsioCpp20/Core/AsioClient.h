@@ -27,6 +27,7 @@ protected:
 	}
 
 	std::string_view GetPacketData(std::string_view packetBuf);
+	void RecvPacketErrorHandle(const std::error_code& err, asio::ip::tcp::socket& sock);
 
 protected:
 	virtual void PostSendPacket(const std::error_code& error, size_t bytesTransferred, std::string_view packet, std::function<void()> callback = nullptr);
