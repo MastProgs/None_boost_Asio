@@ -25,9 +25,6 @@
     <Filter Include="소스 파일\Core\Coroutine">
       <UniqueIdentifier>{a004e3c0-e1da-4e96-a1fe-9978fe664245}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Core\Log">
-      <UniqueIdentifier>{0e236027-09cd-4666-bee3-94c5d2e7a372}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\Core\ObjectBase">
       <UniqueIdentifier>{6b41f92b-596b-473b-a085-c33a98ca3ff8}</UniqueIdentifier>
     </Filter>
@@ -39,6 +36,9 @@
     </Filter>
     <Filter Include="소스 파일\Common\Enum">
       <UniqueIdentifier>{6316c235-a47c-4b6a-aae2-08c167bd9a2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Core\Logger">
+      <UniqueIdentifier>{0e236027-09cd-4666-bee3-94c5d2e7a372}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -53,9 +53,6 @@
     </ClCompile>
     <ClCompile Include="..\Core\Asio\AsioServer.cpp">
       <Filter>소스 파일\Core\Asio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Core\Log\Log.cpp">
-      <Filter>소스 파일\Core\Log</Filter>
     </ClCompile>
     <ClCompile Include="..\Core\ObjectBase\Object.cpp">
       <Filter>소스 파일\Core\ObjectBase</Filter>
@@ -78,6 +75,9 @@
     <ClCompile Include="..\Common\Enum\Enums.cpp">
       <Filter>소스 파일\Common\Enum</Filter>
     </ClCompile>
+    <ClCompile Include="..\Core\Logger\Logger.cpp">
+      <Filter>소스 파일\Core\Logger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -91,9 +91,6 @@
     </ClInclude>
     <ClInclude Include="..\Core\Asio\AsioServer.h">
       <Filter>소스 파일\Core\Asio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Core\Log\Log.h">
-      <Filter>소스 파일\Core\Log</Filter>
     </ClInclude>
     <ClInclude Include="..\Core\ObjectBase\Object.h">
       <Filter>소스 파일\Core\ObjectBase</Filter>
@@ -121,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="..\OpenSource\json.hpp">
       <Filter>소스 파일\OpenSource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Logger\Logger.h">
+      <Filter>소스 파일\Core\Logger</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

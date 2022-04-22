@@ -31,6 +31,6 @@
 #include "Enums.h"
 #include "Object.h"
 #include "Singleton.h"
-#include "Log.h"
+#include "Logger.h"
 
 #endif //PCH_H
