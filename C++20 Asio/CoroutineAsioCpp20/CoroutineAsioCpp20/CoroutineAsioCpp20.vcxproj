@@ -78,11 +78,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Common\Enum;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Common;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\OpenSource;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Packet;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\CoroutineAsioCpp20;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\ObjectBase;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\Logger;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\Coroutine;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\Asio;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20;$(IncludePath)</IncludePath>
+    <IncludePath>D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Common\String;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Common\Enum;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Common;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\OpenSource;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Packet;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\CoroutineAsioCpp20;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\ObjectBase;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\Logger;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\Coroutine;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\Asio;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Common\Enum;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Common;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\OpenSource;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Packet;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\CoroutineAsioCpp20;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\ObjectBase;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\Logger;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\Coroutine;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\Asio;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20;$(IncludePath)</IncludePath>
+    <IncludePath>D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Common\String;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Common\Enum;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Common;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\OpenSource;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Packet;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\CoroutineAsioCpp20;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\ObjectBase;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\Logger;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\Coroutine;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core\Asio;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20\Core;D:\code\None_boost_Asio\C++20 Asio\CoroutineAsioCpp20;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -173,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\Enum\Enums.h" />
+    <ClInclude Include="..\Common\String\ToStr.h" />
     <ClInclude Include="..\Core\Asio\AsioAcceptor.h" />
     <ClInclude Include="..\Core\Asio\AsioClient.h" />
     <ClInclude Include="..\Core\Asio\AsioServer.h" />

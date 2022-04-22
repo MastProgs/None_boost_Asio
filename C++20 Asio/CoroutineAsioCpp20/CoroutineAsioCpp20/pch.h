@@ -25,12 +25,16 @@
 #include <queue>
 #include <chrono>
 
-#include "httplib.h"
-#include "json.hpp"
 #include "BetterEnum.h"
 #include "Enums.h"
+
+#include "httplib.h"
+#include "json.hpp"
+
 #include "Object.h"
 #include "Singleton.h"
 #include "Logger.h"
+
+#include "ToStr.h"
 
 #endif //PCH_H

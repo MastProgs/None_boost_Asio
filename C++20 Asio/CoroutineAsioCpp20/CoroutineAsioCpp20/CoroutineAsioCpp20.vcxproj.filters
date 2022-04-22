@@ -40,6 +40,9 @@
     <Filter Include="소스 파일\Core\Logger">
       <UniqueIdentifier>{0e236027-09cd-4666-bee3-94c5d2e7a372}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Common\String">
+      <UniqueIdentifier>{5296f83d-6666-4958-856e-d6826d144be2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\main.cpp">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="..\Core\Coroutine\Coroutine.h">
       <Filter>소스 파일\Core\Coroutine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\String\ToStr.h">
+      <Filter>소스 파일\Common\String</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
