@@ -81,7 +81,7 @@ public:
 
 	CoTask(CoHandle&& handle) : coHandle(std::make_shared<CoHandle>(handle)) { Run(); }
 	CoTask(CoTask&) = delete;
-	CoTask(CoTask&& rhl) : coHandle(std::move(rhl.coHandle)) {};
+	CoTask(CoTask&& rhl) : coHandle(rhl.coHandle) {};
 	~CoTask() {}
 
 	auto LastReturn() { return coHandle->promise().value; }
@@ -111,7 +111,7 @@ public:
 
 	CTask(CoHandle&& handle) : coHandle(std::make_shared<CoHandle>(handle)) { Run(); }
 	CTask(CTask&) = delete;
-	CTask(CTask&& rhl) : coHandle(std::move(rhl.coHandle)) {};
+	CTask(CTask&& rhl) : coHandle(rhl.coHandle) {};
 	~CTask() {}
 
 	void Run() { coHandle->resume(); }
