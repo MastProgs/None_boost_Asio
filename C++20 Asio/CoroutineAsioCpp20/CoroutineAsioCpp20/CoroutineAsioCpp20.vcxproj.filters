@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="소스 파일\Core">
+      <UniqueIdentifier>{ced0d37d-4af6-4a09-8163-5109eb737bbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Packet">
+      <UniqueIdentifier>{bf885376-d500-405e-b4bd-0da655798f5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Core\Asio">
+      <UniqueIdentifier>{3db4db04-e39b-4dbc-9f54-f25400447bba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Core\Coroutine">
+      <UniqueIdentifier>{a004e3c0-e1da-4e96-a1fe-9978fe664245}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Core\Log">
+      <UniqueIdentifier>{0e236027-09cd-4666-bee3-94c5d2e7a372}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Core\ObjectBase">
+      <UniqueIdentifier>{6b41f92b-596b-473b-a085-c33a98ca3ff8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\OpenSource">
+      <UniqueIdentifier>{49cb9088-130f-48a4-9b22-61d8a900a4b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Common">
+      <UniqueIdentifier>{a10e6194-3a68-4db5-80d3-494ef18e7783}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Common\Enum">
+      <UniqueIdentifier>{6316c235-a47c-4b6a-aae2-08c167bd9a2b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Asio\AsioAcceptor.cpp">
+      <Filter>소스 파일\Core\Asio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Asio\AsioClient.cpp">
+      <Filter>소스 파일\Core\Asio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Asio\AsioServer.cpp">
+      <Filter>소스 파일\Core\Asio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Log\Log.cpp">
+      <Filter>소스 파일\Core\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\ObjectBase\Object.cpp">
+      <Filter>소스 파일\Core\ObjectBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\ObjectBase\Singleton.cpp">
+      <Filter>소스 파일\Core\ObjectBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Packet\Packet.cpp">
+      <Filter>소스 파일\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Packet\PacketHandler.cpp">
+      <Filter>소스 파일\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>헤더 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Coroutine.cpp">
+      <Filter>소스 파일\Core\Coroutine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\Enum\Enums.cpp">
+      <Filter>소스 파일\Common\Enum</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Asio\AsioAcceptor.h">
+      <Filter>소스 파일\Core\Asio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Asio\AsioClient.h">
+      <Filter>소스 파일\Core\Asio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Asio\AsioServer.h">
+      <Filter>소스 파일\Core\Asio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Log\Log.h">
+      <Filter>소스 파일\Core\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\ObjectBase\Object.h">
+      <Filter>소스 파일\Core\ObjectBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\ObjectBase\Singleton.h">
+      <Filter>소스 파일\Core\ObjectBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\Packet.h">
+      <Filter>소스 파일\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\PacketHandler.h">
+      <Filter>소스 파일\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Coroutine.h">
+      <Filter>소스 파일\Core\Coroutine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OpenSource\BetterEnum.h">
+      <Filter>소스 파일\OpenSource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Enum\Enums.h">
+      <Filter>소스 파일\Common\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OpenSource\httplib.h">
+      <Filter>소스 파일\OpenSource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OpenSource\json.hpp">
+      <Filter>소스 파일\OpenSource</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
