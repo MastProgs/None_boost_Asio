@@ -25,6 +25,7 @@
 #include <queue>
 #include <chrono>
 
+
 #include "BetterEnum.h"
 #include "Enums.h"
 
@@ -33,6 +34,7 @@
 
 #include "Object.h"
 #include "Singleton.h"
+#include "Coroutine.h"
 #include "Logger.h"
 
 //#include "ToStr.h"
