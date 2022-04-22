@@ -35,6 +35,6 @@
 #include "Singleton.h"
 #include "Logger.h"
 
-#include "ToStr.h"
+//#include "ToStr.h"
 
 #endif //PCH_H
