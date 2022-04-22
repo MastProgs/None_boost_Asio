@@ -157,13 +157,13 @@
     <ClCompile Include="..\Core\Asio\AsioAcceptor.cpp" />
     <ClCompile Include="..\Core\Asio\AsioClient.cpp" />
     <ClCompile Include="..\Core\Asio\AsioServer.cpp" />
+    <ClCompile Include="..\Core\Coroutine\Coroutine.cpp" />
     <ClCompile Include="..\Core\Logger\Logger.cpp" />
     <ClCompile Include="..\Core\ObjectBase\Object.cpp" />
     <ClCompile Include="..\Core\ObjectBase\Singleton.cpp" />
     <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\Packet\Packet.cpp" />
     <ClCompile Include="..\Packet\PacketHandler.cpp" />
-    <ClCompile Include="Coroutine.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -176,6 +176,7 @@
     <ClInclude Include="..\Core\Asio\AsioAcceptor.h" />
     <ClInclude Include="..\Core\Asio\AsioClient.h" />
     <ClInclude Include="..\Core\Asio\AsioServer.h" />
+    <ClInclude Include="..\Core\Coroutine\Coroutine.h" />
     <ClInclude Include="..\Core\Logger\Logger.h" />
     <ClInclude Include="..\Core\ObjectBase\Object.h" />
     <ClInclude Include="..\Core\ObjectBase\Singleton.h" />
@@ -184,7 +185,6 @@
     <ClInclude Include="..\OpenSource\json.hpp" />
     <ClInclude Include="..\Packet\Packet.h" />
     <ClInclude Include="..\Packet\PacketHandler.h" />
-    <ClInclude Include="Coroutine.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

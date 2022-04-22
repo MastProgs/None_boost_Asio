@@ -69,14 +69,14 @@
     <ClCompile Include="pch.cpp">
       <Filter>헤더 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Coroutine.cpp">
-      <Filter>소스 파일\Core\Coroutine</Filter>
-    </ClCompile>
     <ClCompile Include="..\Common\Enum\Enums.cpp">
       <Filter>소스 파일\Common\Enum</Filter>
     </ClCompile>
     <ClCompile Include="..\Core\Logger\Logger.cpp">
       <Filter>소스 파일\Core\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Coroutine\Coroutine.cpp">
+      <Filter>소스 파일\Core\Coroutine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,9 +104,6 @@
     <ClInclude Include="..\Packet\PacketHandler.h">
       <Filter>소스 파일\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="Coroutine.h">
-      <Filter>소스 파일\Core\Coroutine</Filter>
-    </ClInclude>
     <ClInclude Include="..\OpenSource\BetterEnum.h">
       <Filter>소스 파일\OpenSource</Filter>
     </ClInclude>
@@ -121,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="..\Core\Logger\Logger.h">
       <Filter>소스 파일\Core\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Coroutine\Coroutine.h">
+      <Filter>소스 파일\Core\Coroutine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
