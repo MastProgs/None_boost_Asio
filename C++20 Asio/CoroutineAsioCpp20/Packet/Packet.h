@@ -15,7 +15,7 @@ private:
 	PacketHeader m_header;
 };
 
-// »ç¿ë¿¹½Ã
+// ì‚¬ìš©ì˜ˆì‹œ
 namespace C2S
 {
 	class TestPacket : public Packet
@@ -25,7 +25,7 @@ namespace C2S
 	};
 }
 
-// »ç¿ë¿¹½Ã
+// ì‚¬ìš©ì˜ˆì‹œ
 namespace S2C
 {
 	class TestPacket : public Packet

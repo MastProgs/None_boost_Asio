@@ -33,11 +33,11 @@ protected:
 	virtual void PostSendPacket(const std::error_code& error, size_t bytesTransferred, std::string_view packet, std::function<void()> callback = nullptr);
 
 	asio::ip::tcp::socket m_socket;
-	// std::string m_sendBuffer;	// µ¥ÀÌÅÍ ÀÏ°ü¼ºÀ» À§ÇØ ½º¸¶Æ® Æ÷ÀÎÅÍ·Î ´ëÃ¼
-	// std::string m_recvBuffer;	// µ¥ÀÌÅÍ ÀÏ°ü¼ºÀ» À§ÇØ ½º¸¶Æ® Æ÷ÀÎÅÍ·Î ´ëÃ¼
+	// std::string m_sendBuffer;	// ë°ì´í„° ì¼ê´€ì„±ì„ ìœ„í•´ ìŠ¤ë§ˆíŠ¸ í¬ì¸í„°ë¡œ ëŒ€ì²´
+	// std::string m_recvBuffer;	// ë°ì´í„° ì¼ê´€ì„±ì„ ìœ„í•´ ìŠ¤ë§ˆíŠ¸ í¬ì¸í„°ë¡œ ëŒ€ì²´
 };
 
-// »ç¿ë ¿¹½Ã
+// ì‚¬ìš© ì˜ˆì‹œ
 class GameClient : public AsioClient
 {
 public:
@@ -46,7 +46,7 @@ public:
 	virtual bool Init() override final;
 
 	virtual void RecvPacket() override final;
-	// ±âÅ¸ ÄÁÅÙÃ÷ ÀûÀÎ°Å ³Ö°í ÃÊ±âÈ­ ÇÒ°Å ³Ö°í ÇÏ¸é¼­ »ç¿ëÇÏ¸é µÉ µí
+	// ê¸°íƒ€ ì»¨í…ì¸  ì ì¸ê±° ë„£ê³  ì´ˆê¸°í™” í• ê±° ë„£ê³  í•˜ë©´ì„œ ì‚¬ìš©í•˜ë©´ ë  ë“¯
 private:
 	virtual void PostSendPacket(const std::error_code& error, size_t bytesTransferred, std::string_view packet, std::function<void()> callback = nullptr) override final;
 };

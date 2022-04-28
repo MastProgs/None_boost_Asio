@@ -28,7 +28,7 @@ namespace
 	//	return std::array<asio::mutable_buffer, sizeof...(Args)>{asio::buffer(args)...};
 	//}
 
-	// »ç¿ë ¿¹½Ã
+	// ì‚¬ìš© ì˜ˆì‹œ
 	// io::async_write(socket, const_sequence(first, second, io::buffer(pointer, size)), handler);
 }
 
@@ -78,7 +78,7 @@ void AsioClient::RecvPacketErrorHandle(const std::error_code& err, asio::ip::tcp
 
 		if (err.value() == asio::error::eof)
 		{
-			// client °¡ ¿¬°á Á¾·á
+			// client ê°€ ì—°ê²° ì¢…ë£Œ
 			auto ep = sock.remote_endpoint();
 			Logger::Inst().Debug(std::format("Client Disonnected :: IP = {}, Port = {}", ep.address().to_string(), ep.port()));
 
@@ -100,7 +100,7 @@ void AsioClient::SendPacket(std::string_view packet, std::function<void()> callb
 		[self = shared_from_this(), p = packetData, func = callback, pBuf = sendBuffer](const std::error_code& error, size_t bytes_transferred)
 	{
 		self->PostSendPacket(error, bytes_transferred, p, func);
-		//std::cout << std::format("Sended Message : {}, º¸³½ Å©±â : {}\n", p, bytes_transferred);
+		//std::cout << std::format("Sended Message : {}, ë³´ë‚¸ í¬ê¸° : {}\n", p, bytes_transferred);
 	});
 }
 
@@ -150,11 +150,11 @@ void AsioClient::PostSendPacket(const std::error_code& error, size_t bytesTransf
 
 /// <summary>
 /// 
-/// Acceptor ¸¦ ÅëÇØ¼­ Á¢¼Ó ¹ŞÀº ¼ÒÄÏ¿¡ ´ëÀÀµÇ´Â Å¬¶óÀÌ¾ğÆ® ¼ÒÄÏ Å¬·¡½º¸¦ Á¤ÀÇ³»¸± ¼ö ÀÖÀ½
-/// °ÔÀÓ Å¬¶óÀÌ¾ğÆ®°¡ µÉ ¼öµµ ÀÖ°í, ±âÅ¸ ¼­¹ö ´ë ¼­¹ö¿¡ ÀÇÇÑ Å¬¶óÀÌ¾ğÆ® ¼ÒÄÏÀÌ µÉ ¼öµµ ÀÖ°ÚÁö?
+/// Acceptor ë¥¼ í†µí•´ì„œ ì ‘ì† ë°›ì€ ì†Œì¼“ì— ëŒ€ì‘ë˜ëŠ” í´ë¼ì´ì–¸íŠ¸ ì†Œì¼“ í´ë˜ìŠ¤ë¥¼ ì •ì˜ë‚´ë¦´ ìˆ˜ ìˆìŒ
+/// ê²Œì„ í´ë¼ì´ì–¸íŠ¸ê°€ ë  ìˆ˜ë„ ìˆê³ , ê¸°íƒ€ ì„œë²„ ëŒ€ ì„œë²„ì— ì˜í•œ í´ë¼ì´ì–¸íŠ¸ ì†Œì¼“ì´ ë  ìˆ˜ë„ ìˆê² ì§€?
 /// 
 /// </summary>
-/// <param name="io"> AsioServer ÀÇ io_context °¡ µé¾î¿Í¾ß, °ü·Ã context ¿¡¼­ Ã³¸®°¡ ÁøÇàµÈ´Ù </param>
+/// <param name="io"> AsioServer ì˜ io_context ê°€ ë“¤ì–´ì™€ì•¼, ê´€ë ¨ context ì—ì„œ ì²˜ë¦¬ê°€ ì§„í–‰ëœë‹¤ </param>
 
 GameClient::GameClient(asio::io_context& io)
 	: AsioClient{ io }
@@ -196,7 +196,7 @@ void GameClient::RecvPacket()
 
 void GameClient::PostSendPacket(const std::error_code& error, size_t bytesTransferred, std::string_view packet, std::function<void()> callback)
 {
-	// ÀÏ¹İÀûÀ¸·Î send ¸¦ ÇÏ°í ³ª¼­ ÈÄ Ã³¸®¸¦ ÇÒ ÀÏÀº º°·Î ¾øÀ»°ÍÀ¸·Î º¸ÀÎ´Ù.
-	/// ÀÖ´Ù¸é log ³²±â´Â°Å Á¤µµ°¡ ÀÖÀ»µí
+	// ì¼ë°˜ì ìœ¼ë¡œ send ë¥¼ í•˜ê³  ë‚˜ì„œ í›„ ì²˜ë¦¬ë¥¼ í•  ì¼ì€ ë³„ë¡œ ì—†ì„ê²ƒìœ¼ë¡œ ë³´ì¸ë‹¤.
+	/// ìˆë‹¤ë©´ log ë‚¨ê¸°ëŠ”ê±° ì •ë„ê°€ ìˆì„ë“¯
 	__super::PostSendPacket(error, bytesTransferred, packet, callback);
 }

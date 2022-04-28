@@ -32,7 +32,7 @@ protected:
 	std::atomic<bool> m_isAlreadyListening{ false };
 };
 
-// »ç¿ë ¿¹½Ã
+// ì‚¬ìš© ì˜ˆì‹œ
 class GameClient;
 class GameClientAcceptor : public AsioAcceptor
 {

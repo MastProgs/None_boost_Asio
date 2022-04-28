@@ -5,14 +5,14 @@
 
 void PacketHandler::ProcessPacket(std::string_view packet, std::shared_ptr<AsioClient> client)
 {
-	// packet µ¥ÀÌÅÍ ¸¶Áö¸·¿£ ¹®ÀÚ¿­ÀÌ¶ó¼­ '\0' ÀÌ ºÙ¾îÀÖÀ½, ¹®ÀÚ¿­ÀÌ ¾Æ´Ñ µ¥ÀÌÅÍ´Â '\0' Á¦¿ÜÇÏ°í ½á¾ßÇÔ
+	// packet ë°ì´í„° ë§ˆì§€ë§‰ì—” ë¬¸ìžì—´ì´ë¼ì„œ '\0' ì´ ë¶™ì–´ìžˆìŒ, ë¬¸ìžì—´ì´ ì•„ë‹Œ ë°ì´í„°ëŠ” '\0' ì œì™¸í•˜ê³  ì¨ì•¼í•¨
 	Logger::Inst().Debug(std::format("C2S_PacketHandler : {}", packet));
 	client->SendPacket(packet);
 }
 
 void C2S_PacketHandler::ProcessPacket(std::string_view packet, std::shared_ptr<GameClient> client)
 {
-	// packet µ¥ÀÌÅÍ ¸¶Áö¸·¿£ ¹®ÀÚ¿­ÀÌ¶ó¼­ '\0' ÀÌ ºÙ¾îÀÖÀ½, ¹®ÀÚ¿­ÀÌ ¾Æ´Ñ µ¥ÀÌÅÍ´Â '\0' Á¦¿ÜÇÏ°í ½á¾ßÇÔ
+	// packet ë°ì´í„° ë§ˆì§€ë§‰ì—” ë¬¸ìžì—´ì´ë¼ì„œ '\0' ì´ ë¶™ì–´ìžˆìŒ, ë¬¸ìžì—´ì´ ì•„ë‹Œ ë°ì´í„°ëŠ” '\0' ì œì™¸í•˜ê³  ì¨ì•¼í•¨
 	Logger::Inst().Debug(std::format("C2S_PacketHandler : {}", packet));
 	client->SendPacket(packet);
 }

@@ -67,14 +67,14 @@ bool AsioContext::StartThreads()
 
 void AsioContext::Post(std::function<void()> callback)
 {
-	// dispatch ´Â È£ÃâÇÑ ¾²·¹µå¿¡¼­¸¸ °ü·Ã ÇÔ¼ö¸¦ Ã³¸®ÇÏÁö¸¸ post ´Â ºñ¾îÀÖ´Â ¾²·¹µå ¾î´À°÷¿¡¼­³ª ÇÔ¼ö Ã³¸® °¡´ÉÇÔ
+	// dispatch ëŠ” í˜¸ì¶œí•œ ì“°ë ˆë“œì—ì„œë§Œ ê´€ë ¨ í•¨ìˆ˜ë¥¼ ì²˜ë¦¬í•˜ì§€ë§Œ post ëŠ” ë¹„ì–´ìˆëŠ” ì“°ë ˆë“œ ì–´ëŠê³³ì—ì„œë‚˜ í•¨ìˆ˜ ì²˜ë¦¬ ê°€ëŠ¥í•¨
 	asio::post(m_ioContext, callback);
 
 	/*
-	* m_ioContext.post(callback);	// ÀÌ ÇÔ¼ö´Â ÀÌÁ¦ ¾²¸é ¾ÈµÈ´Ù°í ÇÔ
-	* ÇÑ±¹¾î ¼³¸í : https://zepeh.tistory.com/498
-	* ¿¹Á¦ = https://www.boost.org/doc/libs/1_66_0/doc/html/boost_asio/example/cpp03/services/logger_service.hpp
-	* ½ºÅÃ¿À¹öÇÃ·Î¿ì = https://stackoverflow.com/questions/59753391/boost-asio-io-service-vs-io-context
+	* m_ioContext.post(callback);	// ì´ í•¨ìˆ˜ëŠ” ì´ì œ ì“°ë©´ ì•ˆëœë‹¤ê³  í•¨
+	* í•œêµ­ì–´ ì„¤ëª… : https://zepeh.tistory.com/498
+	* ì˜ˆì œ = https://www.boost.org/doc/libs/1_66_0/doc/html/boost_asio/example/cpp03/services/logger_service.hpp
+	* ìŠ¤íƒì˜¤ë²„í”Œë¡œìš° = https://stackoverflow.com/questions/59753391/boost-asio-io-service-vs-io-context
 	*/
 }
 
@@ -85,7 +85,7 @@ void AsioContext::Dispatch(std::function<void()> callback)
 
 void AsioContext::Stop()
 {
-	// io_context ¿Í °ü·ÃÇÑ run() »óÅÂÀÇ ¾²·¹µåµéÀÌ ¸ğµÎ return À» ÇÏ°í, °ü·Ã ¾²·¹µåµéÀº Á¤»ó Á¾·á¸¦ ÇÏ°Ô µÈ´Ù.
+	// io_context ì™€ ê´€ë ¨í•œ run() ìƒíƒœì˜ ì“°ë ˆë“œë“¤ì´ ëª¨ë‘ return ì„ í•˜ê³ , ê´€ë ¨ ì“°ë ˆë“œë“¤ì€ ì •ìƒ ì¢…ë£Œë¥¼ í•˜ê²Œ ëœë‹¤.
 	m_ioContext.stop();
 }
 
@@ -119,7 +119,7 @@ bool AsioContext::SetServerIpList()
 	using asio::ip::tcp;
 	tcp::resolver rs(m_ioContext);
 
-	// asio::ip::tcp::resolver::query ´Â »èÁ¦ ´ë»ó
+	// asio::ip::tcp::resolver::query ëŠ” ì‚­ì œ ëŒ€ìƒ
 	for (const auto& iter : rs.resolve(asio::ip::host_name() , ""))
 	{
 		auto addr = iter.endpoint().address();
@@ -135,7 +135,7 @@ bool AsioContext::SetServerIpList()
 
 bool AsioContext::SetAcceptor()
 {
-	// ¿©·¯ Acceptor ¸¦ ¾²´Â °æ¿ì, Æ÷Æ® ¹øÈ£¸¦ ¿©±â¼­ µû·Î µû·Î ÁöÁ¤ÇØÁÖ¸é µÈ´Ù.
+	// ì—¬ëŸ¬ Acceptor ë¥¼ ì“°ëŠ” ê²½ìš°, í¬íŠ¸ ë²ˆí˜¸ë¥¼ ì—¬ê¸°ì„œ ë”°ë¡œ ë”°ë¡œ ì§€ì •í•´ì£¼ë©´ ëœë‹¤.
 
 	constexpr int PORT_NUMBER = 9000;
 	m_acceptor = std::make_shared<GameClientAcceptor>(m_ioContext, asio::ip::tcp::endpoint{ asio::ip::tcp::v4(), PORT_NUMBER });

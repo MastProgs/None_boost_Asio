@@ -49,19 +49,19 @@ void AsioAcceptor::HandleAccept(std::shared_ptr<AsioClient> client, const std::e
 		return;
 	}
 
-	// Å×½ºÆ®¿ë ÀÀ´ä
+	// í…ŒìŠ¤íŠ¸ìš© ì‘ë‹µ
 	client->TEST_SampleResponse();
 	client->RecvPacket();
 }
 
 /// <summary>
 /// 
-/// GameClient ¿¡ ´ëÇØ ÇÑÁ¤À¸·Î¸¸ Accept ¸¦ ÁøÇàÇÏ´Â Acceptor ¸¦ ±¸ÇöÇÒ ¼ö ÀÖÀ½
-/// AsioServer::SetAcceptor() ¿¡¼­ Á¤ÀÇ°¡ ÇÊ¿äÇÏ´Ù.
+/// GameClient ì— ëŒ€í•´ í•œì •ìœ¼ë¡œë§Œ Accept ë¥¼ ì§„í–‰í•˜ëŠ” Acceptor ë¥¼ êµ¬í˜„í•  ìˆ˜ ìˆìŒ
+/// AsioServer::SetAcceptor() ì—ì„œ ì •ì˜ê°€ í•„ìš”í•˜ë‹¤.
 /// 
 /// </summary>
-/// <param name="io"> AsioServer Å¬·¡½º¿¡ Á¤ÀÇ µÇ¾î ÀÖ´Â io_context °¡ ÇÊ¿äÇÔ </param>
-/// <param name="e"> ip4v ¿É¼Ç°ú port Á¤º¸°¡ ÀÖÀ½ </param>
+/// <param name="io"> AsioServer í´ë˜ìŠ¤ì— ì •ì˜ ë˜ì–´ ìˆëŠ” io_context ê°€ í•„ìš”í•¨ </param>
+/// <param name="e"> ip4v ì˜µì…˜ê³¼ port ì •ë³´ê°€ ìˆìŒ </param>
 
 GameClientAcceptor::GameClientAcceptor(asio::io_context& io, asio::ip::tcp::endpoint&& e)
 	: AsioAcceptor{ io, std::forward<asio::ip::tcp::endpoint>(e) }

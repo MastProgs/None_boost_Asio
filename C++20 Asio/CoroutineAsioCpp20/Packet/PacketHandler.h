@@ -11,7 +11,7 @@ public:
 private:
 };
 
-// »ç¿ë ¿¹½Ã
+// ì‚¬ìš© ì˜ˆì‹œ
 class GameClient;
 class C2S_PacketHandler : public Singleton<C2S_PacketHandler>
 {
