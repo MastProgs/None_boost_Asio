@@ -1,6 +1,6 @@
 #pragma once
 
-BETTER_ENUM(LOG_TYPE, char
+BETTER_ENUM(LOG_LEVEL, char
 	, NONE
 	, DEBUG
 	, WARN
