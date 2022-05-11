@@ -1,7 +1,5 @@
 #pragma once
 
-class CTask;
-
 using ERROR_LOG_Name = std::string;
 using ERROR_LOG_Descript = std::string;
 

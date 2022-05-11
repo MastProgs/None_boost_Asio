@@ -49,7 +49,7 @@ private:
 };
 
 template <typename T>
-class CoTask : public Task
+class RTask : public Task
 {
 public:
 	struct promise_type;
@@ -57,9 +57,9 @@ public:
 
 	struct promise_type
 	{
-		CoTask get_return_object() noexcept
+		RTask get_return_object() noexcept
 		{
-			return CoTask{ CoHandle::from_promise(*this) };
+			return RTask{ CoHandle::from_promise(*this) };
 		}
 		auto initial_suspend() noexcept { return std::suspend_always{}; }
 		auto final_suspend() noexcept { return std::suspend_always{}; }
@@ -79,10 +79,10 @@ public:
 		T value;
 	};
 
-	CoTask(CoHandle&& handle) : coHandle(std::make_shared<CoHandle>(handle)) { Run(); }
-	CoTask(CoTask&) = delete;
-	CoTask(CoTask&& rhl) : coHandle(rhl.coHandle) {};
-	~CoTask() {}
+	RTask(CoHandle&& handle) : coHandle(std::make_shared<CoHandle>(handle)) { Run(); }
+	RTask(RTask&) = delete;
+	RTask(RTask&& rhl) : coHandle(rhl.coHandle) {};
+	~RTask() {}
 
 	auto LastReturn() { return coHandle->promise().value; }
 	void Run() { coHandle->resume(); }
@@ -91,7 +91,7 @@ private:
 	std::shared_ptr<CoHandle> coHandle;
 };
 
-class CTask : public Task
+class VTask : public Task
 {
 public:
 	struct promise_type;
@@ -99,9 +99,9 @@ public:
 
 	struct promise_type
 	{
-		CTask get_return_object() noexcept
+		VTask get_return_object() noexcept
 		{
-			return CTask{ CoHandle::from_promise(*this) };
+			return VTask{ CoHandle::from_promise(*this) };
 		}
 		auto initial_suspend() noexcept { return std::suspend_always{}; }
 		auto final_suspend() noexcept { return std::suspend_always{}; }
@@ -109,10 +109,10 @@ public:
 		void return_void() { return; }
 	};
 
-	CTask(CoHandle&& handle) : coHandle(std::make_shared<CoHandle>(handle)) { Run(); }
-	CTask(CTask&) = delete;
-	CTask(CTask&& rhl) : coHandle(rhl.coHandle) {};
-	~CTask() {}
+	VTask(CoHandle&& handle) : coHandle(std::make_shared<CoHandle>(handle)) { Run(); }
+	VTask(VTask&) = delete;
+	VTask(VTask&& rhl) : coHandle(rhl.coHandle) {};
+	~VTask() {}
 
 	void Run() { coHandle->resume(); }
 	bool IsFinish() { return coHandle->done(); }
