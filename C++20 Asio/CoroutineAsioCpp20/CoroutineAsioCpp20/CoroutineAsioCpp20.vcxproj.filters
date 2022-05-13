@@ -43,6 +43,9 @@
     <Filter Include="소스 파일\Common\String">
       <UniqueIdentifier>{5296f83d-6666-4958-856e-d6826d144be2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Core\Reflection">
+      <UniqueIdentifier>{4451ced3-e982-4b1e-a0cd-5e14ef0a32df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\main.cpp">
@@ -80,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="..\Core\Coroutine\Coroutine.cpp">
       <Filter>소스 파일\Core\Coroutine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Reflection\TypeInfo.cpp">
+      <Filter>소스 파일\Core\Reflection</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -128,5 +134,29 @@
     <ClInclude Include="..\Common\String\ToStr.h">
       <Filter>소스 파일\Common\String</Filter>
     </ClInclude>
+    <ClInclude Include="..\Core\Reflection\Method.h">
+      <Filter>소스 파일\Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Reflection\MethodMacros.h">
+      <Filter>소스 파일\Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Reflection\Property.h">
+      <Filter>소스 파일\Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Reflection\PropertyMacros.h">
+      <Filter>소스 파일\Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Reflection\Reflection.h">
+      <Filter>소스 파일\Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Reflection\TypeInfo.h">
+      <Filter>소스 파일\Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Reflection\TypeInfoMacros.h">
+      <Filter>소스 파일\Core\Reflection</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

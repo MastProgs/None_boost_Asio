@@ -78,11 +78,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\..\asio-1.22.1\include;$(SolutionDir)\Common\String;$(SolutionDir)\Common\Enum;$(SolutionDir)\Common;$(SolutionDir)\OpenSource;$(SolutionDir)\Packet;$(SolutionDir)\CoroutineAsioCpp20;$(SolutionDir)\Core\ObjectBase;$(SolutionDir)\Core\Logger;$(SolutionDir)\Core\Coroutine;$(SolutionDir)\Core\Asio;$(SolutionDir)\Core;$(SolutionDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\..\asio-1.22.1\include;$(SolutionDir)\Common\String;$(SolutionDir)\Common\Enum;$(SolutionDir)\Common;$(SolutionDir)\OpenSource;$(SolutionDir)\Packet;$(SolutionDir)\CoroutineAsioCpp20;$(SolutionDir)\Core\ObjectBase;$(SolutionDir)\Core\Logger;$(SolutionDir)\Core\Coroutine;$(SolutionDir)\Core\Asio;$(SolutionDir)\Core;$(SolutionDir)\Core\Reflection;$(SolutionDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\..\asio-1.22.1\include;$(SolutionDir)\Common\String;$(SolutionDir)\Common\Enum;$(SolutionDir)\Common;$(SolutionDir)\OpenSource;$(SolutionDir)\Packet;$(SolutionDir)\CoroutineAsioCpp20;$(SolutionDir)\Core\ObjectBase;$(SolutionDir)\Core\Logger;$(SolutionDir)\Core\Coroutine;$(SolutionDir)\Core\Asio;$(SolutionDir)\Core;$(SolutionDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\..\asio-1.22.1\include;$(SolutionDir)\Common\String;$(SolutionDir)\Common\Enum;$(SolutionDir)\Common;$(SolutionDir)\OpenSource;$(SolutionDir)\Packet;$(SolutionDir)\CoroutineAsioCpp20;$(SolutionDir)\Core\ObjectBase;$(SolutionDir)\Core\Logger;$(SolutionDir)\Core\Coroutine;$(SolutionDir)\Core\Asio;$(SolutionDir)\Core;$(SolutionDir)\Core\Reflection;$(SolutionDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -161,6 +161,7 @@
     <ClCompile Include="..\Core\Logger\Logger.cpp" />
     <ClCompile Include="..\Core\ObjectBase\Object.cpp" />
     <ClCompile Include="..\Core\ObjectBase\Singleton.cpp" />
+    <ClCompile Include="..\Core\Reflection\TypeInfo.cpp" />
     <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\Packet\Packet.cpp" />
     <ClCompile Include="..\Packet\PacketHandler.cpp" />
@@ -181,12 +182,22 @@
     <ClInclude Include="..\Core\Logger\Logger.h" />
     <ClInclude Include="..\Core\ObjectBase\Object.h" />
     <ClInclude Include="..\Core\ObjectBase\Singleton.h" />
+    <ClInclude Include="..\Core\Reflection\Method.h" />
+    <ClInclude Include="..\Core\Reflection\MethodMacros.h" />
+    <ClInclude Include="..\Core\Reflection\Property.h" />
+    <ClInclude Include="..\Core\Reflection\PropertyMacros.h" />
+    <ClInclude Include="..\Core\Reflection\Reflection.h" />
+    <ClInclude Include="..\Core\Reflection\TypeInfo.h" />
+    <ClInclude Include="..\Core\Reflection\TypeInfoMacros.h" />
     <ClInclude Include="..\OpenSource\BetterEnum.h" />
     <ClInclude Include="..\OpenSource\httplib.h" />
     <ClInclude Include="..\OpenSource\json.hpp" />
     <ClInclude Include="..\Packet\Packet.h" />
     <ClInclude Include="..\Packet\PacketHandler.h" />
     <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
