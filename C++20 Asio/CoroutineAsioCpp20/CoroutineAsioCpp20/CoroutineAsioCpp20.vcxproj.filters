@@ -46,6 +46,9 @@
     <Filter Include="소스 파일\Core\Reflection">
       <UniqueIdentifier>{4451ced3-e982-4b1e-a0cd-5e14ef0a32df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Common\Random">
+      <UniqueIdentifier>{ebb42323-222f-43fe-b994-5914ed8a0689}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\main.cpp">
@@ -86,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="..\Core\Reflection\TypeInfo.cpp">
       <Filter>소스 파일\Core\Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\Random\Rand.cpp">
+      <Filter>소스 파일\Common\Random</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="..\Core\Reflection\TypeInfoMacros.h">
       <Filter>소스 파일\Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Random\Rand.h">
+      <Filter>소스 파일\Common\Random</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -78,11 +78,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\..\asio-1.22.1\include;$(SolutionDir)\Common\String;$(SolutionDir)\Common\Enum;$(SolutionDir)\Common;$(SolutionDir)\OpenSource;$(SolutionDir)\Packet;$(SolutionDir)\CoroutineAsioCpp20;$(SolutionDir)\Core\ObjectBase;$(SolutionDir)\Core\Logger;$(SolutionDir)\Core\Coroutine;$(SolutionDir)\Core\Asio;$(SolutionDir)\Core;$(SolutionDir)\Core\Reflection;$(SolutionDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\..\asio-1.22.1\include;$(SolutionDir)\Common\Random;$(SolutionDir)\Common\String;$(SolutionDir)\Common\Enum;$(SolutionDir)\Common;$(SolutionDir)\OpenSource;$(SolutionDir)\Packet;$(SolutionDir)\CoroutineAsioCpp20;$(SolutionDir)\Core\ObjectBase;$(SolutionDir)\Core\Logger;$(SolutionDir)\Core\Coroutine;$(SolutionDir)\Core\Asio;$(SolutionDir)\Core;$(SolutionDir)\Core\Reflection;$(SolutionDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\..\asio-1.22.1\include;$(SolutionDir)\Common\String;$(SolutionDir)\Common\Enum;$(SolutionDir)\Common;$(SolutionDir)\OpenSource;$(SolutionDir)\Packet;$(SolutionDir)\CoroutineAsioCpp20;$(SolutionDir)\Core\ObjectBase;$(SolutionDir)\Core\Logger;$(SolutionDir)\Core\Coroutine;$(SolutionDir)\Core\Asio;$(SolutionDir)\Core;$(SolutionDir)\Core\Reflection;$(SolutionDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\..\asio-1.22.1\include;$(SolutionDir)\Common\Random;$(SolutionDir)\Common\String;$(SolutionDir)\Common\Enum;$(SolutionDir)\Common;$(SolutionDir)\OpenSource;$(SolutionDir)\Packet;$(SolutionDir)\CoroutineAsioCpp20;$(SolutionDir)\Core\ObjectBase;$(SolutionDir)\Core\Logger;$(SolutionDir)\Core\Coroutine;$(SolutionDir)\Core\Asio;$(SolutionDir)\Core;$(SolutionDir)\Core\Reflection;$(SolutionDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Common\Enum\Enums.cpp" />
+    <ClCompile Include="..\Common\Random\Rand.cpp" />
     <ClCompile Include="..\Core\Asio\AsioAcceptor.cpp" />
     <ClCompile Include="..\Core\Asio\AsioClient.cpp" />
     <ClCompile Include="..\Core\Asio\AsioServer.cpp" />
@@ -174,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\Enum\Enums.h" />
+    <ClInclude Include="..\Common\Random\Rand.h" />
     <ClInclude Include="..\Common\String\ToStr.h" />
     <ClInclude Include="..\Core\Asio\AsioAcceptor.h" />
     <ClInclude Include="..\Core\Asio\AsioClient.h" />
