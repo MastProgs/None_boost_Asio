@@ -49,6 +49,9 @@
     <Filter Include="소스 파일\Common\Random">
       <UniqueIdentifier>{ebb42323-222f-43fe-b994-5914ed8a0689}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Common\Datetime">
+      <UniqueIdentifier>{ce5e136c-7cd0-4e93-ad0e-0e162010d352}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\main.cpp">
@@ -92,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="..\Common\Random\Rand.cpp">
       <Filter>소스 파일\Common\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\Datetime\Datetime.cpp">
+      <Filter>소스 파일\Common\Datetime</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="..\Common\Random\Rand.h">
       <Filter>소스 파일\Common\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Datetime\Datetime.h">
+      <Filter>소스 파일\Common\Datetime</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
