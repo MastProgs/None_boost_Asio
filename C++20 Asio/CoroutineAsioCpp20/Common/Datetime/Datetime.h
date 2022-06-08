@@ -144,42 +144,40 @@ public:
 	}
 	bool operator!=(const week_hh_mm_ss& rhs) const
 	{
-		if (week.c_encoding() != rhs.week.c_encoding()) { return true; }
-		if (hour != rhs.hour) { return true; }
-		if (minute != rhs.minute) { return true; }
-		if (second != rhs.second) { return true; }
-		return false;
+		return !(*this == rhs);
 	}
 	bool operator<(const week_hh_mm_ss& rhs) const
 	{
-		if (week.c_encoding() < rhs.week.c_encoding()) { return true; }
-		if (hour < rhs.hour) { return true; }
-		if (minute < rhs.minute) { return true; }
-		if (second < rhs.second) { return true; }
-		return false;
+		if (week.c_encoding() > rhs.week.c_encoding()) { return false; }
+		if (hour > rhs.hour) { return false; }
+		if (minute > rhs.minute) { return false; }
+		if (second > rhs.second) { return false; }
+		if (*this == rhs) { return false; }
+		return true;
 	}
 	bool operator<=(const week_hh_mm_ss& rhs) const
 	{
-		if (week.c_encoding() < rhs.week.c_encoding()) { return true; }
-		if (hour < rhs.hour) { return true; }
-		if (minute < rhs.minute) { return true; }
-		if (second <= rhs.second) { return true; }
-		return false;
+		if (week.c_encoding() > rhs.week.c_encoding()) { return false; }
+		if (hour > rhs.hour) { return false; }
+		if (minute > rhs.minute) { return false; }
+		if (second > rhs.second) { return false; }
+		return true;
 	}
 	bool operator>(const week_hh_mm_ss& rhs) const
 	{
-		if (week.c_encoding() > rhs.week.c_encoding()) { return true; }
-		if (hour > rhs.hour) { return true; }
-		if (minute > rhs.minute) { return true; }
-		if (second > rhs.second) { return true; }
-		return false;
+		if (week.c_encoding() < rhs.week.c_encoding()) { return false; }
+		if (hour < rhs.hour) { return false; }
+		if (minute < rhs.minute) { return false; }
+		if (second < rhs.second) { return false; }
+		if (*this == rhs) { return false; }
+		return true;
 	}
 	bool operator>=(const week_hh_mm_ss& rhs) const
 	{
-		if (week.c_encoding() > rhs.week.c_encoding()) { return true; }
-		if (hour > rhs.hour) { return true; }
-		if (minute > rhs.minute) { return true; }
-		if (second >= rhs.second) { return true; }
+		if (week.c_encoding() < rhs.week.c_encoding()) { return false; }
+		if (hour < rhs.hour) { return false; }
+		if (minute < rhs.minute) { return false; }
+		if (second < rhs.second) { return false; }
 		return false;
 	}
 
