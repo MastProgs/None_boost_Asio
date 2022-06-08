@@ -39,14 +39,12 @@ public:
 		return std::format("{:" + std::string{ dateForm } + "}", NowLocal());
 	}
 
-	std::optional<TP> StrToTP(const std::string& strDt, std::string_view dateForm = "%Y-%m-%d %H:%M:%S")
+	TP StrToTP(const std::string& strDt, std::string_view dateForm = "%Y-%m-%d %H:%M:%S")
 	{
 		std::stringstream ss(strDt);
 		TP tp;
 
 		ss >> std::chrono::parse(dateForm.data(), tp);
-		if (false == ss.fail()) { return std::nullopt; }
-
 		return tp;
 	}
 
