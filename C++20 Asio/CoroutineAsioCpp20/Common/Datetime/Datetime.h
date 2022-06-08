@@ -131,55 +131,23 @@ public:
 	int Hour() const { return hour.count(); }
 	int Minute() const { return minute.count(); }
 	int Second() const { return second.count(); }
+	int ToDuration() const
+	{
+		int w = Week() * 24 * 60 * 60;
+		int h = Hour() * 60 * 60;
+		int m = Minute() * 60;
+		int s = Second();
+		return w + h + m + s;
+	}
 
 #pragma region OPERATORS
 public:
-	bool operator==(const week_hh_mm_ss& rhs) const
-	{
-		if (week.c_encoding() != rhs.week.c_encoding()) { return false; }
-		if (hour != rhs.hour) { return false; }
-		if (minute != rhs.minute) { return false; }
-		if (second != rhs.second) { return false; }
-		return true;
-	}
-	bool operator!=(const week_hh_mm_ss& rhs) const
-	{
-		return !(*this == rhs);
-	}
-	bool operator<(const week_hh_mm_ss& rhs) const
-	{
-		if (week.c_encoding() > rhs.week.c_encoding()) { return false; }
-		if (hour > rhs.hour) { return false; }
-		if (minute > rhs.minute) { return false; }
-		if (second > rhs.second) { return false; }
-		if (*this == rhs) { return false; }
-		return true;
-	}
-	bool operator<=(const week_hh_mm_ss& rhs) const
-	{
-		if (week.c_encoding() > rhs.week.c_encoding()) { return false; }
-		if (hour > rhs.hour) { return false; }
-		if (minute > rhs.minute) { return false; }
-		if (second > rhs.second) { return false; }
-		return true;
-	}
-	bool operator>(const week_hh_mm_ss& rhs) const
-	{
-		if (week.c_encoding() < rhs.week.c_encoding()) { return false; }
-		if (hour < rhs.hour) { return false; }
-		if (minute < rhs.minute) { return false; }
-		if (second < rhs.second) { return false; }
-		if (*this == rhs) { return false; }
-		return true;
-	}
-	bool operator>=(const week_hh_mm_ss& rhs) const
-	{
-		if (week.c_encoding() < rhs.week.c_encoding()) { return false; }
-		if (hour < rhs.hour) { return false; }
-		if (minute < rhs.minute) { return false; }
-		if (second < rhs.second) { return false; }
-		return false;
-	}
+	bool operator==(const week_hh_mm_ss& rhs) const { return ToDuration() == rhs.ToDuration(); }
+	bool operator!=(const week_hh_mm_ss& rhs) const { return ToDuration() != rhs.ToDuration(); }
+	bool operator<(const week_hh_mm_ss& rhs) const { return ToDuration() < rhs.ToDuration(); }
+	bool operator<=(const week_hh_mm_ss& rhs) const { return ToDuration() <= rhs.ToDuration(); }
+	bool operator>(const week_hh_mm_ss& rhs) const { return ToDuration() > rhs.ToDuration(); }
+	bool operator>=(const week_hh_mm_ss& rhs) const { return ToDuration() >= rhs.ToDuration(); }
 
 	week_hh_mm_ss operator+(const std::chrono::days add)
 	{
@@ -285,6 +253,7 @@ public:
 		return GTime::Inst().GetDateTP(realTp, Hour(), Minute(), Second());
 	}
 #pragma endregion OPERATORS
+
 
 private:
 
