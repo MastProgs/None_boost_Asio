@@ -11,166 +11,6 @@ namespace
 	constexpr std::chrono::weekday Saturday{ 6 };
 }
 
-class week_hh_mm_ss
-{
-public:
-	week_hh_mm_ss(int week = 0, int hour = 0, int minute = 0, int second = 0)
-		: week{ week }, hour{ hour }, minute{ minute }, second{ second }
-	{
-	};
-	~week_hh_mm_ss() {};
-
-	std::chrono::weekday week;
-	std::chrono::hours hour;
-	std::chrono::minutes minute;
-	std::chrono::seconds second;
-
-	int Week() const { return week.c_encoding(); }
-	int Hour() const { return hour.count(); }
-	int Minute() const { return minute.count(); }
-	int Second() const { return second.count(); }
-
-	bool operator==(const week_hh_mm_ss& rhs)
-	{
-		if (week.c_encoding() == rhs.week.c_encoding()) { return true; }
-		if (hour == rhs.hour) { return true; }
-		if (minute == rhs.minute) { return true; }
-		if (second == rhs.second) { return true; }
-		return false;
-	}
-	bool operator!=(const week_hh_mm_ss& rhs)
-	{
-		if (week.c_encoding() != rhs.week.c_encoding()) { return true; }
-		if (hour != rhs.hour) { return true; }
-		if (minute != rhs.minute) { return true; }
-		if (second != rhs.second) { return true; }
-		return false;
-	}
-	bool operator<(const week_hh_mm_ss& rhs)
-	{
-		if (week.c_encoding() < rhs.week.c_encoding()) { return true; }
-		if (hour < rhs.hour) { return true; }
-		if (minute < rhs.minute) { return true; }
-		if (second < rhs.second) { return true; }
-		return false;
-	}
-	bool operator<=(const week_hh_mm_ss& rhs)
-	{
-		if (week.c_encoding() <= rhs.week.c_encoding()) { return true; }
-		if (hour <= rhs.hour) { return true; }
-		if (minute <= rhs.minute) { return true; }
-		if (second <= rhs.second) { return true; }
-		return false;
-	}
-	bool operator>(const week_hh_mm_ss& rhs)
-	{
-		if (week.c_encoding() > rhs.week.c_encoding()) { return true; }
-		if (hour > rhs.hour) { return true; }
-		if (minute > rhs.minute) { return true; }
-		if (second > rhs.second) { return true; }
-		return false;
-	}
-	bool operator>=(const week_hh_mm_ss& rhs)
-	{
-		if (week.c_encoding() >= rhs.week.c_encoding()) { return true; }
-		if (hour >= rhs.hour) { return true; }
-		if (minute >= rhs.minute) { return true; }
-		if (second >= rhs.second) { return true; }
-		return false;
-	}
-
-	week_hh_mm_ss& operator+(const std::chrono::days add)
-	{
-		week += add;
-		return *this;
-	}
-	week_hh_mm_ss& operator+(const std::chrono::hours add)
-	{
-		week += std::chrono::floor<std::chrono::days>(add);
-		hour += add % 24;
-		return *this;
-	}
-	week_hh_mm_ss& operator+(const std::chrono::minutes add)
-	{
-		week += std::chrono::floor<std::chrono::days>(add);
-		hour += std::chrono::floor<std::chrono::hours>(add) % 24;
-		minute += add % 60;
-		return *this;
-	}
-	week_hh_mm_ss& operator+(const std::chrono::seconds add)
-	{
-		week += std::chrono::floor<std::chrono::days>(add);
-		hour += std::chrono::floor<std::chrono::hours>(add) % 24;
-		minute += std::chrono::floor<std::chrono::minutes>(add) % 60;
-		second += add % 60;
-		return *this;
-	}
-
-	week_hh_mm_ss& operator+=(const std::chrono::days add)
-	{
-		return operator+(add);
-	}
-	week_hh_mm_ss& operator+=(const std::chrono::hours add)
-	{
-		return operator+(add);
-	}
-	week_hh_mm_ss& operator+=(const std::chrono::minutes add)
-	{
-		return operator+(add);
-	}
-	week_hh_mm_ss& operator+=(const std::chrono::seconds add)
-	{
-		return operator+(add);
-	}
-
-	week_hh_mm_ss& operator-(const std::chrono::days add)
-	{
-		week -= add;
-		return *this;
-	}
-	week_hh_mm_ss& operator-(const std::chrono::hours add)
-	{
-		week -= std::chrono::floor<std::chrono::days>(add);
-		hour -= add % 24;
-		return *this;
-	}
-	week_hh_mm_ss& operator-(const std::chrono::minutes add)
-	{
-		week -= std::chrono::floor<std::chrono::days>(add);
-		hour -= std::chrono::floor<std::chrono::hours>(add) % 24;
-		minute -= add % 60;
-		return *this;
-	}
-	week_hh_mm_ss& operator-(const std::chrono::seconds add)
-	{
-		week -= std::chrono::floor<std::chrono::days>(add);
-		hour -= std::chrono::floor<std::chrono::hours>(add) % 24;
-		minute -= std::chrono::floor<std::chrono::minutes>(add) % 60;
-		second -= add % 60;
-		return *this;
-	}
-
-	week_hh_mm_ss& operator-=(const std::chrono::days add)
-	{
-		return operator-(add);
-	}
-	week_hh_mm_ss& operator-=(const std::chrono::hours add)
-	{
-		return operator-(add);
-	}
-	week_hh_mm_ss& operator-=(const std::chrono::minutes add)
-	{
-		return operator-(add);
-	}
-	week_hh_mm_ss& operator-=(const std::chrono::seconds add)
-	{
-		return operator-(add);
-	}
-
-private:
-
-};
-
 class GTime : public Singleton<GTime>
 {
 public:
@@ -271,4 +111,177 @@ public:
 	}
 
 private:
+};
+
+
+
+class week_hh_mm_ss
+{
+public:
+	week_hh_mm_ss(int week = 0, int hour = 0, int minute = 0, int second = 0)
+		: week{ week }, hour{ hour }, minute{ minute }, second{ second }
+	{
+	};
+	~week_hh_mm_ss() {};
+
+	std::chrono::weekday week;
+	std::chrono::hours hour;
+	std::chrono::minutes minute;
+	std::chrono::seconds second;
+
+	int Week() const { return week.c_encoding(); }
+	int Hour() const { return hour.count(); }
+	int Minute() const { return minute.count(); }
+	int Second() const { return second.count(); }
+
+#pragma region OPERATORS
+public:
+	bool operator==(const week_hh_mm_ss& rhs) const
+	{
+		if (week.c_encoding() != rhs.week.c_encoding()) { return false; }
+		if (hour != rhs.hour) { return false; }
+		if (minute != rhs.minute) { return false; }
+		if (second != rhs.second) { return false; }
+		return true;
+	}
+	bool operator!=(const week_hh_mm_ss& rhs) const
+	{
+		if (week.c_encoding() != rhs.week.c_encoding()) { return true; }
+		if (hour != rhs.hour) { return true; }
+		if (minute != rhs.minute) { return true; }
+		if (second != rhs.second) { return true; }
+		return false;
+	}
+	bool operator<(const week_hh_mm_ss& rhs) const
+	{
+		if (week.c_encoding() < rhs.week.c_encoding()) { return true; }
+		if (hour < rhs.hour) { return true; }
+		if (minute < rhs.minute) { return true; }
+		if (second < rhs.second) { return true; }
+		return false;
+	}
+	bool operator<=(const week_hh_mm_ss& rhs) const
+	{
+		if (week.c_encoding() < rhs.week.c_encoding()) { return true; }
+		if (hour < rhs.hour) { return true; }
+		if (minute < rhs.minute) { return true; }
+		if (second <= rhs.second) { return true; }
+		return false;
+	}
+	bool operator>(const week_hh_mm_ss& rhs) const
+	{
+		if (week.c_encoding() > rhs.week.c_encoding()) { return true; }
+		if (hour > rhs.hour) { return true; }
+		if (minute > rhs.minute) { return true; }
+		if (second > rhs.second) { return true; }
+		return false;
+	}
+	bool operator>=(const week_hh_mm_ss& rhs) const
+	{
+		if (week.c_encoding() > rhs.week.c_encoding()) { return true; }
+		if (hour > rhs.hour) { return true; }
+		if (minute > rhs.minute) { return true; }
+		if (second >= rhs.second) { return true; }
+		return false;
+	}
+
+	week_hh_mm_ss& operator+(const std::chrono::days add)
+	{
+		week += add;
+		return *this;
+	}
+	week_hh_mm_ss& operator+(const std::chrono::hours add)
+	{
+		week += std::chrono::floor<std::chrono::days>(add);
+		hour += add % 24;
+		return *this;
+	}
+	week_hh_mm_ss& operator+(const std::chrono::minutes add)
+	{
+		week += std::chrono::floor<std::chrono::days>(add);
+		hour += std::chrono::floor<std::chrono::hours>(add) % 24;
+		minute += add % 60;
+		return *this;
+	}
+	week_hh_mm_ss& operator+(const std::chrono::seconds add)
+	{
+		week += std::chrono::floor<std::chrono::days>(add);
+		hour += std::chrono::floor<std::chrono::hours>(add) % 24;
+		minute += std::chrono::floor<std::chrono::minutes>(add) % 60;
+		second += add % 60;
+		return *this;
+	}
+
+	week_hh_mm_ss& operator+=(const std::chrono::days add)
+	{
+		return operator+(add);
+	}
+	week_hh_mm_ss& operator+=(const std::chrono::hours add)
+	{
+		return operator+(add);
+	}
+	week_hh_mm_ss& operator+=(const std::chrono::minutes add)
+	{
+		return operator+(add);
+	}
+	week_hh_mm_ss& operator+=(const std::chrono::seconds add)
+	{
+		return operator+(add);
+	}
+
+	week_hh_mm_ss& operator-(const std::chrono::days add)
+	{
+		week -= add;
+		return *this;
+	}
+	week_hh_mm_ss& operator-(const std::chrono::hours add)
+	{
+		week -= std::chrono::floor<std::chrono::days>(add);
+		hour -= add % 24;
+		return *this;
+	}
+	week_hh_mm_ss& operator-(const std::chrono::minutes add)
+	{
+		week -= std::chrono::floor<std::chrono::days>(add);
+		hour -= std::chrono::floor<std::chrono::hours>(add) % 24;
+		minute -= add % 60;
+		return *this;
+	}
+	week_hh_mm_ss& operator-(const std::chrono::seconds add)
+	{
+		week -= std::chrono::floor<std::chrono::days>(add);
+		hour -= std::chrono::floor<std::chrono::hours>(add) % 24;
+		minute -= std::chrono::floor<std::chrono::minutes>(add) % 60;
+		second -= add % 60;
+		return *this;
+	}
+
+	week_hh_mm_ss& operator-=(const std::chrono::days add)
+	{
+		return operator-(add);
+	}
+	week_hh_mm_ss& operator-=(const std::chrono::hours add)
+	{
+		return operator-(add);
+	}
+	week_hh_mm_ss& operator-=(const std::chrono::minutes add)
+	{
+		return operator-(add);
+	}
+	week_hh_mm_ss& operator-=(const std::chrono::seconds add)
+	{
+		return operator-(add);
+	}
+
+
+	using TP = std::chrono::system_clock::time_point;
+	TP operator+(const TP& tp) const
+	{
+		auto realTp = GTime::Inst().GetThisWeekTP(tp, week);
+		return GTime::Inst().GetDateTP(realTp, Hour(), Minute(), Second());
+	}
+#pragma endregion OPERATORS
+
+private:
+
 };
