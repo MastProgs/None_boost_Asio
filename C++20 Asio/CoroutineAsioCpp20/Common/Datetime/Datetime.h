@@ -131,13 +131,19 @@ public:
 		return 0;
 	}
 
-	std::tuple<int, int, int> GetYMD(const TP& targetTp)
+	int GetWeek(const TP& targetTp = std::chrono::system_clock::now())
+	{
+		std::chrono::year_month_weekday ymw{ std::chrono::floor<std::chrono::days>(targetTp) };
+		return ymw.weekday().c_encoding();
+	}
+
+	std::tuple<int, int, int> GetYMD(const TP& targetTp = std::chrono::system_clock::now())
 	{
 		std::chrono::year_month_day ymd{ std::chrono::floor<std::chrono::days>(targetTp) };
 		return { int(ymd.year()), MonthToInt(ymd.month()), DayToInt(ymd.day()) };
 	}
 
-	std::tuple<int, int, int> GetHMS(const TP& targetTp)
+	std::tuple<int, int, int> GetHMS(const TP& targetTp = std::chrono::system_clock::now())
 	{
 		auto dp = std::chrono::floor<std::chrono::days>(targetTp);
 		std::chrono::hh_mm_ss hms{ targetTp - dp };
