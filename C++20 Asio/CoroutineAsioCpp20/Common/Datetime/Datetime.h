@@ -44,7 +44,7 @@ public:
 		std::stringstream ss(strDt);
 		TP tp;
 
-		//ss >> std::chrono::parse(dateForm.data(), tp);
+		ss >> std::chrono::parse(dateForm.data(), tp);
 		return tp;
 	}
 
@@ -140,7 +140,6 @@ public:
 	std::tuple<int, int, int> GetHMS(const TP& targetTp)
 	{
 		auto dp = std::chrono::floor<std::chrono::days>(targetTp);
-		std::chrono::year_month_day ymd{ dp };
 		std::chrono::hh_mm_ss hms{ targetTp - dp };
 		return { hms.hours().count(), hms.minutes().count(), hms.seconds().count() };
 	}
