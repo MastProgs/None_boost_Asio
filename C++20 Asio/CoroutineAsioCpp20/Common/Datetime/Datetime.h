@@ -180,37 +180,47 @@ public:
 		return tmp;
 	}
 
-	week_hh_mm_ss operator+=(const std::chrono::days add)
+	week_hh_mm_ss& operator+=(const std::chrono::days add)
 	{
-		return operator+(add);
+		week += add;
+		return *this;
 	}
-	week_hh_mm_ss operator+=(const std::chrono::hours add)
+	week_hh_mm_ss& operator+=(const std::chrono::hours add)
 	{
-		return operator+(add);
+		week += std::chrono::floor<std::chrono::days>(add);
+		hour += add % 24;
+		return *this;
 	}
-	week_hh_mm_ss operator+=(const std::chrono::minutes add)
+	week_hh_mm_ss& operator+=(const std::chrono::minutes add)
 	{
-		return operator+(add);
+		week += std::chrono::floor<std::chrono::days>(add);
+		hour += std::chrono::floor<std::chrono::hours>(add) % 24;
+		minute += add % 60;
+		return *this;
 	}
-	week_hh_mm_ss operator+=(const std::chrono::seconds add)
+	week_hh_mm_ss& operator+=(const std::chrono::seconds add)
 	{
-		return operator+(add);
+		week += std::chrono::floor<std::chrono::days>(add);
+		hour += std::chrono::floor<std::chrono::hours>(add) % 24;
+		minute += std::chrono::floor<std::chrono::minutes>(add) % 60;
+		second += add % 60;
+		return *this;
 	}
 
-	week_hh_mm_ss& operator-(const std::chrono::days add)
+	week_hh_mm_ss operator-(const std::chrono::days add)
 	{
 		auto tmp = *this;
 		tmp.week -= add;
 		return tmp;
 	}
-	week_hh_mm_ss& operator-(const std::chrono::hours add)
+	week_hh_mm_ss operator-(const std::chrono::hours add)
 	{
 		auto tmp = *this;
 		tmp.week -= std::chrono::floor<std::chrono::days>(add);
 		tmp.hour -= add % 24;
 		return tmp;
 	}
-	week_hh_mm_ss& operator-(const std::chrono::minutes add)
+	week_hh_mm_ss operator-(const std::chrono::minutes add)
 	{
 		auto tmp = *this;
 		tmp.week -= std::chrono::floor<std::chrono::days>(add);
@@ -218,7 +228,7 @@ public:
 		tmp.minute -= add % 60;
 		return tmp;
 	}
-	week_hh_mm_ss& operator-(const std::chrono::seconds add)
+	week_hh_mm_ss operator-(const std::chrono::seconds add)
 	{
 		auto tmp = *this;
 		tmp.week -= std::chrono::floor<std::chrono::days>(add);
@@ -228,21 +238,31 @@ public:
 		return tmp;
 	}
 
-	week_hh_mm_ss operator-=(const std::chrono::days add)
+	week_hh_mm_ss& operator-=(const std::chrono::days add)
 	{
-		return operator-(add);
+		week -= add;
+		return *this;
 	}
-	week_hh_mm_ss operator-=(const std::chrono::hours add)
+	week_hh_mm_ss& operator-=(const std::chrono::hours add)
 	{
-		return operator-(add);
+		week -= std::chrono::floor<std::chrono::days>(add);
+		hour -= add % 24;
+		return *this;
 	}
-	week_hh_mm_ss operator-=(const std::chrono::minutes add)
+	week_hh_mm_ss& operator-=(const std::chrono::minutes add)
 	{
-		return operator-(add);
+		week -= std::chrono::floor<std::chrono::days>(add);
+		hour -= std::chrono::floor<std::chrono::hours>(add) % 24;
+		minute -= add % 60;
+		return *this;
 	}
-	week_hh_mm_ss operator-=(const std::chrono::seconds add)
+	week_hh_mm_ss& operator-=(const std::chrono::seconds add)
 	{
-		return operator-(add);
+		week -= std::chrono::floor<std::chrono::days>(add);
+		hour -= std::chrono::floor<std::chrono::hours>(add) % 24;
+		minute -= std::chrono::floor<std::chrono::minutes>(add) % 60;
+		second -= add % 60;
+		return *this;
 	}
 
 
