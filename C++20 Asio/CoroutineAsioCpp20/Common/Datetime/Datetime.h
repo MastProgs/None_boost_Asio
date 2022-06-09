@@ -1,20 +1,20 @@
 #pragma once
 
-namespace
-{
-	constexpr std::chrono::weekday Sunday{ 0 };
-	constexpr std::chrono::weekday Monday{ 1 };
-	constexpr std::chrono::weekday Tuesday{ 2 };
-	constexpr std::chrono::weekday Wednesday{ 3 };
-	constexpr std::chrono::weekday Thursday{ 4 };
-	constexpr std::chrono::weekday Friday{ 5 };
-	constexpr std::chrono::weekday Saturday{ 6 };
-}
-
 class GTime : public Singleton<GTime>
 {
 public:
-	GTime() = default;
+	GTime()
+	{
+		for (unsigned int i = 1; i <= 12; i++)
+		{
+			m_monthList.emplace_back(i);
+		}
+
+		for (unsigned int i = 1; i <= 31; i++)
+		{
+			m_dayList.emplace_back(i);
+		}
+	};
 	virtual ~GTime() = default;
 
 	using TP = std::chrono::system_clock::time_point;
@@ -44,12 +44,17 @@ public:
 		std::stringstream ss(strDt);
 		TP tp;
 
-		ss >> std::chrono::parse(dateForm.data(), tp);
+		//ss >> std::chrono::parse(dateForm.data(), tp);
 		return tp;
 	}
 
+	std::string TpToStr(const TP& tp, std::string_view dateForm = "%Y-%m-%d %H:%M:%OS")
+	{
+		return std::format("{:" + std::string{ dateForm } + "}", tp);
+	}
+
 	// Sunday ~ Saturday, 0 ~ 6
-	auto GetThisWeekTP(const TP& periodTp, std::chrono::weekday findWeek = Sunday)
+	auto GetThisWeekTP(const TP& periodTp, std::chrono::weekday findWeek = std::chrono::Sunday)
 	{
 		auto one_day_hour = std::chrono::hours{ 24 };
 
@@ -108,7 +113,42 @@ public:
 		return hms.seconds().count();
 	}
 
+	int MonthToInt(const std::chrono::month& m)
+	{
+		for (size_t i = 0; i < m_monthList.size(); i++)
+		{
+			if (m_monthList[i] == m) { return i + 1; }
+		}
+		return 0;
+	}
+
+	int DayToInt(const std::chrono::day& d)
+	{
+		for (size_t i = 0; i < m_dayList.size(); i++)
+		{
+			if (m_dayList[i] == d) { return i + 1; }
+		}
+		return 0;
+	}
+
+	std::tuple<int, int, int> GetYMD(const TP& targetTp)
+	{
+		std::chrono::year_month_day ymd{ std::chrono::floor<std::chrono::days>(targetTp) };
+		return { int(ymd.year()), MonthToInt(ymd.month()), DayToInt(ymd.day()) };
+	}
+
+	std::tuple<int, int, int> GetHMS(const TP& targetTp)
+	{
+		auto dp = std::chrono::floor<std::chrono::days>(targetTp);
+		std::chrono::year_month_day ymd{ dp };
+		std::chrono::hh_mm_ss hms{ targetTp - dp };
+		return { hms.hours().count(), hms.minutes().count(), hms.seconds().count() };
+	}
+
 private:
+	std::vector<std::chrono::month> m_monthList;
+	std::vector<std::chrono::day> m_dayList;
+
 };
 
 
