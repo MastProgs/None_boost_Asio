@@ -44,7 +44,7 @@ public:
 		std::stringstream ss(strDt);
 		TP tp;
 
-		ss >> std::chrono::parse(dateForm.data(), tp);
+		std::chrono::from_stream(ss, dateForm.data(), tp);
 		return tp;
 	}
 
