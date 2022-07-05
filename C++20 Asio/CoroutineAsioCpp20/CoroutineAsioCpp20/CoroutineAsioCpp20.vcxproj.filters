@@ -52,6 +52,9 @@
     <Filter Include="소스 파일\Common\Datetime">
       <UniqueIdentifier>{ce5e136c-7cd0-4e93-ad0e-0e162010d352}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Core\Reflection\detail">
+      <UniqueIdentifier>{267cd601-4ab9-4de0-bdb8-1d772895601a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\main.cpp">
@@ -89,9 +92,6 @@
     </ClCompile>
     <ClCompile Include="..\Core\Coroutine\Coroutine.cpp">
       <Filter>소스 파일\Core\Coroutine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Core\Reflection\TypeInfo.cpp">
-      <Filter>소스 파일\Core\Reflection</Filter>
     </ClCompile>
     <ClCompile Include="..\Common\Random\Rand.cpp">
       <Filter>소스 파일\Common\Random</Filter>
@@ -146,32 +146,23 @@
     <ClInclude Include="..\Common\String\ToStr.h">
       <Filter>소스 파일\Common\String</Filter>
     </ClInclude>
-    <ClInclude Include="..\Core\Reflection\Method.h">
-      <Filter>소스 파일\Core\Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Core\Reflection\MethodMacros.h">
-      <Filter>소스 파일\Core\Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Core\Reflection\Property.h">
-      <Filter>소스 파일\Core\Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Core\Reflection\PropertyMacros.h">
-      <Filter>소스 파일\Core\Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Core\Reflection\Reflection.h">
-      <Filter>소스 파일\Core\Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Core\Reflection\TypeInfo.h">
-      <Filter>소스 파일\Core\Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Core\Reflection\TypeInfoMacros.h">
-      <Filter>소스 파일\Core\Reflection</Filter>
-    </ClInclude>
     <ClInclude Include="..\Common\Random\Rand.h">
       <Filter>소스 파일\Common\Random</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\Datetime\Datetime.h">
       <Filter>소스 파일\Common\Datetime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Reflection\detail\itoa.hpp">
+      <Filter>소스 파일\Core\Reflection\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Reflection\detail\string_stream.hpp">
+      <Filter>소스 파일\Core\Reflection\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Reflection\detail\traits.hpp">
+      <Filter>소스 파일\Core\Reflection\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Reflection\reflection.hpp">
+      <Filter>소스 파일\Core\Reflection</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
