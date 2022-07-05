@@ -150,6 +150,14 @@ public:
 		return { hms.hours().count(), hms.minutes().count(), hms.seconds().count() };
 	}
 
+	std::tuple<int, int, int, int, int, int> GetYMDHMS(const TP& targetTp = std::chrono::system_clock::now())
+	{
+		auto dp = std::chrono::floor<std::chrono::days>(targetTp);
+		std::chrono::year_month_day ymd{ dp };
+		std::chrono::hh_mm_ss hms{ targetTp - dp };
+		return { int(ymd.year()), MonthToInt(ymd.month()), DayToInt(ymd.day()), hms.hours().count(), hms.minutes().count(), hms.seconds().count() };
+	}
+
 private:
 	std::vector<std::chrono::month> m_monthList;
 	std::vector<std::chrono::day> m_dayList;
