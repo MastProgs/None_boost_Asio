@@ -2,6 +2,8 @@
 // Created by Qiyu on 17-6-5.
 // https://github.com/qicosmos/iguana
 
+#pragma once
+
 #ifndef SERIALIZE_JSON_HPP
 #define SERIALIZE_JSON_HPP
 #include "reflection.hpp"
