@@ -26,11 +26,13 @@ public:
 	};
 
 	template<typename T>
-	T& Dice(std::vector<T>& vec)
+	T* Dice(std::vector<T>& vec)
 	{
+		if (vec.size() < 1) { return nullptr; }
 		auto idx = Dice(vec.size() - 1);
-		return vec[idx];
+		return &vec[idx];
 	}
+
 public:
 	template<typename T>
 	T* ItemDice(std::vector<RandItem<T>>& vec, int maxPercent)
@@ -59,9 +61,9 @@ public:
 	bool BDice(int percent, bool expect, int maxPer)
 	{
 		percent = ValidCheck(percent, maxPer);
-		auto fixP = expect == false ? percent : (maxPer - percent) * -1;
-		auto res = Dice(maxPer);
-		return percent < res;
+		auto fixPer = expect == false ? percent : (maxPer - percent);
+		auto res = Dice(maxPer - 1);
+		return fixPer <= res;
 	}
 
 	bool BDice100(int percent, bool expect = true) { return BDice(percent, expect, 100); }
