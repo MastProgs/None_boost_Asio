@@ -43,17 +43,17 @@
     <Filter Include="소스 파일\Common\String">
       <UniqueIdentifier>{5296f83d-6666-4958-856e-d6826d144be2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Core\Reflection">
-      <UniqueIdentifier>{4451ced3-e982-4b1e-a0cd-5e14ef0a32df}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\Common\Random">
       <UniqueIdentifier>{ebb42323-222f-43fe-b994-5914ed8a0689}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\Common\Datetime">
       <UniqueIdentifier>{ce5e136c-7cd0-4e93-ad0e-0e162010d352}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Core\Reflection\detail">
-      <UniqueIdentifier>{267cd601-4ab9-4de0-bdb8-1d772895601a}</UniqueIdentifier>
+    <Filter Include="소스 파일\OpenSource\Reflection">
+      <UniqueIdentifier>{5730ebf1-0ae6-4263-bf44-4ac25bf75fdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\OpenSource\Reflection\detail">
+      <UniqueIdentifier>{182f702c-4684-4f6d-8a66-c96620f19298}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -152,17 +152,20 @@
     <ClInclude Include="..\Common\Datetime\Datetime.h">
       <Filter>소스 파일\Common\Datetime</Filter>
     </ClInclude>
-    <ClInclude Include="..\Core\Reflection\detail\itoa.hpp">
-      <Filter>소스 파일\Core\Reflection\detail</Filter>
+    <ClInclude Include="..\OpenSource\Reflection\reflection.hpp">
+      <Filter>소스 파일\OpenSource\Reflection</Filter>
     </ClInclude>
-    <ClInclude Include="..\Core\Reflection\detail\string_stream.hpp">
-      <Filter>소스 파일\Core\Reflection\detail</Filter>
+    <ClInclude Include="..\OpenSource\Reflection\json.hpp">
+      <Filter>소스 파일\OpenSource\Reflection</Filter>
     </ClInclude>
-    <ClInclude Include="..\Core\Reflection\detail\traits.hpp">
-      <Filter>소스 파일\Core\Reflection\detail</Filter>
+    <ClInclude Include="..\OpenSource\Reflection\detail\itoa.hpp">
+      <Filter>소스 파일\OpenSource\Reflection\detail</Filter>
     </ClInclude>
-    <ClInclude Include="..\Core\Reflection\reflection.hpp">
-      <Filter>소스 파일\Core\Reflection</Filter>
+    <ClInclude Include="..\OpenSource\Reflection\detail\string_stream.hpp">
+      <Filter>소스 파일\OpenSource\Reflection\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OpenSource\Reflection\detail\traits.hpp">
+      <Filter>소스 파일\OpenSource\Reflection\detail</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

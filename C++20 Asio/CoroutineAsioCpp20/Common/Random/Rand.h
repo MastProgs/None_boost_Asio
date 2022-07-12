@@ -1,5 +1,15 @@
 #pragma once
 
+template <typename Data>
+class RandItem
+{
+public:
+	RandItem(int per, const Data& d) : percent{ per }, data{ d } {};
+
+	int percent;
+	Data data;
+};
+
 class Rand : public Singleton<Rand>
 {
 public:
@@ -18,21 +28,44 @@ public:
 	template<typename T>
 	T& Dice(std::vector<T>& vec)
 	{
-		auto idx = Dice(0, vec.size() - 1);
+		auto idx = Dice(vec.size() - 1);
 		return vec[idx];
 	}
+public:
+	template<typename T>
+	T* ItemDice(std::vector<RandItem<T>>& vec, int maxPercent)
+	{
+		if (vec.size() < 1) { return nullptr; }
+
+		int end = 0;
+		for (const auto& e : vec) { end += e.percent; }
+		if (end != maxPercent) { return nullptr; }
+
+		end = 0;
+		int start = 0;
+		auto randVal = Dice(maxPercent - 1);
+		for (auto& e : vec)
+		{
+			end += e.percent;
+			if (start <= randVal && randVal < end) { return &e.data; }
+			start = end;
+		}
+
+		return nullptr;
+	}
+
 
 public:
-	bool BDice(int percent, bool expect, int maxP)
+	bool BDice(int percent, bool expect, int maxPer)
 	{
-		percent = ValidCheck(percent, maxP);
-		auto fixP = expect == false ? percent : (maxP - percent) * -1;
-		auto res = Dice(maxP);
+		percent = ValidCheck(percent, maxPer);
+		auto fixP = expect == false ? percent : (maxPer - percent) * -1;
+		auto res = Dice(maxPer);
 		return percent < res;
 	}
 
-	bool BDice100(int percent, bool expect = false) { return BDice(percent, expect, 100); }
-	bool BDice10000(int percent, bool expect = false) { return BDice(percent, expect, 10000); }
+	bool BDice100(int percent, bool expect = true) { return BDice(percent, expect, 100); }
+	bool BDice10000(int percent, bool expect = true) { return BDice(percent, expect, 10000); }
 
 private:
 	int ValidCheck(int val, int max, int min = 0)
