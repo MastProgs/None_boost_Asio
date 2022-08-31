@@ -47,7 +47,7 @@ bool AsioContext::StartThreads()
 	m_threadList.reserve(m_cpuThreadCount);
 	for (size_t i = 0; i < m_cpuThreadCount; i++)
 	{
-		Logger::Inst().Debug(std::format("Thread id no.{} is on", i));
+		Logger::Inst().Debug(Format("Thread id no.{} is on", i));
 		m_threadList.emplace_back(
 			[&, i]() 
 			{ 
@@ -109,7 +109,7 @@ bool AsioContext::RestartThreads()
 bool AsioContext::SetThreadCore(int threadCount)
 {
 	m_cpuThreadCount = threadCount > 0 ? threadCount : std::thread::hardware_concurrency();
-	Logger::Inst().Debug(std::format("Thread Count : {}", m_cpuThreadCount));
+	Logger::Inst().Debug(Format("Thread Count : {}", m_cpuThreadCount));
 
 	return m_cpuThreadCount;
 }
@@ -127,7 +127,7 @@ bool AsioContext::SetServerIpList()
 		if (addr.is_v4()) { m_ipv4List.emplace_back(ip); }
 		else if (addr.is_v6()) { m_ipv6List.emplace_back(ip); }
 
-		Logger::Inst().Debug(std::format("IP = {}", ip));
+		Logger::Inst().Debug(Format("IP = {}", ip));
 	}
 	
 	return (m_ipv4List.size() + m_ipv6List.size()) != 0;
@@ -139,7 +139,7 @@ bool AsioContext::SetAcceptor()
 
 	constexpr int PORT_NUMBER = 9000;
 	m_acceptor = std::make_shared<GameClientAcceptor>(m_ioContext, asio::ip::tcp::endpoint{ asio::ip::tcp::v4(), PORT_NUMBER });
-	Logger::Inst().Debug(std::format("Port = {}", PORT_NUMBER));
+	Logger::Inst().Debug(Format("Port = {}", PORT_NUMBER));
 
 	return m_acceptor != nullptr;
 }

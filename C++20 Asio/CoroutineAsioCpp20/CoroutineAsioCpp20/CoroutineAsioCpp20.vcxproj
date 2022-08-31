@@ -178,6 +178,7 @@
     <ClInclude Include="..\Common\Datetime\Datetime.h" />
     <ClInclude Include="..\Common\Enum\Enums.h" />
     <ClInclude Include="..\Common\Random\Rand.h" />
+    <ClInclude Include="..\Common\String\Format.h" />
     <ClInclude Include="..\Common\String\ToStr.h" />
     <ClInclude Include="..\Core\Asio\AsioAcceptor.h" />
     <ClInclude Include="..\Core\Asio\AsioClient.h" />

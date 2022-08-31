@@ -31,12 +31,12 @@ public:
 
 	auto UTC_String(std::string_view dateForm = "%Y-%m-%d %H:%M:%OS")
 	{
-		return std::format("{:" + std::string{ dateForm } + "}", UTC());
+		return Format("{:" + std::string{ dateForm } + "}", UTC());
 	}
 
 	auto LOCAL_String(std::string_view dateForm = "%Y-%m-%d %H:%M:%OS")
 	{
-		return std::format("{:" + std::string{ dateForm } + "}", LOCAL());
+		return Format("{:" + std::string{ dateForm } + "}", LOCAL());
 	}
 
 	TP StrToTP(const std::string& strDt, std::string_view dateForm = "%Y-%m-%d %H:%M:%S")
@@ -50,7 +50,7 @@ public:
 
 	std::string TpToStr(const TP& tp, std::string_view dateForm = "%Y-%m-%d %H:%M:%OS")
 	{
-		return std::format("{:" + std::string{ dateForm } + "}", tp);
+		return Format("{:" + std::string{ dateForm } + "}", tp);
 	}
 
 	// Sunday ~ Saturday, 0 ~ 6

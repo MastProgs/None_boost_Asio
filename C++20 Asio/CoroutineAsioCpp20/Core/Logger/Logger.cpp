@@ -5,7 +5,7 @@
 void Logger::Debug(std::string_view customLog)
 {
 #ifdef _DEBUG
-	auto logStr = std::format("{} :: [ {} ] {}\n", GetUtcFormat(), LOG_LEVEL(LOG_LEVEL::DEBUG)._to_string(), customLog);
+	auto logStr = Format("{} :: [ {} ] {}\n", GetUtcFormat(), LOG_LEVEL(LOG_LEVEL::DEBUG)._to_string(), customLog);
 	Print(LOG_LEVEL::DEBUG, logStr);
 #else
 
@@ -38,7 +38,7 @@ std::string Logger::GetUtcFormat()
 {
 	auto utcTime = std::chrono::system_clock::now();
 	auto timePoint = std::chrono::time_point_cast<std::chrono::milliseconds>(utcTime);
-	auto datetime = std::format("{0:%F} {0:%T}", timePoint);
+	auto datetime = Format("{0:%F} {0:%T}", timePoint);
 	return datetime;
 }
 
@@ -51,17 +51,17 @@ void Logger::MakeLog(const ERROR_LOG& err, std::string_view _file, int _line, st
 
 std::string Logger::MakeLogString(std::string_view errLevelString, std::string_view errName, std::string_view errDesciption, std::string_view _file, int _line, std::string_view additionalLog)
 {
-	auto date = std::format("{} :: ", GetUtcFormat());
-	auto log_level = std::format("[ {} ] {} - {}", errLevelString, errName, errDesciption);
+	auto date = Format("{} :: ", GetUtcFormat());
+	auto log_level = Format("[ {} ] {} - {}", errLevelString, errName, errDesciption);
 
 	auto base_log = date + log_level;
 	if (_file != "" && _line > 0)
 	{
 		std::vector<std::string_view> words;
 		for (std::string_view word : std::ranges::split_view(_file, '\\')) { words.emplace_back(word); }
-		base_log += std::format(". File ( {} ), Line No.{}", *words.rbegin(), _line);
+		base_log += Format(". File ( {} ), Line No.{}", *words.rbegin(), _line);
 	}
-	if (additionalLog != "") { base_log += std::format(". Additional Log = {}", additionalLog); }
+	if (additionalLog != "") { base_log += Format(". Additional Log = {}", additionalLog); }
 
 	return base_log + "\n";
 }

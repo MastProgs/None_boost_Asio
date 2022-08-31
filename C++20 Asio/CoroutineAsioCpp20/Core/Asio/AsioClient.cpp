@@ -80,7 +80,7 @@ void AsioClient::RecvPacketErrorHandle(const std::error_code& err, asio::ip::tcp
 		{
 			// client 가 연결 종료
 			auto ep = sock.remote_endpoint();
-			Logger::Inst().Debug(std::format("Client Disonnected :: IP = {}, Port = {}", ep.address().to_string(), ep.port()));
+			Logger::Inst().Debug(Format("Client Disonnected :: IP = {}, Port = {}", ep.address().to_string(), ep.port()));
 
 			sock.shutdown(sock.shutdown_both);
 			sock.close();
@@ -100,7 +100,7 @@ void AsioClient::SendPacket(std::string_view packet, std::function<void()> callb
 		[self = shared_from_this(), p = packetData, func = callback, pBuf = sendBuffer](const std::error_code& error, size_t bytes_transferred)
 	{
 		self->PostSendPacket(error, bytes_transferred, p, func);
-		//std::cout << std::format("Sended Message : {}, 보낸 크기 : {}\n", p, bytes_transferred);
+		//std::cout << Format("Sended Message : {}, 보낸 크기 : {}\n", p, bytes_transferred);
 	});
 }
 
@@ -123,7 +123,7 @@ void AsioClient::RecvPacket()
 		}
 		else
 		{
-			Logger::Inst().Log(ERROR_LOG::INVALID_PACKET_DATA, std::format("AsioClient::RecvPacket() Packet Data : {}", *pBuf), __FILE__, __LINE__);
+			Logger::Inst().Log(ERROR_LOG::INVALID_PACKET_DATA, Format("AsioClient::RecvPacket() Packet Data : {}", *pBuf), __FILE__, __LINE__);
 			_ASSERT(true);
 		}
 
@@ -186,7 +186,7 @@ void GameClient::RecvPacket()
 		}
 		else
 		{
-			Logger::Inst().Log(ERROR_LOG::INVALID_PACKET_DATA, std::format("GameClient::RecvPacket() Packet Data : {}", *pBuf), __FILE__, __LINE__);
+			Logger::Inst().Log(ERROR_LOG::INVALID_PACKET_DATA, Format("GameClient::RecvPacket() Packet Data : {}", *pBuf), __FILE__, __LINE__);
 			_ASSERT(true);
 		}
 

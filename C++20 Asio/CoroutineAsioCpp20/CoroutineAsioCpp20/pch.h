@@ -32,11 +32,12 @@
 #include "httplib.h"
 #include "json.hpp"
 
+#include "Format.h"
+
 #include "Object.h"
 #include "Singleton.h"
 #include "Coroutine.h"
 #include "Logger.h"
-
-//#include "ToStr.h"
+#include "ToStr.h"
 
 #endif //PCH_H

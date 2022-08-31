@@ -19,6 +19,8 @@ public:
 	int Dice(int end) { return Dice(0, end); };
 	int Dice(int start, int end)
 	{
+		if (start == end) { return start; }
+
 		std::random_device rd;
 		std::mt19937 gen(rd());
 		std::uniform_int_distribution<int> dis(start, end);

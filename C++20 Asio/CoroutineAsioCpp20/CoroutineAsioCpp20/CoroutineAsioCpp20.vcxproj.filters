@@ -167,6 +167,9 @@
     <ClInclude Include="..\OpenSource\Reflection\detail\traits.hpp">
       <Filter>소스 파일\OpenSource\Reflection\detail</Filter>
     </ClInclude>
+    <ClInclude Include="..\Common\String\Format.h">
+      <Filter>소스 파일\Common\String</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
