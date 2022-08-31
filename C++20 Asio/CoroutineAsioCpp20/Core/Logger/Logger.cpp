@@ -2,11 +2,11 @@
 #include "Logger.h"
 #include <ranges>
 
-void Logger::Debug(std::string_view customLog)
+void Logger::Info(std::string_view customLog)
 {
 #ifdef _DEBUG
-	auto logStr = Format("{} :: [ {} ] {}\n", GetUtcFormat(), LOG_LEVEL(LOG_LEVEL::DEBUG)._to_string(), customLog);
-	Print(LOG_LEVEL::DEBUG, logStr);
+	auto logStr = Format("{} :: [ {} ] {}\n", GetUtcFormat(), LOG_LEVEL(LOG_LEVEL::INFO)._to_string(), customLog);
+	Print(LOG_LEVEL::INFO, logStr);
 #else
 
 #endif // _DEBUG
@@ -38,7 +38,7 @@ std::string Logger::GetUtcFormat()
 {
 	auto utcTime = std::chrono::system_clock::now();
 	auto timePoint = std::chrono::time_point_cast<std::chrono::milliseconds>(utcTime);
-	auto datetime = Format("{0:%F} {0:%T}", timePoint);
+	auto datetime = Format("{:%Y-%m-%d %H:%M:%OS}", timePoint);
 	return datetime;
 }
 
@@ -63,7 +63,7 @@ std::string Logger::MakeLogString(std::string_view errLevelString, std::string_v
 	}
 	if (additionalLog != "") { base_log += Format(". Additional Log = {}", additionalLog); }
 
-	return base_log + "\n";
+	return base_log;
 }
 
 ErrorLogDetail& Logger::GetErrorInfo(const ERROR_LOG& err)

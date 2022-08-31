@@ -16,7 +16,7 @@ bool AsioAcceptor::StartListen()
 	if (m_isAlreadyListening.compare_exchange_strong(bFalse, true))
 	{
 		Listen();
-		Logger::Inst().Debug("Listen Ready");
+		Logger::Inst().Info("Listen Ready");
 		return true;
 	}
 
@@ -33,7 +33,7 @@ void AsioAcceptor::Listen()
 	m_acceptor.async_accept(client->GetSocket(),
 		[client, self = shared_from_this()](const std::error_code& error)
 	{
-		Logger::Inst().Debug("Client Connected");
+		Logger::Inst().Info("Client Connected");
 
 		self->HandleAccept(client, error);
 		self->Listen();
@@ -74,7 +74,7 @@ void GameClientAcceptor::Listen()
 	m_acceptor.async_accept(client->GetSocket(),
 		[client, self = shared_from_base<GameClientAcceptor>()](const std::error_code& error)
 	{
-		Logger::Inst().Debug("Game Client Connected");
+		Logger::Inst().Info("Game Client Connected");
 
 		self->HandleAccept(client, error);
 		self->Listen();

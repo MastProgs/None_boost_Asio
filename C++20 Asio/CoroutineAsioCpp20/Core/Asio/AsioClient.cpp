@@ -80,7 +80,7 @@ void AsioClient::RecvPacketErrorHandle(const std::error_code& err, asio::ip::tcp
 		{
 			// client 가 연결 종료
 			auto ep = sock.remote_endpoint();
-			Logger::Inst().Debug(Format("Client Disonnected :: IP = {}, Port = {}", ep.address().to_string(), ep.port()));
+			Logger::Inst().Info(Format("Client Disonnected :: IP = {}, Port = {}", ep.address().to_string(), ep.port()));
 
 			sock.shutdown(sock.shutdown_both);
 			sock.close();

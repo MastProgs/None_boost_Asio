@@ -22,8 +22,8 @@ protected:
 	LogManager()
 	{
 		AddLogDetail(LOG_LEVEL::NONE, ERROR_LOG::NO_LOG, "No Log");
-		AddLogDetail(LOG_LEVEL::DEBUG, ERROR_LOG::LOG_TEST, "Log Test Successful");
-		AddLogDetail(LOG_LEVEL::DEBUG, ERROR_LOG::DEBUG, "");
+		AddLogDetail(LOG_LEVEL::INFO, ERROR_LOG::LOG_TEST, "Log Test Successful");
+		AddLogDetail(LOG_LEVEL::INFO, ERROR_LOG::INFO, "");
 		AddLogDetail(LOG_LEVEL::ALERT, ERROR_LOG::INVALID_CODE, "Invalid Error Code");
 		AddLogDetail(LOG_LEVEL::ALERT, ERROR_LOG::INVALID_NAME, "Invalid Error Name");
 		AddLogDetail(LOG_LEVEL::ALERT, ERROR_LOG::SAME_LOG_NAME_ERROR, "When you insert new error code, log name already exist in log manager");
@@ -64,7 +64,7 @@ public:
 	Logger() {};
 	~Logger() {};
 
-	void Debug(std::string_view customLog);
+	void Info(std::string_view customLog);
 	void Log(const ERROR_LOG& err);
 	void Log(const ERROR_LOG& err, std::string_view additionalLog);
 	void Log(const ERROR_LOG& err, std::string_view _file, int _line);
