@@ -59,9 +59,9 @@ std::string Logger::MakeLogString(std::string_view errLevelString, std::string_v
 	{
 		std::vector<std::string_view> words;
 		std::string_view delim{ "\\" };
-		for (const auto word : std::ranges::split_view(_file, delim))
+		for (const auto& word : std::ranges::split_view(_file, delim))
 		{
-			words.push_back(std::string_view(word.begin(), word.end()));
+			words.emplace_back(std::string_view(word.begin(), word.end()));
 		}
 		base_log += Format(". File ( {} ), Line No.{}", *words.rbegin(), _line);
 	}
