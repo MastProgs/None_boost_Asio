@@ -138,7 +138,7 @@ void AsioClient::PostSendPacket(const std::error_code& error, size_t bytesTransf
 
 	if (error)
 	{
-		error.message();
+		auto errMsg = error.message();
 		return;
 	}
 

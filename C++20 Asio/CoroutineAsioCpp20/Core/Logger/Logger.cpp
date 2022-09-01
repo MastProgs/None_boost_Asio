@@ -58,7 +58,11 @@ std::string Logger::MakeLogString(std::string_view errLevelString, std::string_v
 	if (_file != "" && _line > 0)
 	{
 		std::vector<std::string_view> words;
-		for (std::string_view word : std::ranges::split_view(_file, '\\')) { words.emplace_back(word); }
+		std::string_view delim{ "\\" };
+		for (const auto word : std::ranges::split_view(_file, delim))
+		{
+			words.push_back(std::string_view(word.begin(), word.end()));
+		}
 		base_log += Format(". File ( {} ), Line No.{}", *words.rbegin(), _line);
 	}
 	if (additionalLog != "") { base_log += Format(". Additional Log = {}", additionalLog); }

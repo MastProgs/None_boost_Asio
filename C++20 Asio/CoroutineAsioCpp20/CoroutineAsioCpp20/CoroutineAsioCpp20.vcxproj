@@ -124,9 +124,10 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>D:\code\None_boost_Asio\asio-1.22.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,6 +158,7 @@
     <ClCompile Include="..\Common\Datetime\Datetime.cpp" />
     <ClCompile Include="..\Common\Enum\Enums.cpp" />
     <ClCompile Include="..\Common\Random\Rand.cpp" />
+    <ClCompile Include="..\Common\String\ToStr.cpp" />
     <ClCompile Include="..\Core\Asio\AsioAcceptor.cpp" />
     <ClCompile Include="..\Core\Asio\AsioClient.cpp" />
     <ClCompile Include="..\Core\Asio\AsioServer.cpp" />

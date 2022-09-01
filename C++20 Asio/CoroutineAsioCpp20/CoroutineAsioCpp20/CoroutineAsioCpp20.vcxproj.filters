@@ -99,6 +99,9 @@
     <ClCompile Include="..\Common\Datetime\Datetime.cpp">
       <Filter>소스 파일\Common\Datetime</Filter>
     </ClCompile>
+    <ClCompile Include="..\Common\String\ToStr.cpp">
+      <Filter>소스 파일\Common\String</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
