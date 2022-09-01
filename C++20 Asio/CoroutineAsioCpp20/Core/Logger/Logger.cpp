@@ -65,7 +65,7 @@ std::string Logger::MakeLogString(std::string_view errLevelString, std::string_v
 		}
 		base_log += Format(". File ( {} ), Line No.{}", *words.rbegin(), _line);
 	}
-	if (additionalLog != "") { base_log += Format(". Additional Log = {}", additionalLog); }
+	if (additionalLog.size() != 0) { base_log += Format(". Additional Log = {}", additionalLog); }
 
 	return base_log;
 }
