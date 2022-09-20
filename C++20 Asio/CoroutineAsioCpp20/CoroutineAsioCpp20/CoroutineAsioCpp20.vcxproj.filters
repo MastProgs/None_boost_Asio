@@ -55,6 +55,15 @@
     <Filter Include="소스 파일\OpenSource\Reflection\detail">
       <UniqueIdentifier>{182f702c-4684-4f6d-8a66-c96620f19298}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\OpenSource\Redis">
+      <UniqueIdentifier>{a20c2644-ad61-4673-8b90-a8600e432613}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\OpenSource\Redis\cpp_redis">
+      <UniqueIdentifier>{aee74ce7-d6c5-4f9d-b227-e4555e88c844}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\OpenSource\Redis\tacopie">
+      <UniqueIdentifier>{cc3488ef-d7ed-41db-b80c-6835bdff6a0c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\main.cpp">
@@ -173,5 +182,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="..\OpenSource\Redis\cpp_redis\cpp_redis">
+      <Filter>소스 파일\OpenSource\Redis\cpp_redis</Filter>
+    </None>
+    <None Include="..\OpenSource\Redis\tacopie\tacopie">
+      <Filter>소스 파일\OpenSource\Redis\tacopie</Filter>
+    </None>
   </ItemGroup>
 </Project>
