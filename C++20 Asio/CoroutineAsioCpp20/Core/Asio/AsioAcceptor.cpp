@@ -45,7 +45,7 @@ void AsioAcceptor::HandleAccept(std::shared_ptr<AsioClient> client, const std::e
 {
 	if (error)
 	{
-		error.message();
+		auto errMsg = error.message();
 		return;
 	}
 
@@ -86,7 +86,7 @@ void GameClientAcceptor::HandleAccept(std::shared_ptr<GameClient> client, const 
 {
 	if (error)
 	{
-		error.message();
+		auto errMsg = error.message();
 		return;
 	}
 

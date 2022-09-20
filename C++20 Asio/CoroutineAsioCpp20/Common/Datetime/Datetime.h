@@ -1,5 +1,10 @@
 #pragma once
 
+namespace
+{
+	using TP = std::chrono::system_clock::time_point;
+}
+
 class GTime : public Singleton<GTime>
 {
 public:
@@ -17,147 +22,33 @@ public:
 	};
 	virtual ~GTime() = default;
 
-	using TP = std::chrono::system_clock::time_point;
-
-	auto UTC()
-	{
-		return std::chrono::system_clock::now();
-	}
-
-	auto LOCAL()
-	{
-		return std::chrono::current_zone()->to_local(std::chrono::system_clock::now());
-	}
-
-	auto UTC_String(std::string_view dateForm = "%Y-%m-%d %H:%M:%OS")
-	{
-		return Format("{:" + std::string{ dateForm } + "}", UTC());
-	}
-
-	auto LOCAL_String(std::string_view dateForm = "%Y-%m-%d %H:%M:%OS")
-	{
-		return Format("{:" + std::string{ dateForm } + "}", LOCAL());
-	}
-
-	TP StrToTP(const std::string& strDt, std::string_view dateForm = "%Y-%m-%d %H:%M:%S")
-	{
-		std::stringstream ss(strDt);
-		TP tp;
-
-		std::chrono::from_stream(ss, dateForm.data(), tp);
-		return tp;
-	}
-
-	std::string TpToStr(const TP& tp, std::string_view dateForm = "%Y-%m-%d %H:%M:%OS")
-	{
-		return Format("{:" + std::string{ dateForm } + "}", tp);
-	}
+	auto UTC();
+	auto LOCAL();
+	auto UTC_String(std::string_view dateForm = "%Y-%m-%d %H:%M:%OS");
+	auto LOCAL_String(std::string_view dateForm = "%Y-%m-%d %H:%M:%OS");
+	TP StrToTP(const std::string& strDt, std::string_view dateForm = "%Y-%m-%d %H:%M:%S");
+	std::string TpToStr(const TP& tp, std::string_view dateForm = "%Y-%m-%d %H:%M:%OS");
 
 	// Sunday ~ Saturday, 0 ~ 6
-	auto GetWeekTP(std::chrono::weekday findWeek = std::chrono::Sunday, const TP& periodTp = std::chrono::system_clock::now())
-	{
-		auto one_day_hour = std::chrono::hours{ 24 };
-
-		auto dt = std::chrono::floor<std::chrono::days>(periodTp);
-		std::chrono::year_month_day ymd{ dt };
-		std::chrono::weekday cur_week{ std::chrono::sys_days{ ymd } };
-
-		auto day_gap = int(findWeek.c_encoding()) - int(cur_week.c_encoding());
-		auto fin = periodTp + (day_gap * one_day_hour);
-		return fin;
-	}
+	TP GetWeekTP(std::chrono::weekday findWeek = std::chrono::Sunday, const TP& periodTp = std::chrono::system_clock::now());
 
 	// ex) 2022-10-01 10:15:31 -> 2022-10-01 00:00:00
-	auto GetDateTP(const TP& periodTp = std::chrono::system_clock::now(), int hour = 0, int min = 0, int sec = 0)
-	{
-		auto dt = std::chrono::floor<std::chrono::days>(periodTp);
-		std::chrono::year_month_day ymd{ dt };
-		TP tp = std::chrono::sys_days{ ymd };
-		tp += std::chrono::hours{ hour };
-		tp += std::chrono::minutes{ min };
-		tp += std::chrono::seconds{ sec };
+	TP GetDateTP(const TP& periodTp = std::chrono::system_clock::now(), long long hour = 0, long long min = 0, long long sec = 0);
 
-		return tp;
-	}
+	auto IsInTime(const TP& periodTp, const TP& start, const TP& end);
+	auto Count_Day(const TP& targetTp, const TP& periodTp);
+	auto Count_Hour(const TP& targetTp, const TP& periodTp);
+	auto Count_Minute(const TP& targetTp, const TP& periodTp);
+	auto Count_Second(const TP& targetTp, const TP& periodTp);
 
-	auto IsInTime(const TP& periodTp, const TP& start, const TP& end)
-	{
-		return start <= periodTp && periodTp < end;
-	}
+	size_t MonthToInt(const std::chrono::month& m);
+	size_t DayToInt(const std::chrono::day& d);
 
-	auto Count_Day(const TP& targetTp, const TP& periodTp)
-	{
-		auto ht = std::chrono::floor<std::chrono::milliseconds>(periodTp - targetTp);
-		std::chrono::hh_mm_ss hms{ ht };
-		return (hms.hours() / 24).count();
-	}
+	int GetWeek(const TP& targetTp = std::chrono::system_clock::now());
 
-	auto Count_Hour(const TP& targetTp, const TP& periodTp)
-	{
-		auto ht = std::chrono::floor<std::chrono::milliseconds>(periodTp - targetTp);
-		std::chrono::hh_mm_ss hms{ ht };
-		return hms.hours().count();
-	}
-
-	auto Count_Minute(const TP& targetTp, const TP& periodTp)
-	{
-		auto ht = std::chrono::floor<std::chrono::milliseconds>(periodTp - targetTp);
-		std::chrono::hh_mm_ss hms{ ht };
-		return hms.minutes().count();
-	}
-
-	auto Count_Second(const TP& targetTp, const TP& periodTp)
-	{
-		auto ht = std::chrono::floor<std::chrono::milliseconds>(periodTp - targetTp);
-		std::chrono::hh_mm_ss hms{ ht };
-		return hms.seconds().count();
-	}
-
-	int MonthToInt(const std::chrono::month& m)
-	{
-		for (size_t i = 0; i < m_monthList.size(); i++)
-		{
-			if (m_monthList[i] == m) { return i + 1; }
-		}
-		return 0;
-	}
-
-	int DayToInt(const std::chrono::day& d)
-	{
-		for (size_t i = 0; i < m_dayList.size(); i++)
-		{
-			if (m_dayList[i] == d) { return i + 1; }
-		}
-		return 0;
-	}
-
-	int GetWeek(const TP& targetTp = std::chrono::system_clock::now())
-	{
-		std::chrono::year_month_weekday ymw{ std::chrono::floor<std::chrono::days>(targetTp) };
-		return ymw.weekday().c_encoding();
-	}
-
-	std::tuple<int, int, int> GetYMD(const TP& targetTp = std::chrono::system_clock::now())
-	{
-		std::chrono::year_month_day ymd{ std::chrono::floor<std::chrono::days>(targetTp) };
-		return { int(ymd.year()), MonthToInt(ymd.month()), DayToInt(ymd.day()) };
-	}
-
-	std::tuple<int, int, int> GetHMS(const TP& targetTp = std::chrono::system_clock::now())
-	{
-		auto dp = std::chrono::floor<std::chrono::days>(targetTp);
-		std::chrono::hh_mm_ss hms{ targetTp - dp };
-		return { hms.hours().count(), hms.minutes().count(), hms.seconds().count() };
-	}
-
-	std::tuple<int, int, int, int, int, int> GetYMDHMS(const TP& targetTp = std::chrono::system_clock::now())
-	{
-		auto dp = std::chrono::floor<std::chrono::days>(targetTp);
-		std::chrono::year_month_day ymd{ dp };
-		std::chrono::hh_mm_ss hms{ targetTp - dp };
-		return { int(ymd.year()), MonthToInt(ymd.month()), DayToInt(ymd.day()), hms.hours().count(), hms.minutes().count(), hms.seconds().count() };
-	}
-
+	std::tuple<int, int, int> GetYMD(const TP& targetTp = std::chrono::system_clock::now());
+	std::tuple<int, int, int> GetHMS(const TP& targetTp = std::chrono::system_clock::now());
+	std::tuple<int, int, int, int, int, int> GetYMDHMS(const TP& targetTp = std::chrono::system_clock::now());
 private:
 	std::vector<std::chrono::month> m_monthList;
 	std::vector<std::chrono::day> m_dayList;
@@ -180,16 +71,16 @@ public:
 	std::chrono::minutes minute;
 	std::chrono::seconds second;
 
-	int Week() const { return week.c_encoding(); }
+	unsigned int Week() const { return week.c_encoding(); }
 	int Hour() const { return hour.count(); }
 	int Minute() const { return minute.count(); }
-	int Second() const { return second.count(); }
-	int ToDuration() const
+	long long Second() const { return second.count(); }
+	long long ToDuration() const
 	{
-		int w = Week() * 24 * 60 * 60;
-		int h = Hour() * 60 * 60;
-		int m = Minute() * 60;
-		int s = Second();
+		long long w = Week() * 24 * 60 * 60;
+		long long h = Hour() * 60 * 60;
+		long long m = Minute() * 60;
+		long long s = Second();
 		return w + h + m + s;
 	}
 
@@ -318,11 +209,9 @@ public:
 		return *this;
 	}
 
-
-	using TP = std::chrono::system_clock::time_point;
 	TP operator+(const TP& tp) const
 	{
-		auto realTp = GTime::Inst().GetWeekTP(week, tp);
+		TP realTp = GTime::Inst().GetWeekTP(week, tp);
 		return GTime::Inst().GetDateTP(realTp, Hour(), Minute(), Second());
 	}
 #pragma endregion OPERATORS

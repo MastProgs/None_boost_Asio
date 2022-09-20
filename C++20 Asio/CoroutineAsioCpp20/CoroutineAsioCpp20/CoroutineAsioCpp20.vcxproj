@@ -162,6 +162,7 @@
     <ClCompile Include="..\Common\Datetime\Datetime.cpp" />
     <ClCompile Include="..\Common\Enum\Enums.cpp" />
     <ClCompile Include="..\Common\Random\Rand.cpp" />
+    <ClCompile Include="..\Common\String\ToStr.cpp" />
     <ClCompile Include="..\Core\Asio\AsioAcceptor.cpp" />
     <ClCompile Include="..\Core\Asio\AsioClient.cpp" />
     <ClCompile Include="..\Core\Asio\AsioServer.cpp" />

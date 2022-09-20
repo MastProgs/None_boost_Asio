@@ -111,7 +111,7 @@ public:
 
 	VTask(CoHandle&& handle) : coHandle(std::make_shared<CoHandle>(handle)) { Run(); }
 	VTask(VTask&) = delete;
-	VTask(VTask&& rhl) : coHandle(rhl.coHandle) {};
+	VTask(VTask&& rhl) noexcept : coHandle(rhl.coHandle) {};
 	~VTask() {}
 
 	void Run() { coHandle->resume(); }
