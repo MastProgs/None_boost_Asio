@@ -24,6 +24,7 @@
 #include <coroutine>
 #include <queue>
 #include <chrono>
+#include <ranges>
 
 
 #include "BetterEnum.h"

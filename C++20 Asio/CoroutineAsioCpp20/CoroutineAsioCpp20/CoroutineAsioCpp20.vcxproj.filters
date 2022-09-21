@@ -64,6 +64,9 @@
     <Filter Include="소스 파일\OpenSource\Redis\tacopie">
       <UniqueIdentifier>{cc3488ef-d7ed-41db-b80c-6835bdff6a0c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Core\Redis">
+      <UniqueIdentifier>{c9a3966c-96a2-4a96-a8e3-76595abbc525}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\main.cpp">
@@ -110,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="..\Common\String\ToStr.cpp">
       <Filter>소스 파일\Common\String</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Redis\Redis.cpp">
+      <Filter>소스 파일\Core\Redis</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="..\Common\String\Format.h">
       <Filter>소스 파일\Common\String</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Redis\Redis.h">
+      <Filter>소스 파일\Core\Redis</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
