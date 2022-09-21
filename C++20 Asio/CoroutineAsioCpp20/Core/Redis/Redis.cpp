@@ -20,21 +20,20 @@ RedisManager::~RedisManager()
 
 bool RedisManager::Init()
 {
-	return __super::Init() && Init("172.20.41.44", 6379, 15);
+	return __super::Init() && Init("172.20.41.44", 6379, 16, ERedisConnectType::Sentinal);
 }
 
-bool RedisManager::Init(std::string_view ip, int port, int connectSize)
+bool RedisManager::Init(std::string_view ip, int port, int connectSize, ERedisConnectType rct)
 {
-	auto size = connectSize - 1;
-	if (0 > size) { return false; }
+	if (0 >= connectSize) { return false; }
 
 	m_redisClinetList.reserve(connectSize);
-	for (size_t i = 0; i < size; i++)
+	for (size_t i = 0; i < connectSize; i++)
 	{
 		m_redisClinetList.emplace_back(new cpp_redis::client{});
 	}
 
-	for (size_t i = 0; i < size; i++)
+	for (size_t i = 0; i < connectSize; i++)
 	{
 		auto& redis = *m_redisClinetList[i];
 		redis.connect(ip.data(), port, [i](const std::string& host, std::size_t port, cpp_redis::client::connect_state status) {
@@ -43,13 +42,13 @@ bool RedisManager::Init(std::string_view ip, int port, int connectSize)
 			{
 				Logger::Inst().Info(Format("Redis Connect ok. Index={}, IP={}, Port={}", i, host, port));
 			}
-			else if (status == cpp_redis::client::connect_state::dropped) 
-			{
-				Logger::Inst().Log(ERROR_LOG::REDIS_CONNECTION_FAILED, Format("Redis Index={}, IP={}, Port={}", i, host, port));
-			}
 			else if (status == cpp_redis::client::connect_state::start)
 			{
 				//Logger::Inst().Info(Format("Redis Connect start. Index={}, IP={}, Port={}", i, host, port));
+			}
+			else if (status == cpp_redis::client::connect_state::dropped) 
+			{
+				Logger::Inst().Log(ERROR_LOG::REDIS_CONNECTION_FAILED, Format("Redis Index={}, IP={}, Port={}", i, host, port));
 			}
 		});
 	}
@@ -72,7 +71,26 @@ bool RedisManager::Init(std::string_view ip, int port, int connectSize)
 		return false;
 	}
 
+	if (ERedisConnectType::Sentinal == rct)
+	{
+		// max index size check ( 0 ~ 15 )
+		if (connectSize < 0 || 15 < connectSize)
+		{
+			Logger::Inst().Log(ERROR_LOG::REDIS_INVALID_REQUEST, Format("Redis Connection Type was {} - but index size was: {}", (int)rct, connectSize));
+			return false;
+		}
 
+		for (size_t i = 0; i < connectSize; i++)
+		{
+			auto& redis = *m_redisClinetList[i];
+			auto res = redis.select(i).get();
+			if (false == res.ok())
+			{
+				Logger::Inst().Log(ERROR_LOG::REDIS_INVALID_REQUEST, Format("Redis Connection Type was {}, index : {}, redis cmd was SELECT", (int)rct, i));
+				return false;
+			}
+		}
+	}
 
 	return true;
 }

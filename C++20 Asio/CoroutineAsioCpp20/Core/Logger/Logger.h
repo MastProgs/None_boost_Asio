@@ -26,8 +26,9 @@ protected:
 		AddLogDetail(LOG_LEVEL::INFO, ERROR_LOG::INFO, "");
 		AddLogDetail(LOG_LEVEL::ALERT, ERROR_LOG::REDIS_CONNECTION_FAILED, "Redis Connection Failed");
 		AddLogDetail(LOG_LEVEL::ALERT, ERROR_LOG::REDIS_PING_TEST_FAILED, "Redis ping test Failed");
+		AddLogDetail(LOG_LEVEL::ALERT, ERROR_LOG::REDIS_INVALID_REQUEST, "Invalid request type");
 		AddLogDetail(LOG_LEVEL::ALERT, ERROR_LOG::INVALID_CODE, "Invalid Error Code");
-		AddLogDetail(LOG_LEVEL::ALERT, ERROR_LOG::INVALID_NAME, "Invalid Error Name");
+		AddLogDetail(LOG_LEVEL::ALERT, ERROR_LOG::INVALID_NAME, "Invalid Error Name"); 
 		AddLogDetail(LOG_LEVEL::ALERT, ERROR_LOG::SAME_LOG_NAME_ERROR, "When you insert new error code, log name already exist in log manager");
 		AddLogDetail(LOG_LEVEL::ALERT, ERROR_LOG::INVALID_PACKET_DATA, "Packet PACKET_DELIMITER is not same");
 	}
