@@ -20,7 +20,7 @@ RedisManager::~RedisManager()
 
 bool RedisManager::Init()
 {
-	return __super::Init() && Init("172.20.41.44", 6379, 16, ERedisConnectType::Sentinal);
+	return __super::Init() && Init("172.20.41.44", 6379, 16, ERedisConnectType::Sentinel);
 }
 
 bool RedisManager::Init(std::string_view ip, int port, int connectSize, ERedisConnectType rct)
@@ -71,7 +71,7 @@ bool RedisManager::Init(std::string_view ip, int port, int connectSize, ERedisCo
 		return false;
 	}
 
-	if (ERedisConnectType::Sentinal == rct)
+	if (ERedisConnectType::Sentinel == rct)
 	{
 		// max index size check ( 0 ~ 15 )
 		if (connectSize < 0 || 15 < connectSize)

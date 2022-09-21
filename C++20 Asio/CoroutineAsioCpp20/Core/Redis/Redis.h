@@ -15,7 +15,7 @@ class RedisManager : public Singleton<RedisManager>
 private:
 	enum class ERedisConnectType : char
 	{
-		Sentinal
+		Sentinel
 		, Cluster
 	};
 
