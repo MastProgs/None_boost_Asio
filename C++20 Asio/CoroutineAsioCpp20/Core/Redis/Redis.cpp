@@ -73,8 +73,8 @@ bool RedisManager::Init(std::string_view ip, int port, int connectSize, ERedisCo
 
 	if (ERedisConnectType::Sentinel == rct)
 	{
-		// max index size check ( 0 ~ 15 )
-		if (connectSize < 0 || 15 < connectSize)
+		// max index size check ( 0 ~ 16 )
+		if (connectSize < 0 || 16 < connectSize)
 		{
 			Logger::Inst().Log(ERROR_LOG::REDIS_INVALID_REQUEST, Format("Redis Connection Type was {} - but index size was: {}", (int)rct, connectSize));
 			return false;
@@ -83,13 +83,29 @@ bool RedisManager::Init(std::string_view ip, int port, int connectSize, ERedisCo
 		for (size_t i = 0; i < connectSize; i++)
 		{
 			auto& redis = *m_redisClinetList[i];
-			auto res = redis.select(i).get();
+			auto fu = redis.select(i);
+			redis.commit();
+			auto res = fu.get();
 			if (false == res.ok())
 			{
 				Logger::Inst().Log(ERROR_LOG::REDIS_INVALID_REQUEST, Format("Redis Connection Type was {}, index : {}, redis cmd was SELECT", (int)rct, i));
 				return false;
 			}
 		}
+
+		// test ¿¹½Ã
+		/*{
+			auto& redis = *m_redisClinetList[8];
+			auto fu = redis.set("TEST:hello", "Test");
+			redis.commit();
+			auto res = fu.get();
+		}
+		{
+			auto& redis = *m_redisClinetList[8];
+			auto zadd = redis.send({ "ZADD", "TEST:zadd", "60", "name" });
+			redis.commit();
+			auto res = zadd.get();
+		}*/
 	}
 
 	return true;
@@ -99,8 +115,10 @@ bool RedisManager::Ping()
 {
 	auto iter = m_redisClinetList
 		| std::views::filter([](cpp_redis::client* redis) {
-		auto res = redis->ping().get();
-		return res.is_string() && (res.as_string() == "pong");
+		auto fu = redis->ping();
+		redis->commit();
+		auto res = fu.get();
+		return res.is_string() && (res.as_string() == "PONG");
 			});
 
 	std::vector<bool> wasPong{ iter.begin(), iter.end() };
