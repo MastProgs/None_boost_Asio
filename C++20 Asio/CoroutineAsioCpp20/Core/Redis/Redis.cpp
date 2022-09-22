@@ -3,8 +3,12 @@
 #include "Redis.h"
 
 #include "Singleton.h"
+#include "Format.h"
+#include "Datetime.h"
 
 #include <cpp_redis/cpp_redis>
+
+//#include "Rand.h"
 
 RedisManager::RedisManager()
 {
@@ -53,7 +57,7 @@ bool RedisManager::Init(std::string_view ip, int port, int connectSize, ERedisCo
 		});
 	}
 
-	int successCnt = 0;
+	size_t successCnt = 0;
 	do
 	{
 		auto iter = m_redisClinetList
@@ -80,7 +84,7 @@ bool RedisManager::Init(std::string_view ip, int port, int connectSize, ERedisCo
 			return false;
 		}
 
-		for (size_t i = 0; i < connectSize; i++)
+		for (int i = 0; i < connectSize; i++)
 		{
 			auto& redis = *m_redisClinetList[i];
 			auto fu = redis.select(i);
@@ -105,6 +109,60 @@ bool RedisManager::Init(std::string_view ip, int port, int connectSize, ERedisCo
 			auto zadd = redis.send({ "ZADD", "TEST:zadd", "60", "name" });
 			redis.commit();
 			auto res = zadd.get();
+		}
+		{
+			auto& redis = *m_redisClinetList[8];
+			Redis::ZAdd rCmd{ redis };
+			rCmd.SetKey("TEST", "zaddTest");
+
+			auto r = Rand::Inst().Dice(10000);
+			rCmd.SetParams(r, "testName" + Format("{}", r));
+			auto res = rCmd.Run();
+			if (res.ok())
+			{
+				std::cout << "insert Success!!\n";
+			}
+		}
+
+		{
+			auto& redis = *m_redisClinetList[8];
+			Redis::ZRange rCmd{ redis };
+			rCmd.SetKey("TEST", "zaddTest");
+			rCmd.SetParams(0, -1);
+			rCmd.SetReverse();
+			auto res = rCmd.Run();
+			if (res.ok() && res.is_array())
+			{
+				auto arr = res.as_array();
+				for (const auto& rply : arr)
+				{
+					std::cout << rply.as_string() << " ";
+				}
+			}
+		}
+
+		{
+			auto& redis = *m_redisClinetList[8];
+			Redis::ZRangeByScore rCmd{ redis };
+			rCmd.SetKey("TEST", "zaddTest");
+			rCmd.SetParams("-inf", "+inf");
+			rCmd.SetWithScores();
+			auto res = rCmd.Run();
+			if (res.ok() && res.is_array())
+			{
+				auto arr = res.as_array();
+				for (size_t i = 0; i < arr.size(); i++)
+				{
+					if (i & 1)
+					{
+						std::cout << atoll(arr[i].as_string().data()) << "\n";
+					}
+					else
+					{
+						std::cout << arr[i].as_string() << " ";
+					}
+				}
+			}
 		}*/
 	}
 
@@ -123,4 +181,119 @@ bool RedisManager::Ping()
 
 	std::vector<bool> wasPong{ iter.begin(), iter.end() };
 	return m_redisClinetList.size() == wasPong.size();
+}
+
+RedisCommand::RedisCommand(cpp_redis::client& redis)
+	: m_redis{ redis }
+{
+	m_reply = new cpp_redis::reply{};
+}
+
+RedisCommand::~RedisCommand()
+{
+	delete m_reply;
+}
+
+
+std::vector<std::string> RedisCommand::tokenize(std::string_view str, const char delim)
+{
+	//std::vector<std::string> out;
+	//// construct a stream from the string 
+	//std::stringstream ss(str);
+	//std::string s;
+	//while (std::getline(ss, s, delim))
+	//{
+	//	out.emplace_back(s);
+	//}
+	//return out;
+
+	auto view = str
+		| std::ranges::views::split(delim)
+		| std::ranges::views::filter([](std::string_view s) { return s != ""; })
+		| std::ranges::views::transform([](auto&& elem) {
+				return std::string_view(&*elem.begin(), std::ranges::distance(elem));
+			});
+
+	std::vector<std::string> out{ view.begin(), view.end() };
+	return out;
+}
+
+void RedisCommand::SetCommand()
+{
+	std::string fullCmd = m_operate + " ";
+	if (false == m_key.empty()) { fullCmd = fullCmd + m_key + " "; }
+	fullCmd += m_subParams + " ";
+	if (m_flag_withScores || m_flag_reverse)
+	{
+		std::string option;
+		option = m_flag_withScores ? "WITHSCORES" :
+			m_flag_reverse ? "REV" : "";
+
+		fullCmd = fullCmd + option + " ";
+	}
+
+	m_cmd = tokenize(fullCmd, ' ');
+}
+
+void RedisCommand::SetRawCommand(std::string_view cmds)
+{
+	m_cmd = tokenize(cmds, ' ');
+}
+
+template <typename Elem>
+std::string RedisCommand::MakeKey(const Elem& s)
+{
+	return Format("{}", s);
+}
+
+template <typename Elem, typename ... Strings>
+std::string RedisCommand::MakeKey(const Elem& s, Strings... forms)
+{
+	return std::string{ Format("{}", s) + ":" + MakeKey(forms...) };
+}
+
+template <typename Elem>
+std::string RedisCommand::MakeParams(const Elem& s)
+{
+	return Format("{}", s);
+}
+
+template <typename Elem, typename ... Strings>
+std::string RedisCommand::MakeParams(const Elem& s, Strings... forms)
+{
+	return std::string{ Format("{}", s) + " " + MakeParams(forms...) };
+}
+
+template<typename ...ARGS>
+void RedisCommand::SetKey(const ARGS & ...args)
+{
+	m_key = MakeKey(args...);
+}
+
+template<typename ...ARGS>
+void RedisCommand::SetParams(const ARGS & ...args)
+{
+	m_subParams = MakeParams(args...);
+}
+
+void RedisCommand::SetWithScores(bool b)
+{
+	m_flag_withScores = b;
+}
+
+void RedisCommand::SetReverse(bool b)
+{
+	m_flag_reverse = b;
+}
+
+
+cpp_redis::reply& RedisCommand::Run()
+{
+	SetCommand();
+	auto f = m_redis.send(m_cmd);
+	auto tp = std::chrono::system_clock::now() + std::chrono::seconds{ m_timeout };
+	m_redis.commit();
+	f.wait_until(tp);
+	*m_reply = f.get();
+	return *m_reply;
 }

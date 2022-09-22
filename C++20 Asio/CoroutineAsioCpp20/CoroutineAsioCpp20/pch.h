@@ -18,6 +18,7 @@
 #include <memory>
 #include <format>
 #include <functional>
+#include <future>
 #include <unordered_map>
 #include <atomic>
 #include <mutex>
