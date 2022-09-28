@@ -24,10 +24,10 @@ RedisManager::~RedisManager()
 
 bool RedisManager::Init()
 {
-	return __super::Init() && Init("172.20.41.44", 6379, 16, ERedisConnectType::Sentinel);
+	return __super::Init() && Init("ip", 6379, "password", 16, ERedisConnectType::Sentinel);
 }
 
-bool RedisManager::Init(std::string_view ip, int port, int connectSize, ERedisConnectType rct)
+bool RedisManager::Init(std::string_view ip, int port, std::string_view password, int connectSize, ERedisConnectType rct)
 {
 	if (0 >= connectSize) { return false; }
 
@@ -48,7 +48,7 @@ bool RedisManager::Init(std::string_view ip, int port, int connectSize, ERedisCo
 			}
 			else if (status == cpp_redis::client::connect_state::start)
 			{
-				//Logger::Inst().Info(Format("Redis Connect start. Index={}, IP={}, Port={}", i, host, port));
+				Logger::Inst().Info(Format("Redis Connect start. Index={}, IP={}, Port={}", i, host, port));
 			}
 			else if (status == cpp_redis::client::connect_state::dropped) 
 			{
@@ -68,6 +68,25 @@ bool RedisManager::Init(std::string_view ip, int port, int connectSize, ERedisCo
 		std::vector<cpp_redis::client*> m_successConn{ iter.begin(), iter.end() };
 		successCnt = m_successConn.size();
 	} while (m_redisClinetList.size() != successCnt);
+
+	if (password.size())
+	{
+		for (auto& d : m_redisClinetList)
+		{
+			auto& redis = *d;
+			redis.auth(std::string{ password }, [](const cpp_redis::reply& res) {
+				if (res.ko())
+				{
+					Logger::Inst().Log(ERROR_LOG::REDIS_CONNECTION_FAILED, Format("Redis Auth Password Failed"));
+				}
+
+				if (res.ok())
+				{
+					Logger::Inst().Info(Format("Redis Auth Password Success"));
+				}
+			});
+		}
+	}
 
 	if (false == Ping())
 	{
@@ -165,6 +184,11 @@ bool RedisManager::Init(std::string_view ip, int port, int connectSize, ERedisCo
 			}
 		}*/
 	}
+	else if (ERedisConnectType::Cluster == rct)
+	{
+		// ¹Ì±¸Çö
+		return false;
+	}
 
 	return true;
 }
@@ -181,6 +205,16 @@ bool RedisManager::Ping()
 
 	std::vector<bool> wasPong{ iter.begin(), iter.end() };
 	return m_redisClinetList.size() == wasPong.size();
+}
+
+cpp_redis::client& RedisManager::GetRedis(int i)
+{
+	if (false == (-1 < i && i < m_redisClinetList.size()))
+	{
+		return *m_redisClinetList.at(0);
+	}
+
+	return *m_redisClinetList.at(i);
 }
 
 RedisCommand::RedisCommand(cpp_redis::client& redis)

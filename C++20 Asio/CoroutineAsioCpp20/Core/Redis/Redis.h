@@ -27,8 +27,11 @@ public:
 	virtual bool Init() final;
 	bool Ping();
 
+public:
+	cpp_redis::client& GetRedis(int i = 0);
+
 private:
-	bool Init(std::string_view ip, int port, int connectSize, ERedisConnectType rct);
+	bool Init(std::string_view ip, int port, std::string_view password, int connectSize, ERedisConnectType rct);
 
 private:
 	std::vector<cpp_redis::client*> m_redisClinetList;
