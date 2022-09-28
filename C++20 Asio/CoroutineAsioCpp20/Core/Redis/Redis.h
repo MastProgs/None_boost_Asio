@@ -37,37 +37,84 @@ private:
 	std::vector<cpp_redis::client*> m_redisClinetList;
 };
 
+class RedisResult
+{
+public:
+	explicit RedisResult(bool isError = false) : isError{ isError } {};
+	explicit RedisResult(const std::vector<std::string>& res, bool isError = false) : m_rawRes{ res }, isError{ isError }, isNull{ false } {};
+	explicit RedisResult(const long long& res, bool isError = false) : m_intSingleRes{ res }, isError{ isError }, isNull{ false } {};
+	explicit RedisResult(const std::string& res, bool isError = false) : isError{ isError }, isNull{ false } { m_rawRes.emplace_back(res); };
+
+	~RedisResult() {};
+
+	bool IsError() const { return isError; }
+	bool IsNull() const { return isNull || IsError(); }
+
+	template<typename ResultType>
+	ResultType GetResult() const;
+
+	std::string GetString() const { return m_rawRes.at(0); }
+	long long GetNumber() const
+	{
+		if (m_intSingleRes != MIN_SCORE) return m_intSingleRes;
+		if (m_rawRes.size() == 1) return atoll(m_rawRes.at(0).data());
+		return MIN_SCORE;
+	}
+
+	static const long long MIN_SCORE = INT64_MIN;
+
+private:
+	bool isError = false;
+	bool isNull = true;
+	long long m_intSingleRes = INT64_MIN;
+	std::vector<std::string> m_rawRes;
+};
+
 class RedisCommand
 {
 public:
 	explicit RedisCommand(cpp_redis::client& redis);
 	virtual ~RedisCommand();
 
-	template<typename ... ARGS>
-	void SetKey(const ARGS&... args);
+	template <typename Elem, typename ... Strings>
+	void SetKey(const Elem& s, const Strings&... forms);
+	template <typename Elem>
+	void SetKey(const Elem& s);
 
-	template<typename ... ARGS>
-	void SetParams(const ARGS&... args);
+	template <typename Elem, typename ... Strings>
+	void SetParams(const Elem& s, const Strings&... forms);
+	template <typename Elem>
+	void SetParams(const Elem& s);
+	template <typename Elem>
+	void SetParams(const std::vector<Elem>& s);
+	template <typename Elem, typename Value>
+	void SetParams(const std::vector<Elem>& s, const std::vector<Value>& v);
 
 	void SetWithScores(bool b = true);
 	void SetReverse(bool b = true);
 
-	cpp_redis::reply& Run();
+	RedisResult Run();
 
 protected:
 	std::vector<std::string> tokenize(std::string_view str, const char delim);
 
 	template <typename Elem, typename ... Strings>
-	std::string MakeKey(const Elem& s, Strings... forms);
+	std::string MakeKey(const Elem& s, const Strings&... forms);
 	template <typename Elem>
 	std::string MakeKey(const Elem& s);
 
 	template <typename Elem, typename ... Strings>
-	std::string MakeParams(const Elem& s, Strings... forms);
+	std::string MakeParams(const Elem& s, const Strings&... forms);
 	template <typename Elem>
 	std::string MakeParams(const Elem& s);
+	template <typename Elem>
+	std::string MakeParams(const std::vector<Elem>& s);
+	template <typename Elem, typename Value>
+	std::string MakeParams(const std::vector<Elem>& s, const std::vector<Value>& v);
 
 private:
+	cpp_redis::reply& RunCommit();
+
 	void SetCommand();
 	void SetRawCommand(std::string_view cmds);
 
@@ -82,7 +129,7 @@ protected:
 
 	std::vector<std::string> m_cmd;
 	cpp_redis::client& m_redis;
-	cpp_redis::reply* m_reply;
+	cpp_redis::reply* m_reply = nullptr;
 	int m_timeout = 10;
 };
 

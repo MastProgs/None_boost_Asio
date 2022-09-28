@@ -217,10 +217,164 @@ cpp_redis::client& RedisManager::GetRedis(int i)
 	return *m_redisClinetList.at(i);
 }
 
+
+template<>
+inline std::string RedisResult::GetResult() const
+{
+	return GetString();
+}
+
+template<>
+inline long long RedisResult::GetResult() const
+{
+	return GetNumber();
+}
+
+template<>
+inline int RedisResult::GetResult() const
+{
+	return (int)GetNumber();
+}
+
+template<>
+inline std::vector<std::string> RedisResult::GetResult() const
+{
+	return m_rawRes;
+}
+
+template<>
+inline std::vector<long long> RedisResult::GetResult() const
+{
+	std::vector<long long> ret;
+	for (const auto& d : m_rawRes)
+	{
+		ret.emplace_back(atoll(d.data()));
+	}
+
+	return ret;
+}
+
+template<>
+inline std::vector<int> RedisResult::GetResult() const
+{
+	std::vector<int> ret;
+	for (const auto& d : m_rawRes)
+	{
+		ret.emplace_back(atol(d.data()));
+	}
+
+	return ret;
+}
+
+template<>
+inline std::vector<std::pair<std::string, std::string>> RedisResult::GetResult() const
+{
+	std::vector<std::pair<std::string, std::string>> ret;
+	for (size_t i = 0; i < m_rawRes.size(); i++)
+	{
+		if (i & 1)
+		{
+			ret.emplace_back(std::make_pair<std::string, std::string>(std::string{ m_rawRes.at(i - 1) }, std::string{ m_rawRes.at(i) }));
+		}
+	}
+
+	return ret;
+}
+
+template<>
+inline std::vector<std::pair<std::string, long long>> RedisResult::GetResult() const
+{
+	std::vector<std::pair<std::string, long long>> ret;
+	for (size_t i = 0; i < m_rawRes.size(); i++)
+	{
+		if (i & 1)
+		{
+			ret.emplace_back(std::make_pair<std::string, long long>(std::string{ m_rawRes.at(i - 1) }, atoll(m_rawRes.at(i).data())));
+		}
+	}
+
+	return ret;
+}
+
+template<>
+inline std::vector<std::pair<long long, std::string>> RedisResult::GetResult() const
+{
+	std::vector<std::pair<long long, std::string>> ret;
+	for (size_t i = 0; i < m_rawRes.size(); i++)
+	{
+		if (i & 1)
+		{
+			ret.emplace_back(std::make_pair<long long, std::string>(atoll(m_rawRes.at(i - 1).data()), std::string{ m_rawRes.at(i) }));
+		}
+	}
+
+	return ret;
+}
+
+template<>
+inline std::vector<std::pair<long long, long long>> RedisResult::GetResult() const
+{
+	std::vector<std::pair<long long, long long>> ret;
+	for (size_t i = 0; i < m_rawRes.size(); i++)
+	{
+		if (i & 1)
+		{
+			ret.emplace_back(std::make_pair<long long, long long>(atoll(m_rawRes.at(i - 1).data()), atoll(m_rawRes.at(i).data())));
+		}
+	}
+
+	return ret;
+}
+
+template<>
+inline std::vector<std::pair<std::string, int>> RedisResult::GetResult() const
+{
+	std::vector<std::pair<std::string, int>> ret;
+	for (size_t i = 0; i < m_rawRes.size(); i++)
+	{
+		if (i & 1)
+		{
+			ret.emplace_back(std::make_pair<std::string, int>(std::string{ m_rawRes.at(i - 1) }, atol(m_rawRes.at(i).data())));
+		}
+	}
+
+	return ret;
+}
+
+template<>
+inline std::vector<std::pair<int, std::string>> RedisResult::GetResult() const
+{
+	std::vector<std::pair<int, std::string>> ret;
+	for (size_t i = 0; i < m_rawRes.size(); i++)
+	{
+		if (i & 1)
+		{
+			ret.emplace_back(std::make_pair<int, std::string>(atol(m_rawRes.at(i - 1).data()), std::string{ m_rawRes.at(i) }));
+		}
+	}
+
+	return ret;
+}
+
+template<>
+inline std::vector<std::pair<int, int>> RedisResult::GetResult() const
+{
+	std::vector<std::pair<int, int>> ret;
+	for (size_t i = 0; i < m_rawRes.size(); i++)
+	{
+		if (i & 1)
+		{
+			ret.emplace_back(std::make_pair<int, int>(atol(m_rawRes.at(i - 1).data()), atol(m_rawRes.at(i).data())));
+		}
+	}
+
+	return ret;
+}
+
+
 RedisCommand::RedisCommand(cpp_redis::client& redis)
 	: m_redis{ redis }
 {
-	m_reply = new cpp_redis::reply{};
 }
 
 RedisCommand::~RedisCommand()
@@ -252,6 +406,18 @@ std::vector<std::string> RedisCommand::tokenize(std::string_view str, const char
 	return out;
 }
 
+cpp_redis::reply& RedisCommand::RunCommit()
+{
+	SetCommand();
+	auto f = m_redis.send(m_cmd);
+	auto tp = std::chrono::system_clock::now() + std::chrono::seconds{ m_timeout };
+	m_redis.commit();
+	f.wait_until(tp);
+	m_reply = new cpp_redis::reply{};
+	*m_reply = f.get();
+	return *m_reply;
+}
+
 void RedisCommand::SetCommand()
 {
 	std::string fullCmd = m_operate + " ";
@@ -274,40 +440,91 @@ void RedisCommand::SetRawCommand(std::string_view cmds)
 	m_cmd = tokenize(cmds, ' ');
 }
 
-template <typename Elem>
-std::string RedisCommand::MakeKey(const Elem& s)
+template<typename Elem, typename ...Strings>
+void RedisCommand::SetKey(const Elem& s, const Strings & ...params)
 {
-	return Format("{}", s);
+	m_key = MakeKey(s, params...);
 }
 
-template <typename Elem, typename ... Strings>
-std::string RedisCommand::MakeKey(const Elem& s, Strings... forms)
+template<typename Elem>
+void RedisCommand::SetKey(const Elem& s)
 {
-	return std::string{ Format("{}", s) + ":" + MakeKey(forms...) };
+	m_key = MakeKey(s);
+}
+
+template<typename Elem, typename ...Strings>
+void RedisCommand::SetParams(const Elem& s, const Strings & ...params)
+{
+	m_subParams = MakeParams(s, params...);
+}
+
+template<typename Elem>
+void RedisCommand::SetParams(const Elem& s)
+{
+	m_subParams = MakeParams(s);
+}
+
+template <typename Elem>
+void RedisCommand::SetParams(const std::vector<Elem>& s)
+{
+	m_subParams = MakeParams(s);
+}
+
+template <typename Elem, typename Value>
+void RedisCommand::SetParams(const std::vector<Elem>& s, const std::vector<Value>& v)
+{
+	m_subParams = MakeParams(s, v);
 }
 
 template <typename Elem>
 std::string RedisCommand::MakeParams(const Elem& s)
 {
-	return Format("{}", s);
+	return std::format("{}", s);
 }
 
 template <typename Elem, typename ... Strings>
-std::string RedisCommand::MakeParams(const Elem& s, Strings... forms)
+std::string RedisCommand::MakeParams(const Elem& s, const Strings&... forms)
 {
-	return std::string{ Format("{}", s) + " " + MakeParams(forms...) };
+	return std::string{ std::format("{}", s) + " " + MakeParams(forms...) };
 }
 
-template<typename ...ARGS>
-void RedisCommand::SetKey(const ARGS & ...args)
+template <typename Elem>
+std::string RedisCommand::MakeParams(const std::vector<Elem>& s)
 {
-	m_key = MakeKey(args...);
+	std::string params = "";
+	for (const auto& d : s)
+	{
+		params += std::format("{} ", d);
+	}
+
+	return params;
 }
 
-template<typename ...ARGS>
-void RedisCommand::SetParams(const ARGS & ...args)
+template <typename Elem, typename Value>
+std::string RedisCommand::MakeParams(const std::vector<Elem>& s, const std::vector<Value>& v)
 {
-	m_subParams = MakeParams(args...);
+	std::string params = "";
+	if (s.size() != v.size()) { return params; }
+
+	for (size_t i = 0; i < s.size(); ++i)
+	{
+		params += std::format("{} ", s.at(i));
+		params += std::format("{} ", v.at(i));
+	}
+
+	return params;
+}
+
+template <typename Elem>
+std::string RedisCommand::MakeKey(const Elem& s)
+{
+	return std::format("{}", s);
+}
+
+template <typename Elem, typename ... Strings>
+std::string RedisCommand::MakeKey(const Elem& s, const Strings&... forms)
+{
+	return std::string{ std::format("{}", s) + ":" + MakeKey(forms...) };
 }
 
 void RedisCommand::SetWithScores(bool b)
@@ -321,13 +538,40 @@ void RedisCommand::SetReverse(bool b)
 }
 
 
-cpp_redis::reply& RedisCommand::Run()
+RedisResult RedisCommand::Run()
 {
-	SetCommand();
-	auto f = m_redis.send(m_cmd);
-	auto tp = std::chrono::system_clock::now() + std::chrono::seconds{ m_timeout };
-	m_redis.commit();
-	f.wait_until(tp);
-	*m_reply = f.get();
-	return *m_reply;
+	RunCommit();
+
+	if (nullptr != m_reply)
+	{
+		auto& rep = *m_reply;
+
+		if (rep.ko()) { return RedisResult{ true }; }
+		if (rep.is_null()) { return RedisResult{}; }
+
+		if (rep.ok())
+		{
+			if (rep.is_array())
+			{
+				std::vector<std::string> res;
+
+				for (const auto& d : rep.as_array())
+				{
+					res.emplace_back(d.as_string());
+				}
+
+				return RedisResult{ res };
+			}
+			else if (rep.is_string())
+			{
+				return RedisResult{ rep.as_string() };
+			}
+			else if (rep.is_integer())
+			{
+				return RedisResult{ rep.as_integer() };
+			}
+		}
+	}
+
+	return RedisResult{ true };
 }
