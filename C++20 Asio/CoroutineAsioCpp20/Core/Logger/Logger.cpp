@@ -5,7 +5,7 @@
 void Logger::Info(std::string_view customLog)
 {
 #ifdef _DEBUG
-	auto logStr = Format("{} :: [ {} ] {}\n", GetUtcFormat(), LOG_LEVEL(LOG_LEVEL::INFO)._to_string(), customLog);
+	auto logStr = Format("{} :: [ {} ] {}", GetUtcFormat(), LOG_LEVEL(LOG_LEVEL::INFO)._to_string(), customLog);
 	Print(LOG_LEVEL::INFO, logStr);
 #else
 
@@ -65,7 +65,7 @@ std::string Logger::MakeLogString(std::string_view errLevelString, std::string_v
 		}
 		base_log += Format(". File ( {} ), Line No.{}", *words.rbegin(), _line);
 	}
-	if (additionalLog.size() != 0) { base_log += Format(". Additional Log = {}\n", additionalLog); }
+	if (additionalLog.size() != 0) { base_log += Format(". Additional Log = {}", additionalLog); }
 
 	return base_log;
 }
@@ -78,7 +78,7 @@ ErrorLogDetail& Logger::GetErrorInfo(const ERROR_LOG& err)
 void Logger::Print(const LOG_LEVEL& err_level, std::string_view log)
 {
 #ifdef _DEBUG
-	std::cout << log;
+	std::cout << std::string{ log } + "\n";
 #else
 	switch (err_level)
 	{
