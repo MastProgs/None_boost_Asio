@@ -207,13 +207,25 @@ bool RedisManager::Ping()
 	return m_redisClinetList.size() == wasPong.size();
 }
 
-cpp_redis::client& RedisManager::GetRedis(int i)
+int RedisManager::GetIndex(const RedisContentsType& t)
 {
+	int idx = 0;
+	switch (t)
+	{
+	default:
+		idx = 0;
+		break;
+	}
+	return idx;
+}
+
+cpp_redis::client& RedisManager::GetRedis(const RedisContentsType& t)
+{
+	int i = GetIndex(t);
 	if (false == (-1 < i && i < m_redisClinetList.size()))
 	{
 		return *m_redisClinetList.at(0);
 	}
-
 	return *m_redisClinetList.at(i);
 }
 
@@ -375,6 +387,12 @@ inline std::vector<std::pair<int, int>> RedisResult::GetResult() const
 RedisCommand::RedisCommand(cpp_redis::client& redis)
 	: m_redis{ redis }
 {
+}
+
+RedisCommand::RedisCommand(RedisContentsType t)
+	: m_redis{ RedisManager::Inst().GetRedis(t) }
+{
+
 }
 
 RedisCommand::~RedisCommand()

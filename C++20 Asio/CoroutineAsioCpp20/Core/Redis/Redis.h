@@ -11,6 +11,10 @@ namespace cpp_redis
 	class reply;
 }
 
+BETTER_ENUM(RedisContentsType, char
+	, MAX
+);
+
 class RedisManager : public Singleton<RedisManager>
 {
 private:
@@ -27,8 +31,11 @@ public:
 	virtual bool Init() final;
 	bool Ping();
 
+private:
+	int GetIndex(const RedisContentsType& t);
+
 public:
-	cpp_redis::client& GetRedis(int i = 0);
+	cpp_redis::client& GetRedis(const RedisContentsType& t);
 
 private:
 	bool Init(std::string_view ip, int port, std::string_view password, int connectSize, ERedisConnectType rct);
@@ -74,6 +81,7 @@ class RedisCommand
 {
 public:
 	explicit RedisCommand(cpp_redis::client& redis);
+	explicit RedisCommand(RedisContentsType t);
 	virtual ~RedisCommand();
 
 	template <typename Elem, typename ... Strings>
@@ -133,23 +141,57 @@ protected:
 	int m_timeout = 10;
 };
 
-#define DEFINE_REDIS_CMD(x) class x : public RedisCommand \
-{ \
-public: \
-	explicit x(cpp_redis::client & redis) \
+#define DEFINE_REDIS_CMD_COMMON_BODY(x) public: \
+	explicit x(cpp_redis::client& redis) \
 		: RedisCommand{ redis } \
 	{ \
 		m_operate = tokenize(typeid(this).name(), ' ').at(1); \
 		if (std::string::npos != m_operate.find(':')) { m_operate = tokenize(m_operate, ':').at(1); } \
 	}; \
+	explicit x(RedisContentsType t) \
+		: RedisCommand{ t } \
+	{ \
+		m_operate = tokenize(typeid(this).name(), ' ').at(1); \
+		if (std::string::npos != m_operate.find(':')) { m_operate = tokenize(m_operate, ':').at(1); } \
+	}; 
+
+
+#define DEFINE_REDIS_CMD(x) class x : public RedisCommand \
+{ \
+	DEFINE_REDIS_CMD_COMMON_BODY(x) \
 }
 
 
 namespace Redis
 {
+	// Sorted Sets
 	DEFINE_REDIS_CMD(ZAdd);
+	DEFINE_REDIS_CMD(ZCard);
+	DEFINE_REDIS_CMD(ZRem);
 	DEFINE_REDIS_CMD(ZRange);
+	DEFINE_REDIS_CMD(ZRank);
+	DEFINE_REDIS_CMD(ZRevRank);
 	DEFINE_REDIS_CMD(ZRevRange);
 	DEFINE_REDIS_CMD(ZRangeByScore);
 	DEFINE_REDIS_CMD(ZRevRangeByScore);
+	DEFINE_REDIS_CMD(ZScore);
+
+	// Hash
+	DEFINE_REDIS_CMD(HDEL);
+	DEFINE_REDIS_CMD(HEXISTS);
+	DEFINE_REDIS_CMD(HGET);
+	DEFINE_REDIS_CMD(HGETALL);
+	DEFINE_REDIS_CMD(HKEYS);
+	DEFINE_REDIS_CMD(HMGET);
+	DEFINE_REDIS_CMD(HSET);
+	DEFINE_REDIS_CMD(HMSET);
+	DEFINE_REDIS_CMD(HMSETNX);
+	DEFINE_REDIS_CMD(HLEN);
+	DEFINE_REDIS_CMD(HINCRBY);
+
+	class ZIncrBy : public RedisCommand
+	{
+		DEFINE_REDIS_CMD_COMMON_BODY(ZIncrBy);
+
+	};
 }
