@@ -438,19 +438,23 @@ cpp_redis::reply& RedisCommand::RunCommit()
 
 void RedisCommand::SetCommand()
 {
-	std::string fullCmd = m_operate + " ";
-	if (false == m_key.empty()) { fullCmd = fullCmd + m_key + " "; }
-	fullCmd += m_subParams + " ";
-	if (m_flag_withScores || m_flag_reverse)
+	if (m_rawCmd.empty())
 	{
-		std::string option;
-		option = m_flag_withScores ? "WITHSCORES" :
-			m_flag_reverse ? "REV" : "";
+		m_rawCmd = m_operate + " ";
+		if (false == m_key.empty()) { m_rawCmd += m_key + " "; }
+		if (false == m_subParams.empty()) { m_rawCmd += m_subParams + " "; }
 
-		fullCmd = fullCmd + option + " ";
+		if (m_flag_withScores || m_flag_reverse)
+		{
+			std::string option;
+			option = m_flag_withScores ? "WITHSCORES" :
+				m_flag_reverse ? "REV" : "";
+
+			m_rawCmd = m_rawCmd + option + " ";
+		}
 	}
 
-	m_cmd = tokenize(fullCmd, ' ');
+	m_cmd = tokenize(m_rawCmd, ' ');
 }
 
 void RedisCommand::SetRawCommand(std::string_view cmds)
@@ -533,6 +537,19 @@ std::string RedisCommand::MakeParams(const std::vector<Elem>& s, const std::vect
 	return params;
 }
 
+template<typename T>
+RedisCommand::ValueType RedisCommand::CheckType()
+{
+	auto v = std::string_view{ typeid(T).name() };
+	size_t pos = v.find("string");
+	if (pos != std::string::npos) { return ValueType::STRING; }
+
+	pos = v.find("int");
+	if (pos != std::string::npos) { return ValueType::INT; }
+
+	return ValueType::ETC;
+}
+
 template <typename Elem>
 std::string RedisCommand::MakeKey(const Elem& s)
 {
@@ -564,7 +581,7 @@ RedisResult RedisCommand::Run()
 	{
 		auto& rep = *m_reply;
 
-		if (rep.ko()) { return RedisResult{ true }; }
+		if (rep.ko()) { return RedisResult{ true, rep.error() }; }
 		if (rep.is_null()) { return RedisResult{}; }
 
 		if (rep.ok())
@@ -591,5 +608,5 @@ RedisResult RedisCommand::Run()
 		}
 	}
 
-	return RedisResult{ true };
+	return RedisResult{ true, std::string{ "m_reply was nullptr"} };
 }

@@ -47,7 +47,7 @@ private:
 class RedisResult
 {
 public:
-	explicit RedisResult(bool isError = false) : isError{ isError } {};
+	explicit RedisResult(bool isError = false, const std::string& errMsg = "") : isError{ isError }, m_errMsg{ errMsg } {};
 	explicit RedisResult(const std::vector<std::string>& res, bool isError = false) : m_rawRes{ res }, isError{ isError }, isNull{ false } {};
 	explicit RedisResult(const long long& res, bool isError = false) : m_intSingleRes{ res }, isError{ isError }, isNull{ false } {};
 	explicit RedisResult(const std::string& res, bool isError = false) : isError{ isError }, isNull{ false } { m_rawRes.emplace_back(res); };
@@ -68,6 +68,8 @@ public:
 		return MIN_SCORE;
 	}
 
+	std::string GetErrorMsg() const { return m_errMsg; }
+
 	static const long long MIN_SCORE = INT64_MIN;
 
 private:
@@ -75,6 +77,7 @@ private:
 	bool isNull = true;
 	long long m_intSingleRes = INT64_MIN;
 	std::vector<std::string> m_rawRes;
+	std::string m_errMsg;
 };
 
 class RedisCommand
@@ -83,6 +86,9 @@ public:
 	explicit RedisCommand(cpp_redis::client& redis);
 	explicit RedisCommand(RedisContentsType t);
 	virtual ~RedisCommand();
+
+	void SetWithScores(bool b = true);
+	void SetReverse(bool b = true);
 
 	template <typename Elem, typename ... Strings>
 	void SetKey(const Elem& s, const Strings&... forms);
@@ -98,10 +104,10 @@ public:
 	template <typename Elem, typename Value>
 	void SetParams(const std::vector<Elem>& s, const std::vector<Value>& v);
 
-	void SetWithScores(bool b = true);
-	void SetReverse(bool b = true);
-
 	RedisResult Run();
+
+	std::string GetKey() const { return m_key; }
+	std::string GetRawCmd() const { return m_rawCmd; }
 
 protected:
 	std::vector<std::string> tokenize(std::string_view str, const char delim);
@@ -126,19 +132,35 @@ private:
 	void SetCommand();
 	void SetRawCommand(std::string_view cmds);
 
+private:
+	enum ValueType : char
+	{
+		INT
+		, STRING
+		, ETC
+	};
+
+	template <typename T>
+	ValueType CheckType();
+
 protected:
 	std::string m_operate;
 	std::string m_key;
 	std::string m_subParams;
+	std::string m_rawCmd;
+	std::vector<std::string> m_cmd;
+protected:
 
 	bool m_flag_withScores = false;
 	bool m_flag_reverse = false;
 	bool m_flag_byScore = false;
 
-	std::vector<std::string> m_cmd;
 	cpp_redis::client& m_redis;
 	cpp_redis::reply* m_reply = nullptr;
 	int m_timeout = 10;
+
+public:
+
 };
 
 #define DEFINE_REDIS_CMD_COMMON_BODY(x) public: \
