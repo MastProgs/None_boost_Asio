@@ -39,7 +39,7 @@ LONG ExceptionHandler::exception_callback(
 		}
 
 		SYSTEMTIME st = { 0 };
-		::GetSystemTime(&st);
+		::GetLocalTime(&st);
 
 		std::wstring dump_file_name;
 		dump_file_name.assign(ExceptionHandler::Inst()._dump_file_name + L".dmp");
