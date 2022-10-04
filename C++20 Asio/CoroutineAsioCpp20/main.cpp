@@ -15,9 +15,6 @@ int main()
 			// error check
 		}
 
-		int* p = nullptr;
-		*p = 10;
-
 		if (RedisManager::Inst().Init() == false)
 		{
 			// error check
