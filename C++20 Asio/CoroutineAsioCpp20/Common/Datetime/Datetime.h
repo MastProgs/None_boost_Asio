@@ -24,8 +24,8 @@ public:
 
 	auto UTC();
 	auto LOCAL();
-	auto UTC_String(std::string_view dateForm = "%Y-%m-%d %H:%M:%OS");
-	auto LOCAL_String(std::string_view dateForm = "%Y-%m-%d %H:%M:%OS");
+	std::string UTC_String(std::string_view dateForm = "%Y-%m-%d %H:%M:%OS");
+	std::string LOCAL_String(std::string_view dateForm = "%Y-%m-%d %H:%M:%OS");
 	TP StrToTP(const std::string& strDt, std::string_view dateForm = "%Y-%m-%d %H:%M:%S");
 	std::string TpToStr(const TP& tp, std::string_view dateForm = "%Y-%m-%d %H:%M:%OS");
 

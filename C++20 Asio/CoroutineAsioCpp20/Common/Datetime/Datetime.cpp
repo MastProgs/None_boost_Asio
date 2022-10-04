@@ -12,12 +12,12 @@ auto GTime::LOCAL()
 	return std::chrono::current_zone()->to_local(std::chrono::system_clock::now());
 }
 
-auto GTime::UTC_String(std::string_view dateForm)
+std::string GTime::UTC_String(std::string_view dateForm)
 {
 	return Format("{:" + std::string{ dateForm } + "}", UTC());
 }
 
-auto GTime::LOCAL_String(std::string_view dateForm)
+std::string GTime::LOCAL_String(std::string_view dateForm)
 {
 	return Format("{:" + std::string{ dateForm } + "}", LOCAL());
 }

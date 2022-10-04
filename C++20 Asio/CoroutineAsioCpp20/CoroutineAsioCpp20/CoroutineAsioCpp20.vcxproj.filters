@@ -67,6 +67,9 @@
     <Filter Include="소스 파일\Core\Redis">
       <UniqueIdentifier>{c9a3966c-96a2-4a96-a8e3-76595abbc525}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\OpenSource\Dump">
+      <UniqueIdentifier>{335b998c-c4db-46eb-9863-3956e0740062}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\main.cpp">
@@ -116,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="..\Core\Redis\Redis.cpp">
       <Filter>소스 파일\Core\Redis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenSource\Dump\ExceptionHandler.cpp">
+      <Filter>소스 파일\OpenSource\Dump</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +196,9 @@
     </ClInclude>
     <ClInclude Include="..\Core\Redis\Redis.h">
       <Filter>소스 파일\Core\Redis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OpenSource\Dump\ExceptionHandler.h">
+      <Filter>소스 파일\OpenSource\Dump</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
