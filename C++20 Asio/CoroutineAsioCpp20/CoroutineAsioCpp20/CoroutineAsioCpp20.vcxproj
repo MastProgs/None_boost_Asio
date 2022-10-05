@@ -173,6 +173,7 @@
     <ClCompile Include="..\Core\Redis\Redis.cpp" />
     <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\OpenSource\Dump\ExceptionHandler.cpp" />
+    <ClCompile Include="..\OpenSource\Dump\StackWalker.cpp" />
     <ClCompile Include="..\Packet\Packet.cpp" />
     <ClCompile Include="..\Packet\PacketHandler.cpp" />
     <ClCompile Include="pch.cpp">
@@ -198,6 +199,7 @@
     <ClInclude Include="..\Core\Redis\Redis.h" />
     <ClInclude Include="..\OpenSource\BetterEnum.h" />
     <ClInclude Include="..\OpenSource\Dump\ExceptionHandler.h" />
+    <ClInclude Include="..\OpenSource\Dump\StackWalker.h" />
     <ClInclude Include="..\OpenSource\httplib.h" />
     <ClInclude Include="..\OpenSource\json.hpp" />
     <ClInclude Include="..\OpenSource\Reflection\detail\itoa.hpp" />

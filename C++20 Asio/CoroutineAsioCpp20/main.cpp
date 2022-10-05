@@ -2,6 +2,7 @@
 #include "AsioServer.h"
 #include "Redis.h"
 #include "ExceptionHandler.h"
+#include "StackWalker.h"
 
 int main()
 {
@@ -14,6 +15,8 @@ int main()
 		{
 			// error check
 		}
+		int* p = nullptr;
+		*p = 123;
 
 		if (RedisManager::Inst().Init() == false)
 		{
@@ -28,5 +31,7 @@ int main()
 	catch (const std::exception& e)
 	{
 		std::cout << e.what();
+		int i;
+		std::cin >> i;
 	}
 }

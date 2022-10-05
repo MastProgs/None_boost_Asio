@@ -123,6 +123,9 @@
     <ClCompile Include="..\OpenSource\Dump\ExceptionHandler.cpp">
       <Filter>소스 파일\OpenSource\Dump</Filter>
     </ClCompile>
+    <ClCompile Include="..\OpenSource\Dump\StackWalker.cpp">
+      <Filter>소스 파일\OpenSource\Dump</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -198,6 +201,9 @@
       <Filter>소스 파일\Core\Redis</Filter>
     </ClInclude>
     <ClInclude Include="..\OpenSource\Dump\ExceptionHandler.h">
+      <Filter>소스 파일\OpenSource\Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OpenSource\Dump\StackWalker.h">
       <Filter>소스 파일\OpenSource\Dump</Filter>
     </ClInclude>
   </ItemGroup>

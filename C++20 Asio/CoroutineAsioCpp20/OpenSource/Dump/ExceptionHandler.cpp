@@ -1,5 +1,22 @@
 #include "pch.h"
 #include "ExceptionHandler.h"
+#include "StackWalker.h"
+
+class StackWalkerToConsole : public StackWalker
+{
+protected:
+	virtual void OnOutput(LPCSTR szText) { std::cout << szText; }
+};
+
+
+LONG WINAPI ExpFilter(EXCEPTION_POINTERS* pExp) //, DWORD dwExpCode)
+{
+	//StackWalker sw;  // output to default (Debug-Window)
+	StackWalkerToConsole sw; // output to the console
+	sw.ShowCallstack(GetCurrentThread(), pExp->ContextRecord);
+	return EXCEPTION_EXECUTE_HANDLER;
+}
+
 
 DWORD ExceptionHandler::initialize(
 	__in LPCTSTR dump_file_name,
@@ -31,12 +48,11 @@ DWORD ExceptionHandler::run() {
 LONG ExceptionHandler::exception_callback(
 	__in struct _EXCEPTION_POINTERS* exceptioninfo
 ) {
+	do 
+	{
+		if (nullptr == exceptioninfo) { break; }
 
-	do {
-
-		if (nullptr == exceptioninfo) {
-			break;
-		}
+		ExpFilter(exceptioninfo); // , GetExceptionCode());
 
 		SYSTEMTIME st = { 0 };
 		::GetLocalTime(&st);
