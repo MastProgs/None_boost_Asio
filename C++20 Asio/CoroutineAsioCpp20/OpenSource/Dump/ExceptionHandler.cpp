@@ -21,7 +21,8 @@ LONG WINAPI ExpFilter(EXCEPTION_POINTERS* pExp) //, DWORD dwExpCode)
 DWORD ExceptionHandler::initialize(
 	__in LPCTSTR dump_file_name,
 	__in const MINIDUMP_TYPE dump_type
-) {
+)
+{
 
 	DWORD error = ERROR_SUCCESS;
 
@@ -40,14 +41,17 @@ DWORD ExceptionHandler::initialize(
 	return error;
 }
 
-DWORD ExceptionHandler::run() {
+DWORD ExceptionHandler::run() 
+{
 	_prev_filter = ::SetUnhandledExceptionFilter(exception_callback);
 	return ERROR_SUCCESS;
 }
 
 LONG ExceptionHandler::exception_callback(
 	__in struct _EXCEPTION_POINTERS* exceptioninfo
-) {
+) 
+{
+	std::cout << "\n\n <<< Server Crashed !!! >>> \n\n";
 	do 
 	{
 		if (nullptr == exceptioninfo) { break; }
@@ -102,5 +106,7 @@ LONG ExceptionHandler::exception_callback(
 
 	} while (false);
 
+	int i;
+	std::cin >> i;
 	return (ExceptionHandler::Inst()._prev_filter) ? ExceptionHandler::Inst()._prev_filter(exceptioninfo) : EXCEPTION_EXECUTE_HANDLER;
 }
