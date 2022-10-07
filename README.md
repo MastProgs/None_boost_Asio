@@ -123,7 +123,7 @@ cpp_redis 클라이언트 객체를 관리하고 처리하는 클래스. cpp_red
 Redis::Zadd zadd { RedisContentsType::MAX };
 zadd.SetKey("User", 326, "th"); // key = "User:326:th"
 zadd.SetParams(10);
-zadd.Run();
+zadd.Run();  // final command = ZADD User:326:th 10
 ```
 
 ##### RedisResult
