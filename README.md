@@ -22,7 +22,7 @@ boost 라이브러리를 사용하지 않은 단일 asio 서버 통신 라이브
 ### Core
 대부분의 핵심 기능들은 여기에 구현하여 가져다 쓰는중
 
-#### Asio
+#### [Asio](https://github.com/MastProgs/None_boost_Asio/tree/master/C%2B%2B20%20Asio/CoroutineAsioCpp20/Core/Asio)
 * asio 을 기반으로 네트워크 통신의 가장 핵심적인 역할을 담당
 * boost 문법을 제거하고, std 표준 문법으로 재작성
 * asyncronous
@@ -54,7 +54,7 @@ boost 라이브러리를 사용하지 않은 단일 asio 서버 통신 라이브
   * asio 의 write, read 함수는 다양한 형식을 지원
 * Acceptor 에서 어떠한 Client 형태로 랩핑할지를 결정
 
-### Coroutine
+### [Coroutine](https://github.com/MastProgs/None_boost_Asio/tree/master/C%2B%2B20%20Asio/CoroutineAsioCpp20/Core/Coroutine)
 코루틴을 통해 더 효율적인 비동기 처리를 할 수 있으며, C++20 이 지원이 되어야 정상적으로 처리 가능
 
 * Task 객체를 통해 함수에서 스위칭 되는 시점의 상태 값을 Task 객체로 받음
@@ -81,7 +81,7 @@ VTask Logger::StoreDB(std::string_view log)
 }
 ```
 
-### Logger
+### [Logger](https://github.com/MastProgs/None_boost_Asio/tree/master/C%2B%2B20%20Asio/CoroutineAsioCpp20/Core/Logger)
 로그 관련 처리를 하기 위한 클래스. 기본적으로 std::format 을 사용하므로, C++17 이상 필요. Better Enums 오픈소스를 활용중
 
 #### LogManager
@@ -99,3 +99,93 @@ VTask Logger::StoreDB(std::string_view log)
 * Singleton
 * not thread safe
 
+#### [Redis](https://github.com/MastProgs/None_boost_Asio/tree/master/C%2B%2B20%20Asio/CoroutineAsioCpp20/Core/Redis)
+cpp_redis 오픈소스를 랩핑하여 활용한 Redis 객체, 다양한 범위 연산을 하기위해 ranges 를 활용하기에 C++20 필요.
+
+##### RedisManager
+cpp_redis 클라이언트 객체를 관리하고 처리하는 클래스. cpp_redis 자체가 비동기 지원을 하며, thread safe.
+
+* Singleton
+* Sentinal 형태로 사용하는 경우, vector 를 통해 미리 각 redis index 를 select 해두고 활용하는 구조
+  * GetIndex 로 컨텐츠에 해당하는 redis index 를 select 한 cpp_redis::client 객체를 가져오고 GetRedis 를 통해 객체를 reference 로 전달
+* not thread safe
+  * 최초 서버 시점에 초기화를 진행해주고, 그 이후에 만든 객체를 통해서만 활용하는 것으로 설계
+
+##### RedisCommand
+이 객체는 redis 명령어에만 관여하며, 실질적으로 명령어 생성 & 구조 변경을 하여 cpp_redis::client 객체에 전달하는 역할
+
+* need cpp_redis::client
+* key hash 구분자를 ':' 를 사용
+  * SetKey 함수를 통해 다양한 hash key 를 자동으로 처리
+* param value 들을 추가로 넣어주어서 사용
+
+```c++
+Redis::Zadd zadd { RedisContentsType::MAX };
+zadd.SetKey("User", 326, "th"); // key = "User:326:th"
+zadd.SetParams(10);
+zadd.Run();
+```
+
+##### RedisResult
+RedisCommand 객체를 통해서 실행한 결과가 cpp_redis::reply 객체로 반환되는데, 이 reply 객체를 랩핑하여 데이터를 훨씬 쉽고 간편하게 다루기 위한 클래스
+
+* 단일 데이터를 받는다면 GetString(), GetNumber() 를 통해 결과를 받을 수 있음
+* IsError(), IsNull() 을 통해 결과의 에러 여부 확인 가능
+* Value Score 형태의 리스트로 반환을 받아와야 하는 경우 GetResult<>() 활용 가능
+  * 템플릿에서 변환하고자 하는 형태의 데이터를 입력하면, 캐스팅 시켜줌
+  * 지원 가능한 형변환
+    * std::string
+    * long long
+    * int
+    * std::vector<std::string>
+    * std::vector<long long>
+    * std::vector<int>
+    * std::vector<std::pair<std::string, std::string>>
+    * std::vector<std::pair<std::string, long long>>
+    * std::vector<std::pair<long long, std::string>>
+    * std::vector<std::pair<long long, long long>>
+    * std::vector<std::pair<std::string, int>>
+    * std::vector<std::pair<int, std::string>>
+    * std::vector<std::pair<int, int>> 
+
+```c++
+Redis::ZRevRank zrevrank{ RedisContentsType::MAX }; 
+/* ... */
+
+zrevrank.SetWithScores();
+zrevrank.Run();
+ 
+auto userRankList = zrevrank.GetResult<std::vector<std::pair<std::string, long long>>>();
+for ( const auto& iter : userRankList )
+{
+   const auto& name = iter.first;
+   const auto& rank = iter.second; 
+}
+```
+ 
+### [Common](https://github.com/MastProgs/None_boost_Asio/tree/master/C%2B%2B20%20Asio/CoroutineAsioCpp20/Common)
+공통적으로 자주 활용하게 되는 코드의 경우 여기에 구현
+
+* Datetime
+  * 시간 관련 다루는 객체
+* Enum
+  * 공통으로 쓰이는 enum 정의
+* Random
+  * std random engine 을 활용한 랜덤 함수
+* String
+  * std::vformat 함수를 한 번 더 랩핑
+  * ToStr 을 통해 다양한 문자열 형태 변환
+    * Unicode <-> Multibytes
+    * std::string <-> std::wstring 
+ 
+### [OpenSource](https://github.com/MastProgs/None_boost_Asio/tree/master/C%2B%2B20%20Asio/CoroutineAsioCpp20/OpenSource)
+대부분 오픈 소스들을 가져와 활용하게 되는 곳
+ 
+* Dump
+  * StackWalker
+    * 이 소스를 통해서 크래시 났을 경우, call stack 들을 출력 가능
+    * 상속받아서, 파일 입출력 형태로도 활용 가능
+  * ExceptionHandler
+    * Minidump 파일 (.dmp) 를 남기는 코드
+* httplib
+* json
