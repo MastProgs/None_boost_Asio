@@ -81,10 +81,10 @@ VTask Logger::StoreDB(std::string_view log)
 }
 ```
 
-### [Logger](https://github.com/MastProgs/None_boost_Asio/tree/master/C%2B%2B20%20Asio/CoroutineAsioCpp20/Core/Logger)
+#### [Logger](https://github.com/MastProgs/None_boost_Asio/tree/master/C%2B%2B20%20Asio/CoroutineAsioCpp20/Core/Logger)
 로그 관련 처리를 하기 위한 클래스. 기본적으로 std::format 을 사용하므로, C++17 이상 필요. Better Enums 오픈소스를 활용중
 
-#### LogManager
+##### LogManager
 에러 로그 정보들을 사전에 map 구조의 error number, detail info 로 가지고 있고, 에러가 발생하는 시점에 관련 에러코드를 이 LogManager 에서 찾아서 활용
 
 * Singleton
@@ -93,7 +93,7 @@ VTask Logger::StoreDB(std::string_view log)
   * 서버가 올라간 상황에서는 std::mutex m_lock 을 통해 접근 관리를 해주어야 함
 * Logger 클래스에서만 접근하여 관련 정보를 참조로 불러옴
 
-#### Logger
+##### Logger
 실질적으로 log 내용을 작성하는 객체, file out 이나 DB store 작업이 필요하다면, print 함수에서 커스텀 시켜주면 된다. 기본은 std::cout 으로 cmd 창 출력
 
 * Singleton
