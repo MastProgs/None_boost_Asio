@@ -15,8 +15,6 @@ int main()
 		{
 			// error check
 		}
-		int* p = nullptr;
-		*p = 123;
 
 		if (RedisManager::Inst().Init() == false)
 		{
@@ -30,7 +28,7 @@ int main()
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << e.what();
+		std::cout << "\n\nUnexpected std error catched : " << e.what() << "\n\n";
 		int i;
 		std::cin >> i;
 	}
