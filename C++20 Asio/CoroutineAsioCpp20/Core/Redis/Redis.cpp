@@ -413,7 +413,7 @@ std::vector<std::string> RedisCommand::tokenize(std::string_view str, const char
 	//}
 	//return out;
 
-	auto view = str
+	/*auto view = str
 		| std::ranges::views::split(delim)
 		| std::ranges::views::filter([](std::string_view s) { return s != ""; })
 		| std::ranges::views::transform([](auto&& elem) {
@@ -421,6 +421,17 @@ std::vector<std::string> RedisCommand::tokenize(std::string_view str, const char
 			});
 
 	std::vector<std::string> out{ view.begin(), view.end() };
+	return out;*/
+
+	std::vector<std::string> out;
+	auto range = str | std::ranges::views::split(delim);
+	for (auto&& view : range)
+	{
+		if (auto s = std::string_view(&*view.begin(), std::ranges::distance(view)); !s.empty())
+		{
+			out.emplace_back(s);
+		}
+	}
 	return out;
 }
 
